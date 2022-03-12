@@ -488,21 +488,21 @@ void Smartport::setConfig(Config &config)
         Bn220 *gps;
         gps = new Bn220(GPS_SERIAL, GPS_BAUD_RATE);
         gps->begin();
-        sensorP = new SensorLatLon(GPS_LONG_LATI_FIRST_ID, gps->lonP(), gps->latP(), 5, gps);
+        sensorP = new SensorLatLon(GPS_LONG_LATI_FIRST_ID, gps->lonP(), gps->latP(), CONFIG_REFRESH_GPS, gps);
         addSensor(sensorP);
-        sensorP = new Sensor(GPS_ALT_FIRST_ID, gps->altP(), 5, gps);
+        sensorP = new Sensor(GPS_ALT_FIRST_ID, gps->altP(), CONFIG_REFRESH_GPS, gps);
         addSensor(sensorP);
-        sensorP = new Sensor(GPS_SPEED_FIRST_ID, gps->spdP(), 5, gps);
+        sensorP = new Sensor(GPS_SPEED_FIRST_ID, gps->spdP(), CONFIG_REFRESH_GPS, gps);
         addSensor(sensorP);
-        sensorP = new Sensor(GPS_COURS_FIRST_ID, gps->cogP(), 5, gps);
+        sensorP = new Sensor(GPS_COURS_FIRST_ID, gps->cogP(), CONFIG_REFRESH_GPS, gps);
         addSensor(sensorP);
-        sensorP = new SensorDateTime(GPS_TIME_DATE_FIRST_ID, gps->timeP(), gps->dateP(), 5, gps);
+        sensorP = new SensorDateTime(GPS_TIME_DATE_FIRST_ID, gps->timeP(), gps->dateP(), 10, gps);
         addSensor(sensorP);
         sensorP = new Sensor(VARIO_FIRST_ID + 1, gps->varioP(), 5, gps);
         addSensor(sensorP);
         sensorP = new Sensor(DIY_FIRST_ID + 3, gps->satP(), 10, gps);
         addSensor(sensorP);
-        sensorP = new Sensor(DIY_FIRST_ID + 4, gps->distP(), 10, gps);
+        sensorP = new Sensor(DIY_FIRST_ID + 4, gps->distP(), 5, gps);
         addSensor(sensorP);
     }
     if (config.airspeed == true)

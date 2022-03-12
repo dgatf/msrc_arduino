@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->cbBarometerType->addItems({"BMP280", "MS5611"});
     ui->cbAltitudeFilter->addItems({"Low", "Medium", "High"});
     ui->cbAltitudeFilter->setCurrentIndex(2);
+    ui->cbSpeedUnitsGps->addItems({"km/h", "kts"});
     for (uint8_t i = 0; i < 127; i++) {
         QString hex;
         hex.setNum(i,16);
@@ -158,10 +159,12 @@ void MainWindow::generateConfig()
     QSpinBox *sbVoltageRate = ui->gbRate->findChild<QSpinBox *>("sbVoltageRate");
     QSpinBox *sbCurrentRate = ui->gbRate->findChild<QSpinBox *>("sbCurrentRate");
     QSpinBox *sbTemperatureRate = ui->gbRate->findChild<QSpinBox *>("sbTemperatureRate");
+    QSpinBox *sbGpsRate = ui->gbRate->findChild<QSpinBox *>("sbGpsRate");
     configString += "\n#define CONFIG_REFRESH_RPM " + QString::number(sbRpmRate->value() / 100);
     configString += "\n#define CONFIG_REFRESH_VOLT " + QString::number(sbVoltageRate->value() / 100);
     configString += "\n#define CONFIG_REFRESH_CURR " + QString::number(sbCurrentRate->value() / 100);
     configString += "\n#define CONFIG_REFRESH_TEMP " + QString::number(sbTemperatureRate->value() / 100);
+    configString += "\n#define CONFIG_REFRESH_GPS " + QString::number(sbGpsRate->value() / 100);
 
     // Averaging
     configString += ""
@@ -227,6 +230,12 @@ void MainWindow::generateConfig()
                     "\n/* XBus */";
     if (ui->cbClockStretch->isChecked()) configString += "\n#define XBUS_CLOCK_STRECH_SWITCH";
     else configString += "\n//#define XBUS_CLOCK_STRECH_SWITCH";
+
+    configString += ""
+                    "\n"
+                    "\n/* Jeti Ex */";
+    if (ui->cbSpeedUnitsGps->currentText() == "km/h") configString += "\n#define JETI_GPS_SPEED_UNITS_KMH";
+    else configString += "\n//#define JETI_GPS_SPEED_UNITS_KMH";
 
     configString += ""
                     "\n"
@@ -313,6 +322,15 @@ void MainWindow::on_cbReceiver_currentIndexChanged(const QString &arg1)
     } else {
         ui->cbLuaConfig->setVisible(false);
         gbRate->setVisible(false);
+    }
+
+    QLabel *lbSpeedUnitsGps = ui->gbGps->findChild<QLabel *>("lbSpeedUnitsGps");
+    if (arg1 == "Jeti Ex Bus") {
+        ui->cbSpeedUnitsGps->setVisible(true);
+        lbSpeedUnitsGps->setVisible(true);
+    } else {
+        ui->cbSpeedUnitsGps->setVisible(false);
+        lbSpeedUnitsGps->setVisible(false);
     }
 
 }

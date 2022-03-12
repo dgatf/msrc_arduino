@@ -575,10 +575,15 @@ void JetiEx::setConfig(Config &config)
         Bn220 *gps;
         gps = new Bn220(GPS_SERIAL, GPS_BAUD_RATE);
         gps->begin();
+#ifdef JETI_GPS_SPEED_UNITS_KMH 
+        sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 1, gps->spdKmhP(), gps);
+        sensorJetiExP->setUnit("km/h");
+#else
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 1, gps->spdP(), gps);
+        sensorJetiExP->setUnit("kts");
+#endif
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Speed");
-        sensorJetiExP->setUnit("kts");
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT22, 1, gps->altP(), gps);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Altitude");

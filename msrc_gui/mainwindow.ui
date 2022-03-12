@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1267</width>
-    <height>907</height>
+    <height>928</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,9 +34,9 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-755</y>
+             <y>-756</y>
              <width>603</width>
-             <height>1590</height>
+             <height>1660</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout">
@@ -78,8 +78,41 @@
                     </property>
                    </widget>
                   </item>
+                  <item row="2" column="0">
+                   <widget class="QLabel" name="label_18">
+                    <property name="text">
+                     <string>Current</string>
+                    </property>
+                   </widget>
+                  </item>
                   <item row="2" column="1">
                    <widget class="QSpinBox" name="sbCurrentRate">
+                    <property name="maximum">
+                     <number>1600</number>
+                    </property>
+                    <property name="singleStep">
+                     <number>100</number>
+                    </property>
+                    <property name="value">
+                     <number>100</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="1">
+                   <widget class="QSpinBox" name="sbTemperatureRate">
+                    <property name="maximum">
+                     <number>1600</number>
+                    </property>
+                    <property name="singleStep">
+                     <number>100</number>
+                    </property>
+                    <property name="value">
+                     <number>100</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QSpinBox" name="sbVoltageRate">
                     <property name="maximum">
                      <number>1600</number>
                     </property>
@@ -112,28 +145,15 @@
                     </property>
                    </widget>
                   </item>
-                  <item row="2" column="0">
-                   <widget class="QLabel" name="label_18">
+                  <item row="4" column="0">
+                   <widget class="QLabel" name="label_25">
                     <property name="text">
-                     <string>Current</string>
+                     <string>GPS</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="1" column="1">
-                   <widget class="QSpinBox" name="sbVoltageRate">
-                    <property name="maximum">
-                     <number>1600</number>
-                    </property>
-                    <property name="singleStep">
-                     <number>100</number>
-                    </property>
-                    <property name="value">
-                     <number>100</number>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="3" column="1">
-                   <widget class="QSpinBox" name="sbTemperatureRate">
+                  <item row="4" column="1">
+                   <widget class="QSpinBox" name="sbGpsRate">
                     <property name="maximum">
                      <number>1600</number>
                     </property>
@@ -373,7 +393,7 @@
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
-                   <height>70</height>
+                   <height>0</height>
                   </size>
                  </property>
                  <property name="title">
@@ -385,16 +405,26 @@
                  <property name="checked">
                   <bool>false</bool>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_6">
-                  <item>
+                 <layout class="QGridLayout" name="gridLayout_8">
+                  <item row="0" column="1">
+                   <widget class="QComboBox" name="cbGpsBaudrate"/>
+                  </item>
+                  <item row="0" column="0">
                    <widget class="QLabel" name="label_12">
                     <property name="text">
-                     <string>   Baud rate</string>
+                     <string>Baud rate</string>
                     </property>
                    </widget>
                   </item>
-                  <item>
-                   <widget class="QComboBox" name="cbGpsBaudrate"/>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="lbSpeedUnitsGps">
+                    <property name="text">
+                     <string>Speed units</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QComboBox" name="cbSpeedUnitsGps"/>
                   </item>
                  </layout>
                 </widget>

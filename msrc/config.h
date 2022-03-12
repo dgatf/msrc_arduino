@@ -22,6 +22,7 @@
 #define CONFIG_REFRESH_CURR 1
 #define CONFIG_REFRESH_TEMP 1
 #define CONFIG_REFRESH_DEF 1
+#define CONFIG_REFRESH_GPS 1
 /* Averaging elements (1 = no averaging) */
 #define CONFIG_AVERAGING_ELEMENTS_RPM 1
 #define CONFIG_AVERAGING_ELEMENTS_VOLT 1
@@ -50,6 +51,9 @@
 
 /* XBus */
 //#define XBUS_CLOCK_STRECH_SWITCH
+
+/* Jeti Ex */
+#define JETI_GPS_SPEED_UNITS_KMH
 
 /* Use library I2C_T3 for Teensy LC/3.X */
 #define I2C_T3_TEENSY
