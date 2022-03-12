@@ -165,7 +165,7 @@ void Bn220::parser(uint8_t type, char *data)
         else if (type == BN220_SPD)
         {
             spd_ = atof(data);
-            spdKmh_ = spd_ * 1.852;
+            spdKmh_ = spd_ / 1.852;
         }
         else if (type == BN220_COG)
         {
