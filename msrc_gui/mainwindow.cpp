@@ -146,7 +146,12 @@ void MainWindow::generateConfig()
 
     // Altitude
     configString += " \n#define CONFIG_I2C1_TYPE ";
-    if (ui->gbAltitude->isChecked()) configString += ui->cbBarometerType->currentText();
+    if (ui->gbAltitude->isChecked()) {
+        if (ui->cbBarometerType->currentText() == "BMP280")
+            configString += "I2C_BMP280";
+        else if (ui->cbBarometerType->currentText() == "MS5611")
+            configString += "I2C_MS5611";
+    }
     else configString += "I2C_NONE";
     configString += " \n#define CONFIG_I2C1_ADDRESS ";
     configString += ui->cbAddress->currentText();
