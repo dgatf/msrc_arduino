@@ -46,7 +46,7 @@
 #define VERSION_PATCH 0
 
 /* Init debug port */
-#if (defined(DEBUG) || defined(DEBUG_PACKET) || defined(DEBUG_SBUS_MS) || defined(DEBUG_EEPROM_WRITE) || defined(DEBUG_EEPROM_READ) || defined(DEBUG_GPS) || defined(DEBUG_HW3) || defined(DEBUG_HW4) || defined(DEBUG_PWM) || defined(DEBUG_CASTLE) || defined(DEBUG_CASTLE_RX) || defined(DEBUG_KONTRONIK) || defined(DEBUG_APDF) || defined(DEBUG_APDHV))
+#if defined(DEBUG) || defined(DEBUG_PACKET) || defined(DEBUG_SBUS_MS) || defined(DEBUG_EEPROM_WRITE) || defined(DEBUG_EEPROM_READ) || defined(DEBUG_GPS) || defined(DEBUG_HW3) || defined(DEBUG_HW4) || defined(DEBUG_PWM) || defined(DEBUG_CASTLE) || defined(DEBUG_CASTLE_RX) || defined(DEBUG_KONTRONIK) || defined(DEBUG_APDF) || defined(DEBUG_APDHV) || defined(DEBUG_MS5611)
 #define DEBUG_INIT DEBUG_SERIAL.begin(115200);
 #endif
 

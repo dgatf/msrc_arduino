@@ -39,7 +39,7 @@ void MS5611::calcPressure()
     SENS = SENS - SENS2;
     int32_t P = (((D1_ * SENS) >> 21) - OFF) >> 15;
     temperature_ = (float)TEMP / 100; // °C
-    pressure_ = (float)P / 100;
+    pressure_ = (float)P / 100;       // mbar
 
     if (P0_ == 0 && millis() > 5000)
 #ifdef SIM_SENSORS
@@ -77,6 +77,19 @@ void MS5611::update()
         calcPressure();
         altitude_ = calcAltitude(pressure_, temperature_, P0_);
         vario_ = calcSpeed(altitude_, MS5611_VARIO_INTERVAL);
+#ifdef DEBUG_MS5611
+        DEBUG_PRINT("T:");
+        DEBUG_PRINT(temperature_);
+        DEBUG_PRINT(" P:");
+        DEBUG_PRINT(pressure_);
+        DEBUG_PRINT(" P0:");
+        DEBUG_PRINT(P0_);
+        DEBUG_PRINT(" A:");
+        DEBUG_PRINT(altitude_);
+        DEBUG_PRINT(" V:");
+        DEBUG_PRINT(vario_);
+        DEBUG_PRINTLN();
+#endif
     }
 #endif
     ts = millis();

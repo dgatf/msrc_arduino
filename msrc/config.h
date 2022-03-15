@@ -92,6 +92,7 @@
 //#define DEBUG_PWM
 //#define DEBUG_CASTLE
 //#define DEBUG_CASTLE_RX
+//#define DEBUG_MS5611
 
 //#define SIM_RX
 //#define SIM_SENSORS
