@@ -16,8 +16,8 @@ void MS5611::begin()
 
 void MS5611::calcPressure()
 {
-    int32_t dT, TEMP, T2;
-    int64_t OFF, SENS, OFF2, SENS2;
+    int32_t dT, TEMP, T2 = 0;
+    int64_t OFF, SENS, OFF2 = 0, SENS2 = 0;
     dT = D2_ - ((uint32_t)C5_ << 8);
     TEMP = 2000 + ((dT * C6_) >> 23);
     OFF = ((uint32_t)C2_ << 16) + ((C4_ * dT) >> 7);
