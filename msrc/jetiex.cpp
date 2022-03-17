@@ -320,7 +320,11 @@ void JetiEx::update()
 #endif
     if (status == JETIEX_SEND)
     {
+#ifdef SIM_RX
+        if (1)
+#else
         if (serial_.timestamp() < 1500)
+#endif
             sendPacket(packetId);
 #ifdef DEBUG
         else
@@ -588,12 +592,6 @@ void JetiEx::setConfig(Config &config)
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Altitude");
         sensorJetiExP->setUnit("m");
-        sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_TIMEDATE, JETIEX_FORMAT_TIME, gps->timeP(), gps);
-        sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
-        sensorJetiExP->setText("Time");
-        sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_TIMEDATE, JETIEX_FORMAT_DATE, gps->dateP(), gps);
-        sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
-        sensorJetiExP->setText("Date");
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_COORDINATES, JETIEX_FORMAT_LAT, gps->latP(), gps);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Latitude");
@@ -603,9 +601,6 @@ void JetiEx::setConfig(Config &config)
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT6, JETIEX_FORMAT_0_DECIMAL, gps->satP(), gps);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Sats");
-        sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, JETIEX_FORMAT_2_DECIMAL, gps->hdopP(), gps);
-        sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
-        sensorJetiExP->setText("HDOP");
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 1, gps->varioP(), gps);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Vario");
@@ -614,6 +609,17 @@ void JetiEx::setConfig(Config &config)
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Dist Home");
         sensorJetiExP->setUnit("m");
+#ifndef JETIEX_LOW_MEMORY
+        sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_TIMEDATE, JETIEX_FORMAT_TIME, gps->timeP(), gps);
+        sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
+        sensorJetiExP->setText("Time");
+        sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_TIMEDATE, JETIEX_FORMAT_DATE, gps->dateP(), gps);
+        sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
+        sensorJetiExP->setText("Date");
+        sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, JETIEX_FORMAT_2_DECIMAL, gps->hdopP(), gps);
+        sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
+        sensorJetiExP->setText("HDOP");
+#endif
     }
     if (config.airspeed == true)
     {
@@ -689,14 +695,16 @@ void JetiEx::setConfig(Config &config)
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Altitude");
         sensorJetiExP->setUnit("m");
-        sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 1, bmp->temperatureP(), bmp);
-        sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
-        sensorJetiExP->setText("Temperature");
-        sensorJetiExP->setUnit("C");
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 1, bmp->varioP(), bmp);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Vario");
         sensorJetiExP->setUnit("m/s");
+#ifndef JETIEX_LOW_MEMORY
+        sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 1, bmp->temperatureP(), bmp);
+        sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
+        sensorJetiExP->setText("Temperature");
+        sensorJetiExP->setUnit("C");
+#endif
     }
     if (config.deviceI2C1Type == I2C_MS5611)
     {
@@ -708,14 +716,16 @@ void JetiEx::setConfig(Config &config)
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Altitude");
         sensorJetiExP->setUnit("m");
-        sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 1, bmp->temperatureP(), bmp);
-        sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
-        sensorJetiExP->setText("Temperature");
-        sensorJetiExP->setUnit("C");
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 1, bmp->varioP(), bmp);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Vario");
         sensorJetiExP->setUnit("m/s");
+#ifndef JETIEX_LOW_MEMORY
+        sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 1, bmp->temperatureP(), bmp);
+        sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
+        sensorJetiExP->setText("Temperature");
+        sensorJetiExP->setUnit("C");
+#endif
     }
 }
 

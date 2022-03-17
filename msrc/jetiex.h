@@ -49,6 +49,7 @@
 #define JETIEX_SEND 1
 
 #define JETIEX_TIMEOUT 200
+//#define JETIEX_LOW_MEMORY
 
 class JetiEx
 {
