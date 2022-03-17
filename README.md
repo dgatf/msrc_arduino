@@ -183,6 +183,9 @@ If Vin is a regulated 5V source (e.g. receiver, BEC), pull ups can be connected 
 
 Configure receiver pin (E1 or E2) as Ex Bus
 
+Remark: Only for boards with 2k ram (ATmega328): The maximum number of sensors is 11 (e.g. GPS are already 11 sensors). You can enable the parameter JETIEX_LOW_MEMORY in jeti.h to disable less important sensors for GPS and vario. It disables Time, Date, HDOP and air temperature sensors
+
+
 ## 3. Sensors
 
 All sensors are available with Smartport protocol
