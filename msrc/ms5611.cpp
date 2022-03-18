@@ -19,9 +19,9 @@ void MS5611::calcPressure()
     int32_t dT, TEMP, T2 = 0;
     int64_t OFF, SENS, OFF2 = 0, SENS2 = 0;
     dT = D2_ - ((uint32_t)C5_ << 8);
-    TEMP = 2000 + ((dT * C6_) >> 23);
-    OFF = ((uint32_t)C2_ << 16) + ((C4_ * dT) >> 7);
-    SENS = ((uint32_t)C1_ << 15) + ((C3_ * dT) >> 8);
+    TEMP = 2000 + ((int64_t)dT * C6_ >> 23);
+    OFF = ((int64_t)C2_ << 16) + (((int64_t)C4_ * dT) >> 7);
+    SENS = ((int64_t)C1_ << 15) + (((int64_t)C3_ * dT) >> 8);
 
     if (TEMP < 2000)
     {
@@ -29,7 +29,7 @@ void MS5611::calcPressure()
         OFF2 = 5 * (TEMP - 2000) * (TEMP - 2000) / 2;
         SENS2 = 5 * (TEMP - 2000) * (TEMP - 2000) / 4;
     }
-    if (TEMP < 1500)
+    if (TEMP < -1500)
     {
         OFF2 = OFF2 + 7 * (TEMP + 1500) * (TEMP + 1500);
         SENS2 = SENS2 + 11 * (TEMP + 1500) * (TEMP + 1500) / 2;
