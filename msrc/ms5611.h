@@ -9,6 +9,15 @@
 #define MS5611_CMD_RESET              0x1E
 #define MS5611_CMD_CONV_D1            0x40
 #define MS5611_CMD_CONV_D2            0x50
+
+// 0 0xA0,0xA1 - reserved
+// 1 0xA2,0xA3 - C1
+// 2 0xA4,0xA5 - C2
+// 3 0xA6,0xA7 - C3
+// 4 0xA8,0xA9 - C4
+// 5 0xAA,0xAB - C5
+// 6 0xAC,0xAD - C6
+// 7 0xAE - CRC (4bits)
 #define MS5611_CMD_READ_PROM          0xA0
 
 #define MS5611_OVERSAMPLING_4096 0x08

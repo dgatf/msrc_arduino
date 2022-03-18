@@ -5,13 +5,13 @@ MS5611::MS5611(uint8_t device, uint8_t alphaTemp, uint8_t alphaDef) : device_(de
 void MS5611::begin()
 {
     writeBytes(device_, MS5611_CMD_RESET);
-    delay(5);
-    C1_ = readUInt(device_, MS5611_CMD_READ_PROM, I2C_BIG_ENDIAN);
-    C2_ = readUInt(device_, MS5611_CMD_READ_PROM + 1, I2C_BIG_ENDIAN);
-    C3_ = readUInt(device_, MS5611_CMD_READ_PROM + 2, I2C_BIG_ENDIAN);
-    C4_ = readUInt(device_, MS5611_CMD_READ_PROM + 3, I2C_BIG_ENDIAN);
-    C5_ = readUInt(device_, MS5611_CMD_READ_PROM + 4, I2C_BIG_ENDIAN);
-    C6_ = readUInt(device_, MS5611_CMD_READ_PROM + 5, I2C_BIG_ENDIAN);
+    delay(10);
+    C1_ = readUInt(device_, MS5611_CMD_READ_PROM + 2, I2C_BIG_ENDIAN);
+    C2_ = readUInt(device_, MS5611_CMD_READ_PROM + 4, I2C_BIG_ENDIAN);
+    C3_ = readUInt(device_, MS5611_CMD_READ_PROM + 6, I2C_BIG_ENDIAN);
+    C4_ = readUInt(device_, MS5611_CMD_READ_PROM + 8, I2C_BIG_ENDIAN);
+    C5_ = readUInt(device_, MS5611_CMD_READ_PROM + 10, I2C_BIG_ENDIAN);
+    C6_ = readUInt(device_, MS5611_CMD_READ_PROM + 12, I2C_BIG_ENDIAN);
 }
 
 void MS5611::calcPressure()
@@ -69,9 +69,9 @@ void MS5611::update()
 #else
     isConvertingPressure = !isConvertingPressure;
     if (isConvertingPressure)
-        writeBytes(device_, MS5611_CMD_CONV_D1); // pressure
+        writeBytes(device_, MS5611_CMD_CONV_D1 + MS5611_OVERSAMPLING_4096); // pressure
     else
-        writeBytes(device_, MS5611_CMD_CONV_D2); // temperature
+        writeBytes(device_, MS5611_CMD_CONV_D2 + MS5611_OVERSAMPLING_4096); // temperature
     if (!isConvertingPressure)
     {
         calcPressure();
