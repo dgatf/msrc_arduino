@@ -297,7 +297,7 @@ void Multiplex::setConfig(Config &config)
     {
         SensorMultiplex *sensorMultiplexP;
         Bmp280 *bmp;
-        bmp = new Bmp280(config.deviceI2C1Address, ALPHA(config.average.temp), ALPHA(1));
+        bmp = new Bmp280(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, bmp->temperatureP(), bmp);
         addSensor(sensorMultiplexP);
@@ -310,7 +310,7 @@ void Multiplex::setConfig(Config &config)
     {
         SensorMultiplex *sensorMultiplexP;
         MS5611 *bmp;
-        bmp = new MS5611(config.deviceI2C1Address, ALPHA(config.average.temp), ALPHA(1));
+        bmp = new MS5611(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, bmp->temperatureP(), bmp);
         addSensor(sensorMultiplexP);

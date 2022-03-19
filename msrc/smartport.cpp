@@ -559,11 +559,11 @@ void Smartport::setConfig(Config &config)
     {
         Sensor *sensorP;
         Bmp280 *bmp;
-        bmp = new Bmp280(config.deviceI2C1Address, ALPHA(config.average.temp), ALPHA(1));
+        bmp = new Bmp280(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         sensorP = new Sensor(T1_FIRST_ID + 1, bmp->temperatureP(), config.refresh.temp, bmp);
         addSensor(sensorP);
-        sensorP = new Sensor(ALT_FIRST_ID, bmp->altitudeP(), CONFIG_AVERAGING_ELEMENTS_DEF, bmp);
+        sensorP = new Sensor(ALT_FIRST_ID, bmp->altitudeP(), CONFIG_REFRESH_DEF, bmp);
         addSensor(sensorP);
         sensorP = new Sensor(VARIO_FIRST_ID, bmp->varioP(), 5, bmp);
         addSensor(sensorP);
@@ -572,11 +572,11 @@ void Smartport::setConfig(Config &config)
     {
         Sensor *sensorP;
         MS5611 *bmp;
-        bmp = new MS5611(config.deviceI2C1Address, ALPHA(config.average.temp), ALPHA(1));
+        bmp = new MS5611(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         sensorP = new Sensor(T1_FIRST_ID + 1, bmp->temperatureP(), config.refresh.temp, bmp);
         addSensor(sensorP);
-        sensorP = new Sensor(ALT_FIRST_ID, bmp->altitudeP(), CONFIG_AVERAGING_ELEMENTS_DEF, bmp);
+        sensorP = new Sensor(ALT_FIRST_ID, bmp->altitudeP(), CONFIG_REFRESH_DEF, bmp);
         addSensor(sensorP);
         sensorP = new Sensor(VARIO_FIRST_ID, bmp->varioP(), 5, bmp);
         addSensor(sensorP);

@@ -695,7 +695,7 @@ void JetiEx::setConfig(Config &config)
     {
         SensorJetiEx *sensorJetiExP;
         Bmp280 *bmp;
-        bmp = new Bmp280(config.deviceI2C1Address, ALPHA(config.average.temp), ALPHA(1));
+        bmp = new Bmp280(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 1, bmp->altitudeP(), bmp);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
@@ -716,7 +716,7 @@ void JetiEx::setConfig(Config &config)
     {
         SensorJetiEx *sensorJetiExP;
         MS5611 *bmp;
-        bmp = new MS5611(config.deviceI2C1Address, ALPHA(config.average.temp), ALPHA(1));
+        bmp = new MS5611(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 1, bmp->altitudeP(), bmp);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));

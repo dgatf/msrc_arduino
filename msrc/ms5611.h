@@ -35,11 +35,11 @@ private:
     uint16_t C1_, C2_, C3_, C4_, C5_, C6_;
     uint32_t D1_, D2_;
     float temperature_ = 0, pressure_ = 0, P0_ = 0, altitude_ = 0, vario_ = 0;
-    uint8_t device_, alphaTemp_, alphaDef_;
+    uint8_t device_, alphaVario_;
     void calcPressure();
 
 public:
-    MS5611(uint8_t device, uint8_t alphaTemp, uint8_t alphaDef);
+    MS5611(uint8_t device, uint8_t alphaVario);
     void begin();
     void update();
     float *temperatureP();

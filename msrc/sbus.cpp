@@ -258,7 +258,6 @@ void Sbus::sendPacket()
 void Sbus::update()
 {
     uint8_t status = SBUS_WAIT;
-    static bool mute = true;
 #if defined(SIM_RX)
     static uint16_t ts = 0;
     if ((uint16_t)(millis() - ts) > 500)
@@ -275,6 +274,7 @@ void Sbus::update()
 #endif
     }
 #else
+    static bool mute = true;
     uint8_t lenght = SMARTPORT_FRSKY_SBUS_SERIAL.availableTimeout();
     uint8_t buff[lenght];
     SMARTPORT_FRSKY_SBUS_SERIAL.readBytes(buff, lenght);
@@ -565,7 +565,7 @@ void Sbus::setConfig(Config &config)
     {
         SensorSbus *sensorSbusP;
         Bmp280 *bmp;
-        bmp = new Bmp280(config.deviceI2C1Address, ALPHA(config.average.temp), ALPHA(1));
+        bmp = new Bmp280(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         sensorSbusP = new SensorSbus(FASST_VARIO_SPEED, bmp->varioP(), bmp);
         addSensor(SBUS_SLOT_VARIO_SPEED, sensorSbusP);
@@ -576,7 +576,7 @@ void Sbus::setConfig(Config &config)
     {
         SensorSbus *sensorSbusP;
         MS5611 *bmp;
-        bmp = new MS5611(config.deviceI2C1Address, ALPHA(config.average.temp), ALPHA(1));
+        bmp = new MS5611(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         sensorSbusP = new SensorSbus(FASST_VARIO_SPEED, bmp->varioP(), bmp);
         addSensor(SBUS_SLOT_VARIO_SPEED, sensorSbusP);

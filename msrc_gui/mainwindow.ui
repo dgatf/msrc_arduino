@@ -34,9 +34,9 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-756</y>
+             <y>-871</y>
              <width>603</width>
-             <height>1660</height>
+             <height>1694</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout">
@@ -621,38 +621,17 @@
                <string>Averaging elements</string>
               </property>
               <layout class="QGridLayout" name="gridLayout_6">
-               <item row="1" column="1">
-                <widget class="QSpinBox" name="sbVoltageAvg">
-                 <property name="value">
-                  <number>1</number>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QSpinBox" name="sbCurrentAvg">
-                 <property name="value">
-                  <number>1</number>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="0">
-                <widget class="QLabel" name="label_24">
-                 <property name="text">
-                  <string>Temperature</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="1">
-                <widget class="QSpinBox" name="sbTemperatureAvg">
-                 <property name="value">
-                  <number>1</number>
-                 </property>
-                </widget>
-               </item>
                <item row="1" column="0">
                 <widget class="QLabel" name="label_22">
                  <property name="text">
                   <string>Voltage</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_21">
+                 <property name="text">
+                  <string>RPM</string>
                  </property>
                 </widget>
                </item>
@@ -665,15 +644,77 @@
                </item>
                <item row="0" column="1">
                 <widget class="QSpinBox" name="sbRpmAvg">
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>16</number>
+                 </property>
                  <property name="value">
                   <number>1</number>
                  </property>
                 </widget>
                </item>
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_21">
+               <item row="1" column="1">
+                <widget class="QSpinBox" name="sbVoltageAvg">
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>16</number>
+                 </property>
+                 <property name="value">
+                  <number>1</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QSpinBox" name="sbTemperatureAvg">
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>16</number>
+                 </property>
+                 <property name="value">
+                  <number>1</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_24">
                  <property name="text">
-                  <string>RPM</string>
+                  <string>Temperature</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QSpinBox" name="sbCurrentAvg">
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>16</number>
+                 </property>
+                 <property name="value">
+                  <number>1</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0">
+                <widget class="QLabel" name="label_27">
+                 <property name="text">
+                  <string>Vario</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="1">
+                <widget class="QSpinBox" name="sbVarioAvg">
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>16</number>
                  </property>
                 </widget>
                </item>

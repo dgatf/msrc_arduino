@@ -1,6 +1,6 @@
 #include "ms5611.h"
 
-MS5611::MS5611(uint8_t device, uint8_t alphaTemp, uint8_t alphaDef) : device_(device), alphaTemp_(alphaTemp), alphaDef_(alphaDef) {}
+MS5611::MS5611(uint8_t device, uint8_t alphaVario) : device_(device), alphaVario_(alphaVario) {}
 
 void MS5611::begin()
 {
@@ -75,7 +75,8 @@ void MS5611::update()
     if (!isConvertingPressure)
     {
         calcPressure();
-        altitude_ = calcAltitude(pressure_, temperature_, P0_);
+        float altitude = calcAltitude(pressure_, temperature_, P0_);
+        altitude_ = calcAverage((float)alphaVario_ / 100, altitude_, altitude);
         vario_ = calcSpeed(altitude_, MS5611_VARIO_INTERVAL);
 #ifdef DEBUG_MS5611
         DEBUG_PRINT("T:");

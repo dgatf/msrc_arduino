@@ -170,6 +170,7 @@ void MainWindow::generateConfig()
     configString += "\n#define CONFIG_REFRESH_CURR " + QString::number(sbCurrentRate->value() / 100);
     configString += "\n#define CONFIG_REFRESH_TEMP " + QString::number(sbTemperatureRate->value() / 100);
     configString += "\n#define CONFIG_REFRESH_GPS " + QString::number(sbGpsRate->value() / 100);
+    configString += "\n#define CONFIG_REFRESH_DEF 1";
 
     // Averaging
     configString += ""
@@ -179,10 +180,12 @@ void MainWindow::generateConfig()
     QSpinBox *sbVoltageAvg = ui->gbAverage->findChild<QSpinBox *>("sbVoltageAvg");
     QSpinBox *sbCurrentAvg = ui->gbAverage->findChild<QSpinBox *>("sbCurrentAvg");
     QSpinBox *sbTemperatureAvg = ui->gbAverage->findChild<QSpinBox *>("sbTemperatureAvg");
+    QSpinBox *sbVarioAvg = ui->gbAverage->findChild<QSpinBox *>("sbVarioAvg");
     configString += "\n#define CONFIG_AVERAGING_ELEMENTS_RPM " + QString::number(sbRpmAvg->value());
     configString += "\n#define CONFIG_AVERAGING_ELEMENTS_VOLT " + QString::number(sbVoltageAvg->value());
     configString += "\n#define CONFIG_AVERAGING_ELEMENTS_CURR " + QString::number(sbCurrentAvg->value());
     configString += "\n#define CONFIG_AVERAGING_ELEMENTS_TEMP " + QString::number(sbTemperatureAvg->value());
+    configString += "\n#define CONFIG_AVERAGING_ELEMENTS_VARIO " + QString::number(sbVarioAvg->value());
     configString += "\n#define CONFIG_AVERAGING_ELEMENTS_DEF 1";
 
     // Analog Multipliers

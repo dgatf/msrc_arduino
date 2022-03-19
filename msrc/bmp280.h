@@ -64,13 +64,13 @@ private:
     int16_t T2_, T3_, P2_, P3_, P4_, P5_, P6_, P7_, P8_, P9_;
     uint32_t t_fine_;
     float temperature_ = 0, pressure_ = 0, P0_ = 0, altitude_ = 0, vario_;
-    uint8_t device_, alphaTemp_, alphaDef_;
+    uint8_t device_, alphaVario_;
     void readTemperature();
     void readPressure();
     void calcAltitude();
 
 public:
-    Bmp280(uint8_t device, uint8_t alphaTemp, uint8_t alphaDef);
+    Bmp280(uint8_t device, uint8_t alphaVario);
     void begin();
     void update();
     float *temperatureP();

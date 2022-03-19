@@ -1,6 +1,6 @@
 #include "bmp280.h"
 
-Bmp280::Bmp280(uint8_t device, uint8_t alphaTemp, uint8_t alphaDef) : device_(device), alphaTemp_(alphaTemp), alphaDef_(alphaDef) {}
+Bmp280::Bmp280(uint8_t device, uint8_t alphaVario) : device_(device), alphaVario_(alphaVario) {}
 
 void Bmp280::begin()
 {
@@ -61,7 +61,7 @@ void Bmp280::readPressure()
         var2 = (((int64_t)P8_) * p) >> 19;
         p = ((p + var1 + var2) >> 8) + (((int64_t)P7_) << 4);
         pressure_ = (float)p / 256;
-        //pressure_ = calcAverage((float)alphaDef_ / 100, pressure_, (float)p / 256);
+        //pressure_ = calcAverage((float)alphaVario_ / 100, pressure_, (float)p / 256);
     }
 }
 
@@ -78,7 +78,8 @@ void Bmp280::calcAltitude()
         altitude_ = 0;
         return;
     }
-    altitude_ = (temperature_ + 273.15) * (1000 / 6.5) * (1 - pow(pressure_ / P0_, 1 / 5.256));
+    float altitude = (temperature_ + 273.15) * (1000 / 6.5) * (1 - pow(pressure_ / P0_, 1 / 5.256));
+    altitude_ = calcAverage((float)alphaVario_ / 100, altitude_, altitude);
 }
 
 void Bmp280::update()
@@ -94,8 +95,6 @@ void Bmp280::update()
 #else
     readPressure();
     calcAltitude();
-    //if (altitude_ < 0)
-    //    altitude_ = 0;
     vario_ = calcSpeed(altitude_, BMP280_VARIO_INTERVAL);
 #endif
     ts = millis();

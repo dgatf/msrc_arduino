@@ -411,7 +411,7 @@ void Ibus::setConfig(Config &config)
     {
         SensorIbus *sensorIbusP;
         Bmp280 *bmp;
-        bmp = new Bmp280(config.deviceI2C1Address, ALPHA(config.average.temp), ALPHA(1));
+        bmp = new Bmp280(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         sensorIbusP = new SensorIbus(AFHDS2A_ID_TEMPERATURE, IBUS_TYPE_U16, bmp->temperatureP(), bmp);
         addSensor(sensorIbusP);
@@ -424,7 +424,7 @@ void Ibus::setConfig(Config &config)
     {
         SensorIbus *sensorIbusP;
         MS5611 *bmp;
-        bmp = new MS5611(config.deviceI2C1Address, ALPHA(config.average.temp), ALPHA(1));
+        bmp = new MS5611(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         sensorIbusP = new SensorIbus(AFHDS2A_ID_TEMPERATURE, IBUS_TYPE_U16, bmp->temperatureP(), bmp);
         addSensor(sensorIbusP);
