@@ -46,7 +46,7 @@ bool JetiEx::addSensorValueToBuffer(uint8_t *buffer, uint8_t &posBuffer, uint8_t
                 return false;
             else
             {
-                uint8_t value = abs(*sensorJetiExP[sensorNumber]->valueP()) * pow(10, sensorJetiExP[sensorNumber]->format());
+                uint8_t value = valueF * pow(10, sensorJetiExP[sensorNumber]->format());
                 if (value > 0x1F)
                     value = 0x1F;
                 value |= format;
@@ -77,7 +77,7 @@ bool JetiEx::addSensorValueToBuffer(uint8_t *buffer, uint8_t &posBuffer, uint8_t
                 return false;
             else
             {
-                uint32_t value = abs(*sensorJetiExP[sensorNumber]->valueP()) * pow(10, sensorJetiExP[sensorNumber]->format());
+                uint32_t value = valueF * pow(10, sensorJetiExP[sensorNumber]->format());
                 if (value > 0x1FFFFF)
                     value = 0x1FFFFF;
                 value |= (uint32_t)format << 16;
@@ -94,7 +94,7 @@ bool JetiEx::addSensorValueToBuffer(uint8_t *buffer, uint8_t &posBuffer, uint8_t
                 return false;
             else
             {
-                uint32_t value = abs(*sensorJetiExP[sensorNumber]->valueP()) * pow(10, sensorJetiExP[sensorNumber]->format());
+                uint32_t value = valueF * pow(10, sensorJetiExP[sensorNumber]->format());
                 if (value > 0x1FFFFFFF)
                     value = 0x1FFFFFFF;
                 value |= (uint32_t)format << 24;
@@ -117,7 +117,7 @@ bool JetiEx::addSensorValueToBuffer(uint8_t *buffer, uint8_t &posBuffer, uint8_t
                 // byte 2: month/minute
                 // byte 3(bits 1-5): year/hour
                 // byte 3(bit 6): 0=time 1=date
-                uint32_t value = *sensorJetiExP[sensorNumber]->valueP();
+                uint32_t value = valueF;
                 uint8_t hourYearFormat = format;
                 hourYearFormat |= value / 10000;                             // hour, year
                 uint8_t minuteMonth = (value / 100 - (value / 10000) * 100); // minute, month
@@ -140,7 +140,7 @@ bool JetiEx::addSensorValueToBuffer(uint8_t *buffer, uint8_t &posBuffer, uint8_t
                 // byte 3: degrees (integer)
                 // byte 4(bit 6): 0=lat 1=lon
                 // byte 4(bit 7): 0=+(N,E), 1=-(S,W)
-                float value = abs(*sensorJetiExP[sensorNumber]->valueP());
+                float value = valueF;
                 buffer[posBuffer] = sensorNumber << 4 | sensorJetiExP[sensorNumber]->type();
                 uint8_t degrees = value / 60;
                 uint16_t degreesDecimals = (value / 60 - degrees) * 10000;
