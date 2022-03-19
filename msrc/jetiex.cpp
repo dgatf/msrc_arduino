@@ -30,9 +30,11 @@ bool JetiEx::addSensorValueToBuffer(uint8_t *buffer, uint8_t &posBuffer, uint8_t
 {
     if (sensorJetiExP[sensorNumber])
     {
+        float valueF = *sensorJetiExP[sensorNumber]->valueP();
         uint8_t format = sensorJetiExP[sensorNumber]->format() << 5;
-        if (*sensorJetiExP[sensorNumber]->valueP() < 0)
+        if (valueF < 0)
         {
+            valueF *= -1;
             if (sensorJetiExP[sensorNumber]->type() == JETIEX_TYPE_COORDINATES)
                 format |= 1 << 6;
             else
@@ -59,9 +61,9 @@ bool JetiEx::addSensorValueToBuffer(uint8_t *buffer, uint8_t &posBuffer, uint8_t
                 return false;
             else
             {
-                uint16_t value = abs(*sensorJetiExP[sensorNumber]->valueP()) * pow(10, sensorJetiExP[sensorNumber]->format());
-                if (value > 0x1FFF)
-                    value = 0x1FFF;
+                uint16_t value = valueF * pow(10, sensorJetiExP[sensorNumber]->format());
+                //if (value > 0x1FFF)
+                //    value = 0x1FFF;
                 value |= (uint16_t)format << 8;
                 buffer[posBuffer] = sensorNumber << 4 | sensorJetiExP[sensorNumber]->type();
                 buffer[posBuffer + 1] = value;
