@@ -48,6 +48,17 @@ All sensors are optional. Make the circuit with the desired sensors and enable t
 
 ATmega boards at 5v (16Mhz) may not read properly serial port when using ESC serial or GPS as they use 3.3v logic level and Arduino 5v. In this case if using 5v it is better without USB (Pro Mini) and/or use software serial. If using ATmega board, is preferred 3.3v (8Mhz) boards
 
+Which board should I choose?
+
+Teensy LC/3.x is recommended when:
+- Using Castle ESC
+- Using serial GPS + serial ESC + serial receiver protocol
+- Using SBUS or Jeti with serial ESC or GPS and you don't want to loose any serial frame. Though Pro Mini/Pro Micro/Teensy 2 will work as well, but losing few serial frames
+
+ATmega2560 Pro Mini and Pololu ATmega328PB can be used as an alternative of Teensy LC/3.x
+
+For the rest of the cases it is fine to use Pro Mini/Pro Micro/Teensy 2
+
 ### 1.2 Connections
 
 | Board | Arduino Pro Mini | Pololu ATmega328PB | Arduino ATmega2560 | Teensy 2 | Teensy LC<br/>Teensy 3.x |
@@ -119,10 +130,10 @@ Consider the following generic receiver, were Tele is the telemetry port
   <i>ATmega 5v board with serial inverted protocol (Smartport, Sbus)<br>ATmega 5v board with inverted protocol (IBUS, M-Link, Jeti, SRXL) and ESC or GPS serial connected</i><br><br></p>
 
 <p align="center"><img src="./images/hs_tele.png" width="300"><br>
-  <i>ATmega 3.3v board with non inverted protocol (IBUS, M-Link, Jeti, SRXL)) and without ESC or GPS serial connected</i><br><br></p>
+  <i>ATmega 3.3v board with non inverted protocol (IBUS, M-Link, Jeti, SRXL) and without ESC or GPS serial connected</i><br><br></p>
 
 <p align="center"><img src="./images/hs_servo.png" width="300"><br>
-  <i>ATmega 5v board with non inverted protocol (IBUS, M-Link, Jeti, SRXL)) and without ESC or GPS serial connected</i><br><br></p>
+  <i>ATmega 5v board with non inverted protocol (IBUS, M-Link, Jeti, SRXL) and without ESC or GPS serial connected</i><br><br></p>
 
 ### ARM Cortex boards 
 
