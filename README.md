@@ -200,7 +200,19 @@ All receivers provide 3.3V at the telemetry port.
 
 - TeensyLC/3.x. You can connect 3.7v to 5.5v to LC or 3.6v to 6.0v to 3.x at pin Vin. In this case you can choose the telemetry port Vcc or servo Vcc (if BEC is less than 5.5v or 6v) to connect to Vin pin.
 
-Usually also connect GND to the port where power source (Vcc) comes from.
+Consider the following generic receiver, were Tele is the telemetry port
+
+<p align="center"><img src="./images/ss_tele.png" width="300"><br>
+  <i>ATmega 3.3v board with inverted serial protocol (Smartport, Sbus)<br>ATmega 3.3v board with non inverted protocol (IBUS, M-Link, Jeti, SRXL) and ESC or GPS serial connected</i><br><br></p>
+
+<p align="center"><img src="./images/ss_servo.png" width="300"><br>
+  <i>ATmega 5v board with serial inverted protocol (Smartport, Sbus)<br>ATmega 5v board with inverted protocol (IBUS, M-Link, Jeti, SRXL) and ESC or GPS serial connected</i><br><br></p>
+
+<p align="center"><img src="./images/hs_tele.png" width="300"><br>
+  <i>ATmega 3.3v board with non inverted protocol (IBUS, M-Link, Jeti, SRXL)) and without ESC or GPS serial connected</i><br><br></p>
+
+<p align="center"><img src="./images/hs_servo.png" width="300"><br>
+  <i>ATmega 5v board with non inverted protocol (IBUS, M-Link, Jeti, SRXL)) and without ESC or GPS serial connected</i><br><br></p>
 
 
 ## 4. Sensors
