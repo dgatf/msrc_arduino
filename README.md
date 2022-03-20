@@ -96,24 +96,38 @@ The following Rx protocols are supported:
 - Jeti Ex Bus: serial 125000, 250000 bps
 - Hitec: I2C
 
-Depending on the receiver protocol connect to the Rx as follows
+### Receiver and power source connections
+
+All receivers provide 3.3V at the telemetry port.
+
+- 5V ATmega boards can be feed with 5v to 12v at RAW pin. In this case you need to connect RAW to a servo Vcc from receiver. Also connect servo GND to arduino GND pin (though board may still work if connected to 3.3v)
+
+- 3.3V ATmega boards can be feed with 3.3v to 12v at RAW pin. In this case you can choose the telemetry port Vcc or servo Vcc to connect to RAW pin.
+
+- TeensyLC/3.x. You can connect 3.7v to 5.5v to LC or 3.6v to 6.0v to 3.x at pin Vin. In this case you can choose the telemetry port Vcc or servo Vcc (if BEC is less than 5.5v or 6v) to connect to Vin pin.
+
+Consider the following generic receiver, were Tele is the telemetry port
 
 ### ATmega boards
 
 1k resistor
 
-<p align="center"><img src="./images/frsky_smartport_sbus.png" width="400"><br>
-<i>Frsky Smartport, SBUS</br>or SRXL, IBUS, SB, Jeti Ex Bus and boards with no available UARTS, as being used for ESC serial or GPS</i><br><br></p>
+<p align="center"><img src="./images/ss_tele.png" width="300"><br>
+  <i>ATmega 3.3v board with inverted serial protocol (Smartport, Sbus)<br>ATmega 3.3v board with non inverted protocol (IBUS, M-Link, Jeti, SRXL) and ESC or GPS serial connected</i><br><br></p>
 
-<p align="center"><img src="./images/srxl_ibus_sb.png" width="460"><br>
-<i>SRXL, IBUS, SB, Jeti Ex Bus</i><br><br></p>
+<p align="center"><img src="./images/ss_servo.png" width="300"><br>
+  <i>ATmega 5v board with serial inverted protocol (Smartport, Sbus)<br>ATmega 5v board with inverted protocol (IBUS, M-Link, Jeti, SRXL) and ESC or GPS serial connected</i><br><br></p>
 
-<p align="center"><img src="./images/frsky_d.png" width="310"><br>
-<i>Frsky D</i><br><br></p>
+<p align="center"><img src="./images/hs_tele.png" width="300"><br>
+  <i>ATmega 3.3v board with non inverted protocol (IBUS, M-Link, Jeti, SRXL)) and without ESC or GPS serial connected</i><br><br></p>
+
+<p align="center"><img src="./images/hs_servo.png" width="300"><br>
+  <i>ATmega 5v board with non inverted protocol (IBUS, M-Link, Jeti, SRXL)) and without ESC or GPS serial connected</i><br><br></p>
 
 ### ARM Cortex boards 
 
-<p align="center"><img src="./images/frsk_smartport_srxl_ibus_sbus_teensy.png" width="350"><br>
+<p align="center"><img src="./images/cortex.png" width="300"><br>
+  <i>Teensy LC/3.x board any serial protocol</i><br><br></p>
 
 ### SBUS 2
 
@@ -139,7 +153,7 @@ Slots sensor mapping for Futaba transmitters:
 
 Select protocol: FASSTest 18CH or T-FHSS
 
-Connect t SBUS2 port
+Connect to SBUS2 port
 
 ### XBUS
 
@@ -189,33 +203,6 @@ Remark: Only for boards with 2k ram (ATmega328): The maximum number of sensors i
 
 <p align="center"><img src="./images/mlink.png" width="300"><br>
   <i>M-Link port</i><br><br></p>
-
-## 3. Power source
-
-All receivers provide 3.3V at the telemetry port.
-
-- 5V ATmega boards can be feed with 5v to 12v at RAW pin. In this case you need to connect RAW to a servo Vcc from receiver. Also connect servo GND to arduino GND pin (though board may still work if connected to 3.3v)
-
-- 3.3V ATmega boards can be feed with 3.3v to 12v at RAW pin. In this case you can choose the telemetry port Vcc or servo Vcc to connect to RAW pin.
-
-- TeensyLC/3.x. You can connect 3.7v to 5.5v to LC or 3.6v to 6.0v to 3.x at pin Vin. In this case you can choose the telemetry port Vcc or servo Vcc (if BEC is less than 5.5v or 6v) to connect to Vin pin.
-
-Consider the following generic receiver, were Tele is the telemetry port
-
-<p align="center"><img src="./images/ss_tele.png" width="300"><br>
-  <i>ATmega 3.3v board with inverted serial protocol (Smartport, Sbus)<br>ATmega 3.3v board with non inverted protocol (IBUS, M-Link, Jeti, SRXL) and ESC or GPS serial connected</i><br><br></p>
-
-<p align="center"><img src="./images/ss_servo.png" width="300"><br>
-  <i>ATmega 5v board with serial inverted protocol (Smartport, Sbus)<br>ATmega 5v board with inverted protocol (IBUS, M-Link, Jeti, SRXL) and ESC or GPS serial connected</i><br><br></p>
-
-<p align="center"><img src="./images/hs_tele.png" width="300"><br>
-  <i>ATmega 3.3v board with non inverted protocol (IBUS, M-Link, Jeti, SRXL)) and without ESC or GPS serial connected</i><br><br></p>
-
-<p align="center"><img src="./images/hs_servo.png" width="300"><br>
-  <i>ATmega 5v board with non inverted protocol (IBUS, M-Link, Jeti, SRXL)) and without ESC or GPS serial connected</i><br><br></p>
-
-<p align="center"><img src="./images/cortex.png" width="300"><br>
-  <i>Teensy LC/3.x board any serial protocol</i><br><br></p>
 
 
 ## 4. Sensors
