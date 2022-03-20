@@ -214,6 +214,9 @@ Consider the following generic receiver, were Tele is the telemetry port
 <p align="center"><img src="./images/hs_servo.png" width="300"><br>
   <i>ATmega 5v board with non inverted protocol (IBUS, M-Link, Jeti, SRXL)) and without ESC or GPS serial connected</i><br><br></p>
 
+<p align="center"><img src="./images/cortex.png" width="300"><br>
+  <i>Teensy LC/3.x board any serial protocol</i><br><br></p>
+
 
 ## 4. Sensors
 
