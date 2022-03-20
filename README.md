@@ -185,8 +185,25 @@ Configure receiver pin (E1 or E2) as Ex Bus
 
 Remark: Only for boards with 2k ram (ATmega328): The maximum number of sensors is 11 (e.g. GPS are already 11 sensors). You can enable the parameter JETIEX_LOW_MEMORY in jeti.h to disable less important sensors for GPS and vario. It disables Time, Date, HDOP and air temperature sensors
 
+### Multiplex M-Link
 
-## 3. Sensors
+<p align="center"><img src="./images/mlink.png" width="300"><br>
+  <i>M-Link port</i><br><br></p>
+
+## 3. Power source
+
+All receivers provide 3.3V at the telemetry port.
+
+- 5V ATmega boards can be feed with 5v to 12v at RAW pin. In this case you need to connect RAW to a servo Vcc from receiver. Also connect servo GND to arduino GND pin (though board may still work if connected to 3.3v)
+
+- 3.3V ATmega boards can be feed with 3.3v to 12v at RAW pin. In this case you can choose the telemetry port Vcc or servo Vcc to connect to RAW pin.
+
+- TeensyLC/3.x. You can connect 3.7v to 5.5v to LC or 3.6v to 6.0v to 3.x at pin Vin. In this case you can choose the telemetry port Vcc or servo Vcc (if BEC is less than 5.5v or 6v) to connect to Vin pin.
+
+Usually also connect GND to the port where power source (Vcc) comes from.
+
+
+## 4. Sensors
 
 All sensors are available with Smartport protocol
 
@@ -194,7 +211,7 @@ Other protocols may not have all of the sensors:
 
 - Frsky D. Not available second voltage
 
-### 3.1. ESC
+### 4.1. ESC
 
 #### Serial telemetry
 
@@ -293,11 +310,11 @@ Adjust RPMs in *config.h*:
 
 Alternatively this can be done in the transmitter
 
-### 3.2. Serial GPS
+### 4.2. Serial GPS
 
 Serial GPS (NMEA protocol) is supported
 
-### 3.3. Analog sensors
+### 4.3. Analog sensors
 
 The following analog sensors are supported:
 
@@ -306,7 +323,7 @@ The following analog sensors are supported:
 - Current sensor (Hall effect: ACS758). Calibrate current analog sensor with CURRENT_MULTIPLIER in config.h. Or from opentx, but it is recommended by code to increase sensor resolution
 - Airspeed sensor (MPXV7002)
 
-### 3.4. I2C sensors
+### 4.4. I2C sensors
 
 The following I2C sensors are suported:
 
@@ -320,7 +337,7 @@ Remarks:
 <p align="center"><img src="./images/full.png" width="600"><br>
   <i>I2C and analog sensors with Smartport</i><br><br></p>
 
-## 4. Configuration
+## 5. Configuration
 
 ### From PC - MSRC gui
 
@@ -367,11 +384,11 @@ Options:
 - I2C (x2). Sensor type and address
 
 
-## 5. Flash to Arduino
+## 6. Flash to Arduino
 
 Using Arduino IDE copy folder *msrc* and open *msrc.ino*. Select the board and flash
 
-## 6. OpenTx sensors (Smartport)
+## 7. OpenTx sensors (Smartport)
 
 The default sensor id is 10. This can be changed with [change_id_frsky](https://github.com/dgatf/change_id_frsky)
 
@@ -422,18 +439,18 @@ Calculated:
 
 Some of the sensors have to be adusted in openTx
 
-### 6.1. Adjust RPM sensor (Erpm)
+### 7.1. Adjust RPM sensor (Erpm)
 
 - Blades/poles: number of pair of poles * main gear teeth  
 - Multiplier: pinion gear teeth
 
-### 6.2. Adjust voltage sensors (A3, A4)
+### 7.2. Adjust voltage sensors (A3, A4)
 
 Remark: Instead of adjusting the sensor in opentx, it is recommended to use VOLTAGE1_MULTIPLIER and VOLTAGE2_MULTIPLIER in config.h to increase the sensor resolution. Though voltage resolution in opentx is 10 times the current resolution, so less critical
 
 Measure the voltage of the battery with a voltmeter and adjust *Ratio* in A3, A4 sensor
 
-### 6.3. Adjust analog current sensor (Curr)
+### 7.3. Adjust analog current sensor (Curr)
 
 Remark: Instead of adjusting the sensor in opentx, it is recommended to use CURRENT_MULTIPLIER in config.h to increase the sensor resolution
 
@@ -445,7 +462,7 @@ To calculate the battery consumption add a new sensor:
 - Formula: Consumption
 - Sensor: Curr
 
-### 6.4 Calculate current consumption
+### 7.4 Calculate current consumption
 
 Battery consumption is calculatd since MSRC v0.9
 
@@ -455,7 +472,7 @@ Alternatively can be calculated by adding a calculated sensor in openTx:
 - Formula: _Consumption_
 - Sensor: _EscA_ or _Curr_
 
-## 7. Images
+## 8. Images
 
 <p align="center"><img src="./images/top.jpg" width="300">  <img src="./images/bottom.jpg" width="300"></p>
 
@@ -464,14 +481,14 @@ Alternatively can be calculated by adding a calculated sensor in openTx:
 <p align="center"><img src="./images/450_3.jpg" width="300">  <img src="./images/450_x7.bmp" width="300"><br><i>MSRC on Align 450 connected to Hobbywing V3 Platinum and two thermistors for ESC and motor</i><br></p>
 
 
-## 8. Video
+## 9. Video
 
 [Video](https://youtu.be/Mby2rlmAMlU)
 
 
-## 9. Annex
+## 10. Annex
 
-### 9.1. ESC protocol specifications Hobbywing
+### 10.1. ESC protocol specifications Hobbywing
 
 Serial parameters:
 
@@ -511,29 +528,29 @@ Examples:
 | V5HV130A OPTO | 0x9B  | 0x9B  | 0x03  | 0xE8  | 0x01  | 0x0B  | 0x41  | 0x21  | 0x44  | 0xB9  | 0x21  | 0x21  | 0xB9  |
 
 
-### 9.2. ESC protocol specifications Castle Link
+### 10.2. ESC protocol specifications Castle Link
 
 For best accuracy RX pulse input is captured with a timer interrupt and ESC pulse output is produced by hardware PWM. Maximum latency is 20ms
 
 See [Castle Link Live](https://dzf8vqv24eqhg.cloudfront.net/userfiles/4671/6540/ckfinder/files/Product%20Manuals/Accessories%20and%20replacement%20parts/castle_link_live_2_0.pdf?dc=201606221536-537)
 
-### 9.2. ESC protocol specifications Kontronik
+### 10.2. ESC protocol specifications Kontronik
 
 Supported models: Kosmic, Kolibri, JivePro. Protocol [specs](https://www.kontronik.com/fileadmin/kontronik-sobek/Public/Content/Images/Content/Downloads/Software/Kontronik_TelMe_V4.12_1.12_EN.pdf)
 
 Note that there is another protocol used by Kontronik Jive at 9600 that it is not supported. Info [here](https://www.helifreak.com/showthread.php?t=721180)
 
-### 9.3. Output PWM signal for FBL
+### 10.3. Output PWM signal for FBL
 
 For best accuracy PWM signal output for FBL is produced by hardware PWM from serial RPM values. Maximum latency is 40ms
 
-### 9.4. ADC voltage
+### 10.4. ADC voltage
 
 To obtain the voltage at the analog pin it is required the ADC bits (b) and the Vref:
 
 <img src="https://latex.codecogs.com/svg.latex?V_o=V_{ref}*\frac{Raw}{2^b}" title="Vo = Vref * Raw / 2^bits" /><br>
 
-### 9.5. Analog voltage sensors. Voltage divider circuit
+### 10.5. Analog voltage sensors. Voltage divider circuit
 
 Two battery voltages can be measured through the analog pins A2 and A3
 Metal resistors are recommended as gives more accurate readings (0.1W or higher)
@@ -555,7 +572,7 @@ For 6S battery (or lower) and Pro Mini 3.3v:
 
 If more than 6S change R values or you may burn the Arduino!
 
-### 9.6. Temperature sensors. Thermistors
+### 10.6. Temperature sensors. Thermistors
 
 Two temperature sensors can be installed through the analog pins A0 and A1
 Temperature is measured with NTC thermistors (100k). Adjust thermistor Beta in ntc.h if needed (NTC_BETA, default is 4190). Sensor output in Celsius
@@ -574,7 +591,7 @@ Or with Steinhart and Hart Equation if data is available:
 
 <img src="https://latex.codecogs.com/svg.latex?T=\frac{1}{A+B*ln\frac{R_t}{R_{ref}}+C*ln(\frac{R_t}{R_{ref}})^2+D*ln(\frac{R_t}{R_{ref}})^3}" title="T = 1/[A+Bln(Rt/Rref)+Cln(Rt/Rref)²+Dln(Rt/Rref)³]" />
 
-### 9.7. Current
+### 10.7. Current
 
 #### Hall effect
 
@@ -590,7 +607,7 @@ The voltage drop in the shunt resistor is amplified by a differential amplifier 
 
 <p align="center"><img src="./images/High-Side-Current-Sensing.png" width="200"></p>
 
-### 9.8. Air Speed
+### 10.8. Air Speed
 
 Air speed is measured with a differential pressure sensor 
 
@@ -610,7 +627,7 @@ Adjust constants in *pressure.h*:
 - TRANSFER_SLOPE (B) as per sensor datasheet
 - For fine tuning measure the Vcc on the sensor and adjust TRANSFER_VCC
 
-### 9.8. Altitude
+### 10.9. Altitude
 
 Altitude is calculated using the barometric formula:
 
@@ -626,7 +643,7 @@ Po = pressure at ground (Pa)*
 5 seconds after boot, pressure reference, Po, is set
 
 
-## 10. Change log
+## 11. Change log
 
 v0.9
 
