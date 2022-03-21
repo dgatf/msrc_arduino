@@ -19,7 +19,7 @@ Implemented sensors:
   - ESC with PWM signal or phase sensor
   - ESC Castle Link
 - GPS serial (NMEA)
-- I2C sensors: BMP280
+- I2C sensors: BMP280, MS5611
 - Analog sensors: voltage, temperature, current, air speed
 
 All sensors are optional. Make the circuit with the desired sensors and enable them in the configuration, with a lua script if using smartport or in config.h for the rest of Rx protocols 
@@ -340,7 +340,7 @@ The following analog sensors are supported:
 
 The following I2C sensors are suported:
 
-- Barometer: BMP280
+- Barometer: BMP280, MS5611
 
 Remarks:
 
@@ -677,6 +677,7 @@ v0.9
 - Fixed Futaba SBUS2
 - Fixed Pololu compilation in Arduino IDE
 - Improved msrc_gui
+- Added support for MS5611
 
 [v0.8](https://github.com/dgatf/msrc/tree/v0.8)
 
