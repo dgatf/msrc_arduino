@@ -57,7 +57,7 @@ Teensy LC/3.x is recommended when:
 
 ATmega2560 Pro Mini and Pololu ATmega328PB can be used as an alternative of Teensy LC/3.x
 
-For the rest of the cases it is fine to use Pro Mini/Pro Micro/Teensy 2
+For the rest of the cases you can use Pro Mini/Pro Micro/Teensy 2
 
 ### 1.2 Connections
 
