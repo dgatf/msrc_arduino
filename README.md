@@ -271,6 +271,20 @@ Optionally, for Hobbywing Flyfun (V5) and APD F-series, a PWM signal can be gene
 
 (1) Extrapolated from confirmed models. If you find discrepancy adjust gain parameter and send gain and ESC model to update the table
 
+<ins>APD F series</ins>
+
+Telemetry port: pin T
+
+Types of telemetry:
+
+- *RPM output* it is a PWM signal with the RPMs. Select PROTOCOL_PWM and connect to pin PWM in as noted in [connections table](https://github.com/dgatf/msrc#12-connections)
+
+- *PWM telemetry*. For this type of telemetry you need to flash [beta firmware](https://docs.powerdrives.net/products/firmware-installation/f_series-beta-configurable-firmware). It provides serial telemetry with RPMs, voltage, current and temperature. Select PROTOCOL_APD_F. Connect ESC pin T to pin Rx as defined in [connections table](https://github.com/dgatf/msrc#12-connections)
+
+<ins>APD UHV/HV series</ins>
+
+Serial telemetry with RPMs, voltage, current and temperature. Select PROTOCOL_APD_HV
+
 #### PWM signal
 
 If the ESC have a PWM signal or a phase sensor is installed, RPMs can be measured. If ESC have both serial and PWM signal, like Hobbywing V4/V5, then PWM signal is not needed for telemetry
