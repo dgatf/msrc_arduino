@@ -98,14 +98,19 @@ void MainWindow::generateCircuit(QLabel *label)
             paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
         }
 
-        if ( (ui->gbEsc->isChecked() && (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic"))  || ui->cbEsc->currentText() == "APD F" || ui->cbEsc->currentText() == "APD HV" ||
-             ui->gbGps->isChecked() || ui->cbReceiver->currentText() == "Frsky Smartport" || ui->cbReceiver->currentText() == "Futaba SBUS2" )
+        image.load(":/res/receiver_3v_hs.png");
+        if (ui->gbEsc->isChecked() &&
+             (ui->cbEsc->currentText() == "Hobbywing V3" ||
+              ui->cbEsc->currentText() == "Hobbywing V4" ||
+              ui->cbEsc->currentText() == "Kontronic"  ||
+              ui->cbEsc->currentText() == "APD F" ||
+              ui->cbEsc->currentText() == "APD HV"))
         {
             image.load(":/res/receiver_3v_ss_mini.png");
         }
-        else
+        if (ui->gbGps->isChecked() || ui->cbReceiver->currentText() == "Frsky Smartport" || ui->cbReceiver->currentText() == "Futaba SBUS2")
         {
-            image.load(":/res/receiver_3v_hs.png");
+            image.load(":/res/receiver_3v_ss_mini.png");
         }
         if (ui->cbReceiver->currentText() == "Frsky D")
         {
@@ -174,14 +179,19 @@ void MainWindow::generateCircuit(QLabel *label)
             paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
         }
 
-        if ( (ui->gbEsc->isChecked() && (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic"  || ui->cbEsc->currentText() == "APD F" || ui->cbEsc->currentText() == "APD HV")) ||
-             ui->gbGps->isChecked() || ui->cbReceiver->currentText() == "Frsky Smartport" || ui->cbReceiver->currentText() == "Futaba SBUS2" )
+        image.load(":/res/receiver_3v_hs.png");
+        if (ui->gbEsc->isChecked() &&
+             (ui->cbEsc->currentText() == "Hobbywing V3" ||
+              ui->cbEsc->currentText() == "Hobbywing V4" ||
+              ui->cbEsc->currentText() == "Kontronic"  ||
+              ui->cbEsc->currentText() == "APD F" ||
+              ui->cbEsc->currentText() == "APD HV"))
         {
             image.load(":/res/receiver_3v_ss_micro.png");
         }
-        else
+        if (ui->gbGps->isChecked() || ui->cbReceiver->currentText() == "Frsky Smartport" || ui->cbReceiver->currentText() == "Futaba SBUS2")
         {
-            image.load(":/res/receiver_3v_hs.png");
+            image.load(":/res/receiver_3v_ss_micro.png");
         }
         if (ui->cbReceiver->currentText() == "Frsky D")
         {
@@ -301,23 +311,31 @@ void MainWindow::generateCircuit(QLabel *label)
             paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
         }
 
-        if (ui->gbEsc->isChecked())
-        {
-            if (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic"  || ui->cbEsc->currentText() == "APD F" || ui->cbEsc->currentText() == "APD HV")
-                image.load(":/res/esc_serial_teensy2.png");
-            if (ui->cbEsc->currentText() == "PWM")
-                image.load(":/res/esc_pwm_teensy2.png");
-            paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
-        }
-
-        if ( (ui->gbEsc->isChecked() && (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic"  || ui->cbEsc->currentText() == "APD F" || ui->cbEsc->currentText() == "APD HV")) ||
-             ui->gbGps->isChecked() || ui->cbReceiver->currentText() == "Frsky Smartport" || ui->cbReceiver->currentText() == "Frsky D" || ui->cbReceiver->currentText() == "Futaba SBUS2")
+        image.load(":/res/receiver_3v_hs.png");
+        if (ui->gbEsc->isChecked() &&
+             (ui->cbEsc->currentText() == "Hobbywing V3" ||
+              ui->cbEsc->currentText() == "Hobbywing V4" ||
+              ui->cbEsc->currentText() == "Kontronic"  ||
+              ui->cbEsc->currentText() == "APD F" ||
+              ui->cbEsc->currentText() == "APD HV"))
         {
             image.load(":/res/receiver_3v_ss_teensy2.png");
         }
-        else
+        if (ui->gbGps->isChecked() || ui->cbReceiver->currentText() == "Frsky Smartport" || ui->cbReceiver->currentText() == "Futaba SBUS2")
         {
-            image.load(":/res/receiver_3v_hs_teensy2.png");
+            image.load(":/res/receiver_3v_ss_teensy2.png");
+        }
+        if (ui->cbReceiver->currentText() == "Frsky D")
+        {
+            image.load(":/res/receiver_3v_ss_teensy2_frskyd.png");
+        }
+        if (ui->cbReceiver->currentText() == "Spektrum XBUS")
+        {
+            image.load(":/res/receiver_3v_i2c_xbus_teensy2.png");
+        }
+        if (ui->cbReceiver->currentText() == "Hitec")
+        {
+            image.load(":/res/receiver_3v_i2c_teensy2.png");
         }
         paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
 
