@@ -34,12 +34,26 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-871</y>
+             <y>0</y>
              <width>603</width>
-             <height>1694</height>
+             <height>1635</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QLabel" name="label_28">
+                <property name="text">
+                 <string>Board</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="cbBoard"/>
+              </item>
+             </layout>
+            </item>
             <item>
              <widget class="QGroupBox" name="gbReceiver">
               <property name="minimumSize">
@@ -779,6 +793,26 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QLabel" name="lbCircuit">
+          <property name="minimumSize">
+           <size>
+            <width>350</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btCircuit">
+          <property name="text">
+           <string>Open in window</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
@@ -791,7 +825,7 @@
      <x>0</x>
      <y>0</y>
      <width>1267</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMSRC">
