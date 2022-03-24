@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->cbBoard->addItems({"Arduino Pro Mini", "Arduino Pro Micro", /*"Pololu ATmega328PB", "ATmega2560 Pro Mini",*/ "Teensy 2", "Teensy LC/3.x"});
-    ui->cbEsc->addItems({"Hobbywing V3", "Hobbywing V4", "PWM", "Castle link", "Kontronic", "ADP F", "APD HV"});
+    ui->cbEsc->addItems({"Hobbywing V3", "Hobbywing V4", "PWM", "Castle link", "Kontronic", "APD F", "APD HV"});
     ui->cbGpsBaudrate->addItems({"115200", "57600", "38400", "19200", "14400", "9600","4800"});
     ui->cbGpsBaudrate->setCurrentIndex(5);
     ui->cbReceiver->addItems({"Frsky Smartport", "Frsky D", "Spektrum XBUS", "Spektrum SRXL", "Flysky IBUS", "Futaba SBUS2", "Multiplex Sensor Bus", "Jeti Ex Bus", "Hitec"});
@@ -91,14 +91,14 @@ void MainWindow::generateCircuit(QLabel *label)
 
         if (ui->gbEsc->isChecked())
         {
-            if (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic")
+            if (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic" || ui->cbEsc->currentText() == "APD F" || ui->cbEsc->currentText() == "APD HV")
                 image.load(":/res/esc_serial.png");
             if (ui->cbEsc->currentText() == "PWM")
                 image.load(":/res/esc_pwm.png");
             paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
         }
 
-        if ( (ui->gbEsc->isChecked() && (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic")) ||
+        if ( (ui->gbEsc->isChecked() && (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic"))  || ui->cbEsc->currentText() == "APD F" || ui->cbEsc->currentText() == "APD HV" ||
              ui->gbGps->isChecked() || ui->cbReceiver->currentText() == "Frsky Smartport" || ui->cbReceiver->currentText() == "Futaba SBUS2" )
         {
             image.load(":/res/receiver_3v_ss_mini.png");
@@ -167,14 +167,14 @@ void MainWindow::generateCircuit(QLabel *label)
 
         if (ui->gbEsc->isChecked())
         {
-            if (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic")
+            if (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic"  || ui->cbEsc->currentText() == "APD F" || ui->cbEsc->currentText() == "APD HV")
                 image.load(":/res/esc_serial.png");
             if (ui->cbEsc->currentText() == "PWM")
                 image.load(":/res/esc_pwm_micro.png");
             paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
         }
 
-        if ( (ui->gbEsc->isChecked() && (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic")) ||
+        if ( (ui->gbEsc->isChecked() && (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic"  || ui->cbEsc->currentText() == "APD F" || ui->cbEsc->currentText() == "APD HV")) ||
              ui->gbGps->isChecked() || ui->cbReceiver->currentText() == "Frsky Smartport" || ui->cbReceiver->currentText() == "Futaba SBUS2" )
         {
             image.load(":/res/receiver_3v_ss_micro.png");
@@ -243,7 +243,7 @@ void MainWindow::generateCircuit(QLabel *label)
 
         if (ui->gbEsc->isChecked())
         {
-            if (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic")
+            if (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic"  || ui->cbEsc->currentText() == "APD F" || ui->cbEsc->currentText() == "APD HV")
                 image.load(":/res/esc_serial_teensy3.png");
             if (ui->cbEsc->currentText() == "PWM")
                 image.load(":/res/esc_pwm_teensy3.png");
@@ -303,14 +303,14 @@ void MainWindow::generateCircuit(QLabel *label)
 
         if (ui->gbEsc->isChecked())
         {
-            if (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic")
+            if (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic"  || ui->cbEsc->currentText() == "APD F" || ui->cbEsc->currentText() == "APD HV")
                 image.load(":/res/esc_serial_teensy2.png");
             if (ui->cbEsc->currentText() == "PWM")
                 image.load(":/res/esc_pwm_teensy2.png");
             paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
         }
 
-        if ( (ui->gbEsc->isChecked() && (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic")) ||
+        if ( (ui->gbEsc->isChecked() && (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic"  || ui->cbEsc->currentText() == "APD F" || ui->cbEsc->currentText() == "APD HV")) ||
              ui->gbGps->isChecked() || ui->cbReceiver->currentText() == "Frsky Smartport" || ui->cbReceiver->currentText() == "Frsky D" || ui->cbReceiver->currentText() == "Futaba SBUS2")
         {
             image.load(":/res/receiver_3v_ss_teensy2.png");
