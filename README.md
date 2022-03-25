@@ -301,10 +301,13 @@ If using ATmega328P telemetry values are not accurate all the time. Some reading
 
 Remark: currently not compatible with Teensy3.x and ATmega328PB
 
-<p align="center"><img src="./images/castle_teensy2.png" width="420"><br>
+<p align="center"><img src="./images/esc_castle_teensy2.png" width="420"><br>
   <i>Castle Link with Teensy 2</i><br><br></p>
 
-<p align="center"><img src="./images/castle_teensy3.png" width="500"><br>
+<p align="center"><img src="./images/esc_castle_micro.png" width="420"><br>
+  <i>Castle Link with Arduino Micro</i><br><br></p>
+
+<p align="center"><img src="./images/esc_castle_teensylc.png" width="500"><br>
 <i>Castle Link with Teensy LC/3.x</i><br><br></p>
 
 #### Available ESC telemetry
