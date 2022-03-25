@@ -10,7 +10,7 @@ Compatible RX protocols: Frsky Smartport, FrSky D, Spektrum XBUS, Spektrum SRXL 
 
 Compatible ESCs: Hobbywing V3/V4/V5, Kontronik Kosmic/Kolibri/JivePro, Castle Link, APD F/HV/UHV, phase sensor/PWM signal
 
-Compatible MCUs: ATmega328P, ATmega328PB, ATmega2560 and ATmega32U4 and Teensy LC/3.x
+Compatible MCUs: ATmega328P, ATmega328PB and ATmega32U4 and Teensy LC/3.x
 
 Implemented sensors:
 
@@ -35,10 +35,11 @@ All sensors are optional. Make the circuit with the desired sensors and enable t
 | :---: | :---: | :---: | :---: | :---: |
 | ATmega328P<sup>(3)</sup> | Arduino Pro Mini<sup>(5)</sup> | Innacurate | 1 | :x: |
 | ATmega328PB<sup>(3)</sup> | Pololu ATmega328PB<sup>(5)</sup> | :heavy_check_mark: | 2 | :x: |
-| ATmega2560 | ATmega2560 Pro Mini | :heavy_check_mark: | 4 | :x: |
-| ATmega32U4<sup>(3)</sup> | Teensy 2 | :heavy_check_mark: | 1 | :x: |
+| ATmega32U4<sup>(3)</sup> | Arduino Micro / Teensy 2 | :heavy_check_mark: | 1 | :x: |
 | ARM CortexM0+ | Teensy LC<sup>(4)</sup> | :heavy_check_mark: | 3 | :heavy_check_mark: |
 | ARM CortexM4 | Teensy 3.2 | :heavy_check_mark: | 3 | :heavy_check_mark: |
+
+ATmega2560 is deprecated
 
 (1) 2 x UARTS allows to use ESC serial and GPS at the same time  
 (2) Allows to use hardware serial for Smartport and SBUS without signal inverter. Also is half duplex capable  
@@ -50,38 +51,40 @@ ATmega boards at 5v (16Mhz) may not read properly serial port when using ESC ser
 
 Which board should I choose?
 
-Teensy LC/3.x is recommended when:
-- Using Castle ESC
-- Using serial GPS + serial ESC + serial receiver protocol
-- Using SBUS or Jeti with serial ESC or GPS and you don't want to loose any serial frame. Though Pro Mini/Pro Micro/Teensy 2 will work as well, but losing few serial frames
+Board required if using:
 
-ATmega2560 Pro Mini and Pololu ATmega328PB can be used as an alternative of Teensy LC/3.x
+- ESC Castle: Teensy2, Micro or Teensy LC
+- Receiver serial with ESC serial and GPS serial: Pololu ATmega328PB, Teensy LC/3.x
 
-For the rest of the cases you can use Pro Mini/Pro Micro/Teensy 2
+Teensy LC is recommended if using:
+
+- SBUS or Jeti with another serial (ESC or GPS) and you don't want to loose any serial frame. Though Mini/Micro/Teensy 2 will work as well, but losing few serial frames
+
+For the rest of the cases you can use ATmega328P boards (Pro Mini/Pro Micro/Teensy 2)
 
 ### 1.2 Connections
 
-| Board | Arduino Pro Mini | Pololu ATmega328PB | Arduino ATmega2560 | Teensy 2 | Teensy LC<br/>Teensy 3.x |
-| :---: | :---: | :---: | :---: | :---: | :---: |
-| MCU | ATmega328P | ATmega328PB | ATmega2560 | ATmega32U4 | ARMCortexM0+<br/>ARMCortexM4 |
-| NTC 1 | A0 | A0 | A0 | F6(A1) | 14 |
-| NTC 2 | A1 | A1 | A1 | F7(A0) | 15 |
-| Voltage 1 | A2 | A2 | A2 | F5(A3) | 16 |
-| Voltage 2 | A3 | A3 | A3 | F4(A2) | 17 |
-| Current | A6 | A6 | A6 | B5(A9) | 20 |
-| Airspeed | A7 | A7 | A7 | D7(A7) | 26 |
-| ESC serial | RX | RX0 | 19(RX1) | D2(RX1) | 9 |
-| GPS | RX | RX1 | 17(RX2) | D2(RX1) | 7 |
-| PWM in | 8 | 8 | 49 | D4(A6) | 6 |
-| PWM out | 10 | 10 | 7 | B6(A10) | 22 |
-| Rx Castle | 8 | 8 | 49 | C7 | 16 |
-| ESC Castle<sup>(1)</sup> | 2 & 10 | 2 & 22 | 45 & 48 | C8 & B6 | 2 & 6 |
-| Frsky Smartport, SBUS | 7 & 12<sup>(2)</sup> | 7 & 12<sup>(2)</sup> | A15 & D10<sup>(2)</sup> | B3 & B4<sup>(2)</sup><br/>(14 & 8) | 1 |
-| Frsky D | 12 | 12 | D10 | B4(8) | 1 |
+| Board                     | Arduino Pro Mini | Pololu ATmega328PB | Teensy 2      | Arduino Pro Micro   | Teensy LC<br/>Teensy 3.x     |
+| :---:                     | :---:            | :---:              | :---:         | :---:           | :---:                        |
+| MCU                       | ATmega328P       | ATmega328PB        | ATmega32U4    | ATmega32U4      | ARMCortexM0+<br/>ARMCortexM4 |
+| NTC 1                     | A0               | A0                 | F7            | A0              | 14                           |
+| NTC 2                     | A1               | A1                 | F6            | A1              | 15                           |
+| Voltage 1                 | A2               | A2                 | F5            | A2              | 16                           |
+| Voltage 2                 | A3               | A3                 | F4            | A3              | 17                           |
+| Current                   | A6               | A6                 | B5            | A9              | 20                           |
+| Airspeed                  | A7               | A7                 | D7            | A7              | 26                           |
+| ESC serial                | RX               | RX0                | D2            | RX1             | 9                            |
+| GPS                       | RX               | RX1                | D2            | RX1             | 7                            |
+| PWM in                    | 8                | 8                  | D4            | 4               | 6                            |
+| PWM out                   | 10               | 10                 | B6            | 10              | 22                           |
+| Rx Castle                 | -                | 8                  | C7            | 13<sup>(9)</sup> | 16                          |
+| ESC Castle<sup>(1)</sup>  | -                | 2 & 22             | D4 & B6       | 4 & 10          | 2 & 6                        |
+| Frsky Smartport, SBUS     | 7 & 12<sup>(2)</sup> | 7 & 12<sup>(2)</sup> | A15 & D10<sup>(2)</sup> | B3 & B4<sup>(2)</sup><br/>(14 & 8) | 1 |
+| Frsky D                   | 12               | 12                 | D10           | B4(8)           | 1                            |
 | SRXL, IBUS, SB, Jeti Ex | RX & TX<sup>(2)</sup> </br>or<sup>(8)</sup> 7 & 12<sup>(2)</sup> | RX1 & TX1<sup>(2)</sup> </br>or<sup>(6)</sup> RX0 & TX0<sup>(2)</sup> </br>or<sup>(7)</sup> 7 & 12<sup>(2)</sup> | 15(RX3) & 14(TX3)<sup>(2)</sup> | D2(RX1) & D3(TX1)<sup>(2)</sup> </br>or<sup>(8)</sup> B3 & B4<sup>(2)</sup>(14 & 8) | 1 |
-| Hitec, XBUS or sensor SDA | A4 | A4 | 20 | D1(2) | 18<sup>(3)</sup> |
-| Hitec, XBUS or sensor SCL | A5 | A5 | 21 | D0(3) | 19<sup>(3)</sup> |
-| XBUS NPN clock stretch<sup>(4)</sup> | 13 | 13 | 13 | PB5(9) | 13 |
+| Hitec, XBUS or sensor SDA | A4               | A4                 | D1            | 2               | 18<sup>(3)</sup>             |
+| Hitec, XBUS or sensor SCL | A5               | A5                 | D0            | 3               | 19<sup>(3)</sup>             |
+| XBUS NPN clock stretch<sup>(4)</sup> | 13    | 13                 | B5            | 9               | 13                           |
 
 (1) with 3.3k pull up resistor  
 (2) 1k resistor
@@ -91,6 +94,7 @@ For the rest of the cases you can use Pro Mini/Pro Micro/Teensy 2
 (6) If using GPS  
 (7) If using serial ESC and GPS  
 (8) If using serial ESC or GPS
+(9) If using with Castle, use Arduino Micro. Pin 13 not available in Arduino Pro Micro 
 
 
 ## 2. Receiver protocol
@@ -218,11 +222,8 @@ Remark: Only for boards with 2k ram (ATmega328): The maximum number of sensors i
 
 ## 4. Sensors
 
-All sensors are available with Smartport protocol
-
-Other protocols may not have all of the sensors:
-
-- Frsky D. Not available second voltage
+<p align="center"><img src="./images/msrc_full.png" width="600"><br>
+  <i>Sensors with Smartport</i><br><br></p>
 
 ### 4.1. ESC
 
@@ -360,9 +361,6 @@ Remarks:
 
 - For BMP280 module there are two versions: 3.3V (6 pins, I2C/SPI) and 5V (4 pins, I2C). Note that  3.3V version is not 5V tolerant. Use module version accordingly to your board Vcc
 - If using XBUS, use Teensy LC/3.x to be able to use I2C sensors
-
-<p align="center"><img src="./images/msrc_full.png" width="600"><br>
-  <i>I2C and analog sensors with Smartport</i><br><br></p>
 
 ## 5. Configuration
 

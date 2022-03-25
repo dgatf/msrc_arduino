@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->cbBoard->addItems({"Arduino Pro Mini", "Arduino Pro Micro", /*"Pololu ATmega328PB", "ATmega2560 Pro Mini",*/ "Teensy 2", "Teensy LC/3.x"});
+    ui->cbBoard->addItems({"Arduino Pro Mini", "Arduino Pro Micro", "Arduino Micro", /*"Pololu ATmega328PB", "ATmega2560 Pro Mini",*/ "Teensy 2", "Teensy LC/3.x"});
     ui->cbEsc->addItems({"Hobbywing V3", "Hobbywing V4", "PWM", "Castle link", "Kontronic", "APD F", "APD HV"});
     ui->cbGpsBaudrate->addItems({"115200", "57600", "38400", "19200", "14400", "9600","4800"});
     ui->cbGpsBaudrate->setCurrentIndex(5);
@@ -46,6 +46,8 @@ void MainWindow::generateCircuit(QLabel *label)
     if (ui->cbBoard->currentText() == "Arduino Pro Mini")
         image.load(":/res/mini.png");
     else if (ui->cbBoard->currentText() == "Arduino Pro Micro")
+        image.load(":/res/pro_micro.png");
+    else if (ui->cbBoard->currentText() == "Arduino Micro")
         image.load(":/res/micro.png");
     else if (ui->cbBoard->currentText() == "Teensy 2")
         image.load(":/res/teensy2.png");
@@ -150,6 +152,7 @@ void MainWindow::generateCircuit(QLabel *label)
             paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
         }
     }
+
     else if (ui->cbBoard->currentText() == "Arduino Pro Micro")
     {
         if (ui->gbGps->isChecked())
@@ -174,8 +177,92 @@ void MainWindow::generateCircuit(QLabel *label)
         {
             if (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic"  || ui->cbEsc->currentText() == "APD F" || ui->cbEsc->currentText() == "APD HV")
                 image.load(":/res/esc_serial.png");
-            if (ui->cbEsc->currentText() == "PWM")
+            else if (ui->cbEsc->currentText() == "PWM")
+                image.load(":/res/esc_pwm_pro_micro.png");
+            paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
+        }
+
+        image.load(":/res/receiver_3v_hs.png");
+        if (ui->gbEsc->isChecked() &&
+             (ui->cbEsc->currentText() == "Hobbywing V3" ||
+              ui->cbEsc->currentText() == "Hobbywing V4" ||
+              ui->cbEsc->currentText() == "Kontronic"  ||
+              ui->cbEsc->currentText() == "APD F" ||
+              ui->cbEsc->currentText() == "APD HV"))
+        {
+            image.load(":/res/receiver_3v_ss_pro_micro.png");
+        }
+        if (ui->gbGps->isChecked() || ui->cbReceiver->currentText() == "Frsky Smartport" || ui->cbReceiver->currentText() == "Futaba SBUS2")
+        {
+            image.load(":/res/receiver_3v_ss_pro_micro.png");
+        }
+        if (ui->cbReceiver->currentText() == "Frsky D")
+        {
+            image.load(":/res/receiver_3v_ss_pro_micro_frskyd.png");
+        }
+        if (ui->cbReceiver->currentText() == "Spektrum XBUS")
+        {
+            image.load(":/res/receiver_3v_i2c_xbus_pro_micro.png");
+        }
+        if (ui->cbReceiver->currentText() == "Hitec")
+        {
+            image.load(":/res/receiver_3v_i2c_pro_micro.png");
+        }
+        paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
+
+        if (ui->gbCurrent->isChecked())
+        {
+            image.load(":/res/acs758_pro_micro.png");
+            paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
+        }
+
+        if (ui->cbAirspeed->isChecked())
+        {
+            image.load(":/res/mpxv7002_pro_micro.png");
+            paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
+        }
+
+        if (ui->gbAltitude->isChecked() && ui->cbBarometerType->currentText() == "BMP280")
+        {
+            image.load(":/res/bmp280_pro_micro.png");
+            paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
+        }
+
+        if (ui->gbAltitude->isChecked() && ui->cbBarometerType->currentText() == "MS5611")
+        {
+            image.load(":/res/ms5611_pro_micro.png");
+            paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
+        }
+    }
+
+    else if (ui->cbBoard->currentText() == "Arduino Micro")
+    {
+        if (ui->gbGps->isChecked())
+        {
+            image.load(":/res/bn220.png");
+            paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
+        }
+
+        if (ui->cbTemperature1->isChecked())
+        {
+            image.load(":/res/ntc1.png");
+            paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
+        }
+
+        if (ui->cbTemperature2->isChecked())
+        {
+            image.load(":/res/ntc2.png");
+            paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
+        }
+
+        if (ui->gbEsc->isChecked())
+        {
+            if (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic"  || ui->cbEsc->currentText() == "APD F" || ui->cbEsc->currentText() == "APD HV")
+                image.load(":/res/esc_serial.png");
+            else if (ui->cbEsc->currentText() == "PWM")
                 image.load(":/res/esc_pwm_micro.png");
+            else if (ui->cbEsc->currentText() == "Castle link")
+                image.load(":/res/esc_castle_micro.png");
             paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
         }
 
@@ -231,6 +318,7 @@ void MainWindow::generateCircuit(QLabel *label)
             paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
         }
     }
+
     else if (ui->cbBoard->currentText() == "Teensy LC/3.x")
     {
         if (ui->gbGps->isChecked())
@@ -255,8 +343,10 @@ void MainWindow::generateCircuit(QLabel *label)
         {
             if (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic"  || ui->cbEsc->currentText() == "APD F" || ui->cbEsc->currentText() == "APD HV")
                 image.load(":/res/esc_serial_teensy3.png");
-            if (ui->cbEsc->currentText() == "PWM")
+            else if (ui->cbEsc->currentText() == "PWM")
                 image.load(":/res/esc_pwm_teensy3.png");
+            else if (ui->cbEsc->currentText() == "Castle link")
+                image.load(":/res/esc_castle_teensylc.png");
             paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
         }
 
@@ -303,6 +393,7 @@ void MainWindow::generateCircuit(QLabel *label)
             }
         }
     }
+
     else if (ui->cbBoard->currentText() == "Teensy 2")
     {
         if (ui->gbGps->isChecked())
@@ -311,7 +402,30 @@ void MainWindow::generateCircuit(QLabel *label)
             paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
         }
 
-        image.load(":/res/receiver_3v_hs.png");
+        if (ui->cbTemperature1->isChecked())
+        {
+            image.load(":/res/ntc1_teensy2.png");
+            paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
+        }
+
+        if (ui->cbTemperature2->isChecked())
+        {
+            image.load(":/res/ntc2_teensy2.png");
+            paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
+        }
+
+        if (ui->gbEsc->isChecked())
+        {
+            if (ui->cbEsc->currentText() == "Hobbywing V3" || ui->cbEsc->currentText() == "Hobbywing V4" || ui->cbEsc->currentText() == "Kontronic"  || ui->cbEsc->currentText() == "APD F" || ui->cbEsc->currentText() == "APD HV")
+                image.load(":/res/esc_serial_teensy2.png");
+            else if (ui->cbEsc->currentText() == "PWM")
+                image.load(":/res/esc_pwm_teensy2.png");
+            else if (ui->cbEsc->currentText() == "Castle link")
+                image.load(":/res/esc_castle_teensy2.png");
+            paint->drawImage(QPoint(0, 0), image.scaled(*size, Qt::IgnoreAspectRatio));
+        }
+
+        image.load(":/res/receiver_3v_hs_teensy2.png");
         if (ui->gbEsc->isChecked() &&
              (ui->cbEsc->currentText() == "Hobbywing V3" ||
               ui->cbEsc->currentText() == "Hobbywing V4" ||
@@ -331,7 +445,7 @@ void MainWindow::generateCircuit(QLabel *label)
         }
         if (ui->cbReceiver->currentText() == "Spektrum XBUS")
         {
-            image.load(":/res/receiver_3v_i2c_xbus_teensy2.png");
+            image.load(":/res/receiver_3v_i2c_teensy2_xbus.png");
         }
         if (ui->cbReceiver->currentText() == "Hitec")
         {

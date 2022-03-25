@@ -574,7 +574,7 @@ void EscCastle::begin()
 
 #if defined(__MKL26Z64__) || defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 
-    // FTM1 (2 CH): CAPTURE RX PULSE (PIN: CH0 -> PTB0 -> 16/A2)
+    // FTM1 (2 CH): CAPTURE RX PULSE (PIN: CH0 -> PTB0 -> 16/A2) --------------------> MEJOR : PTE20 -> A10
     FTM1_IRQ_handlerP = FTM1_IRQ_handler;
     FTM1_SC = 0;
     delayMicroseconds(1);
