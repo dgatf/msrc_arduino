@@ -87,5 +87,7 @@
         <file>res/esc_castle_micro.png</file>
         <file>res/esc_castle_teensy2.png</file>
         <file>res/esc_castle_teensylc.png</file>
+        <file>res/msrc.ico</file>
+        <file>res/msrc.png</file>
     </qresource>
 </RCC>
