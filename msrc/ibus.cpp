@@ -407,7 +407,7 @@ void Ibus::setConfig(Config &config)
         sensorIbusP = new SensorIbus(AFHDS2A_ID_TEMPERATURE, IBUS_TYPE_U16, ntc->valueP(), ntc);
         addSensor(sensorIbusP);
     }
-    if (config.deviceI2C1Type == I2C_BMP280)
+    if (CONFIG_I2C1_TYPE == I2C_BMP280)
     {
         SensorIbus *sensorIbusP;
         Bmp280 *bmp;
@@ -420,7 +420,7 @@ void Ibus::setConfig(Config &config)
         sensorIbusP = new SensorIbus(AFHDS2A_ID_CLIMB_RATE, IBUS_TYPE_S16, bmp->varioP(), bmp);
         addSensor(sensorIbusP);
     }
-    if (config.deviceI2C1Type == I2C_MS5611)
+    if (CONFIG_I2C1_TYPE == I2C_MS5611)
     {
         SensorIbus *sensorIbusP;
         MS5611 *bmp;

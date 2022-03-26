@@ -307,10 +307,9 @@ void EscCastle::TIMER3_CAPT_handler() // RX INPUT
             TIMSK3 |= _BV(TOIE3);  // ENABLE OVERFLOW INTERRUPT
         }
         OCR1B = ICR3 - ts;
-        castlePwmRx = OCR1B; // KEEP PWM STATE FOR TELEMETRY PULSE LENGHT
         TCNT3 = 0;           // RESET COUNTER
 #ifdef DEBUG_CASTLE_RX
-        DEBUG_PRINT(castlePwmRx);
+        DEBUG_PRINT(ICR3 - ts);
         DEBUG_PRINTLN();
 #endif
     }
@@ -336,6 +335,7 @@ void EscCastle::TIMER1_COMPB_handler() // START INPUT STATE
     PORTB |= _BV(PB6);                  // PD2 PULLUP
     TIFR1 |= _BV(OCF1C) | _BV(ICF1);    // CLEAR ICP1 CAPTURE/OC1C FLAG
     TIMSK1 |= _BV(OCIE1C) | _BV(ICIE1); // ENABLE ICP1 CAPT/OC1C MATCH
+    castlePwmRx = OCR1B;
 }
 
 void EscCastle::TIMER1_CAPT_handler() // READ TELEMETRY
@@ -554,12 +554,12 @@ void EscCastle::begin()
     TIMER1_CAPT_handlerP = TIMER1_CAPT_handler;
 
     // TIMER3. RX INPUT. ICP3 (PC7,13)
-    PORTC |= _BV(PC7);    // ICP3 PULLUP
+    //PORTC |= _BV(PC7);    // ICP3 PULLUP
     TCCR3A = 0;           //
     TCCR3B = 0;           // MODE 0 (NORMAL)
     TCCR3B |= _BV(ICES3); // RISING EDGE
     TCCR3B |= _BV(CS31);  // SCALER 8
-    TIMSK3 = _BV(ICIE3);  // CAPTURE INTERRUPT
+    TIMSK3 |= _BV(ICIE3);  // CAPTURE INTERRUPT
 
     // TIMER1. ESC: PWM OUTPUT, TELEMETRY INPUT. ICP1 (PD4,4). OC1B (PB6,10) -> OUTPUT/INPUT PULL UP
     TCCR1A = _BV(WGM11) | _BV(WGM10);    // MODE 15 (TOP OCR1A)

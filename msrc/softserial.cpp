@@ -201,7 +201,7 @@ void SoftSerial::begin(uint32_t baud, uint8_t format)
     rx_delay_stop = subs(delay * 3 * stop_bits_ / 4, (37 + 11 + 12) / 4);
 
     TCCR3A = 0;
-    TCCR3B = _BV(CS31); // SCALER 8
+    TCCR3B |= _BV(CS31); // SCALER 8
 }
 
 #endif
