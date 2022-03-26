@@ -21,13 +21,13 @@ FORMS += \
     circuitdialog.ui \
     mainwindow.ui
 
-win32 {
-    TARGET = msrc_gui_win
-    RC_ICONS = res/oscilloscope.ico
-}
-unix {
-    TARGET = msrc_gui_linux
-}
+#win32 {
+#    TARGET = msrc_gui_win
+#    RC_ICONS = res/oscilloscope.ico
+#}
+#unix {
+#    TARGET = msrc_gui_linux
+#}
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
