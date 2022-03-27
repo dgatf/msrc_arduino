@@ -7,7 +7,7 @@ EscApdF::EscApdF(AbstractSerial &serial, uint8_t alphaRpm, uint8_t alphaVolt, ui
 void EscApdF::begin()
 {
     serial_.begin(115200, SERIAL__8N1);
-    serial_.setTimeout(2);
+    serial_.setTimeout(APDF_ESCSERIAL_TIMEOUT);
 }
 
 uint8_t EscApdF::update_crc8(uint8_t crc, uint8_t crc_seed)
@@ -33,10 +33,18 @@ void EscApdF::update()
     uint8_t lenght = serial_.availableTimeout();
     if (lenght == APDF_PACKET_LENGHT || lenght == KISS_PACKET_LENGHT)
     {
-        uint8_t data[lenght];
-        serial_.readBytes(data, lenght);
-        //if (data[10] == 0 && data[11] == 0)
-        if (get_crc8(data, KISS_PACKET_LENGHT) == data[9])
+        uint8_t data[KISS_PACKET_LENGHT];
+        serial_.readBytes(data, KISS_PACKET_LENGHT);
+#ifdef DEBUG_APDF_PACKET
+        DEBUG_PRINT("< ");
+        for (uint8_t i = 0; i < KISS_PACKET_LENGHT; i++)
+        {
+            DEBUG_PRINT_HEX(data[i]);
+            DEBUG_PRINT(" ");
+        }
+        DEBUG_PRINTLN();
+#endif
+        if (get_crc8(data, KISS_PACKET_LENGHT - 1) == data[9])
         {
             float temp = data[0];
             float voltage = ((uint16_t)data[1] << 8 | data[2]) / 100.0;

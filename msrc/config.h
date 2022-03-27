@@ -90,6 +90,7 @@
 //#define DEBUG_HW4
 //#define DEBUG_KONTRONIK
 //#define DEBUG_APDF
+//#define DEBUG_APDF_PACKET
 //#define DEBUG_APDHV
 //#define DEBUG_GPS
 //#define DEBUG_PWM

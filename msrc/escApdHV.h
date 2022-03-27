@@ -1,7 +1,7 @@
 #ifndef ESCAPDHV_H
 #define ESCAPDHV_H
 
-#define APDHV_ESCSERIAL_TIMEOUT 3
+#define APDHV_ESCSERIAL_TIMEOUT 2000
 #define APDHV_PACKET_LENGHT 22
 
 #include <Arduino.h>
