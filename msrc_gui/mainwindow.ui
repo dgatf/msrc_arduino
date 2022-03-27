@@ -38,7 +38,7 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-662</y>
+             <y>-585</y>
              <width>603</width>
              <height>1762</height>
             </rect>
@@ -542,12 +542,12 @@
                   <item row="1" column="1">
                    <widget class="QLabel" name="label_29">
                     <property name="text">
-                     <string>Type</string>
+                     <string>Offset</string>
                     </property>
                    </widget>
                   </item>
                   <item row="1" column="2">
-                   <widget class="QComboBox" name="cbCurrentSensorType"/>
+                   <widget class="QComboBox" name="cbCurrentSensorOffset"/>
                   </item>
                   <item row="0" column="2">
                    <widget class="QSpinBox" name="sbCurrentSens">

@@ -349,9 +349,9 @@ Serial GPS (NMEA protocol) is supported
 
 The following analog sensors are supported:
 
-- 2 x voltage divider. Calibrate voltage analog sensors with VOLTAGE1_MULTIPLIER and VOLTAGE2_MULTIPLIER in msrc_gui or in config.h. Or from opentx, but it is recommended by code to increase sensor resolution. Multiplier = (R1+R2)/ R2
+- 2 x voltage divider. Calibrate voltage analog sensors with VOLTAGE1_MULTIPLIER and VOLTAGE2_MULTIPLIER in msrc_gui or in config.h. Or from opentx, but it is recommended in order to increase sensor resolution. Multiplier = (R1+R2)/ R2
 - 2 x temperature sensors (thermistors)
-- Current sensor. Calibrate current analog sensor from msrc_gui or config.h. Or from opentx, but it is recommended by code to increase sensor resolution. There are two types: hall effect (e.g. ACS758) or open loop hall effect (amploc). If it is open loop type, set the offset (CURRENT_OFFSET) to 512, otherwise, set to 0. Multiplier = 1000 / sensitivity(mV/A)
+- Current sensor. Calibrate current analog sensor from msrc_gui or config.h. Or from opentx, but it is recommended in order to increase sensor resolution. Set offset for I = 0. E.g. ACS758 offset is 0 and Amploc is Vs/2=512. Multiplier = 1000 / sensitivity(mV/A)
 - Airspeed sensor (MPXV7002)
 
 ### 4.4. I2C sensors
