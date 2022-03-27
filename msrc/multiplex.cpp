@@ -271,7 +271,7 @@ void Multiplex::setConfig(Config &config)
     {
         SensorMultiplex *sensorMultiplexP;
         Current *current;
-        current = new Current(PIN_CURRENT, ALPHA(config.average.curr), CURRENT_MULTIPLIER);
+        current = new Current(PIN_CURRENT, ALPHA(config.average.curr), CURRENT_MULTIPLIER, CURRENT_OFFSET);
         sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, current->valueP(), current);
         addSensor(sensorMultiplexP);
         sensorMultiplexP = new SensorMultiplex(FHSS_CONSUMPTION, current->consumptionP(), current);

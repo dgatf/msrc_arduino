@@ -34,6 +34,8 @@
 #define VOLTAGE1_MULTIPLIER 1
 #define VOLTAGE2_MULTIPLIER 1
 #define CURRENT_MULTIPLIER 1
+/* Analog current raw offset: 0 hall sensor, 512 open loop hall sensor */
+#define CURRENT_OFFSET 0
 /* RPM multipliers (optional, this may be done in transmitter*/
 #define RPM_PAIR_OF_POLES 1
 #define RPM_PINION_TEETH 1  // For helis

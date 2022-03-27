@@ -537,7 +537,7 @@ void Sbus::setConfig(Config &config)
     {
         SensorSbus *sensorSbusP;
         Current *current;
-        current = new Current(PIN_CURRENT, ALPHA(config.average.curr), CURRENT_MULTIPLIER);
+        current = new Current(PIN_CURRENT, ALPHA(config.average.curr), CURRENT_MULTIPLIER, CURRENT_OFFSET);
         sensorSbusP = new SensorSbus(FASST_POWER_CURR, current->valueP(), current);
         addSensor(SBUS_SLOT_POWER_CURR2, sensorSbusP);
         sensorSbusP = new SensorSbus(FASST_POWER_CONS, current->consumptionP(), current);

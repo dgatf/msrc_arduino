@@ -423,7 +423,7 @@ void Hitec::setConfig(Config &config)
     if (config.current == true)
     {
         Current *current;
-        current = new Current(PIN_CURRENT, ALPHA(config.average.curr), CURRENT_MULTIPLIER);
+        current = new Current(PIN_CURRENT, ALPHA(config.average.curr), CURRENT_MULTIPLIER, CURRENT_OFFSET);
         addDevice(current);
         frame_0x18_P[HITEC_FRAME_0X18_AMP] = current->valueP();
         isEnabledFrame[HITEC_FRAME_0X18] = true;

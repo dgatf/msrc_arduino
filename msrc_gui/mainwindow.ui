@@ -38,9 +38,9 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>0</y>
+             <y>-906</y>
              <width>603</width>
-             <height>1635</height>
+             <height>1762</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout">
@@ -528,8 +528,18 @@
                  <property name="checked">
                   <bool>false</bool>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_4">
-                  <item>
+                 <layout class="QGridLayout" name="gridLayout_9">
+                  <item row="0" column="2">
+                   <widget class="QDoubleSpinBox" name="sbCurrentMult">
+                    <property name="maximum">
+                     <double>1000.000000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>1.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
                    <widget class="QLabel" name="label_5">
                     <property name="text">
                      <string>Multiplier</string>
@@ -539,15 +549,15 @@
                     </property>
                    </widget>
                   </item>
-                  <item>
-                   <widget class="QDoubleSpinBox" name="sbCurrentMult">
-                    <property name="maximum">
-                     <double>1000.000000000000000</double>
-                    </property>
-                    <property name="value">
-                     <double>1.000000000000000</double>
+                  <item row="1" column="1">
+                   <widget class="QLabel" name="label_29">
+                    <property name="text">
+                     <string>Type</string>
                     </property>
                    </widget>
+                  </item>
+                  <item row="1" column="2">
+                   <widget class="QComboBox" name="cbCurrentSensorType"/>
                   </item>
                  </layout>
                 </widget>
@@ -829,7 +839,7 @@
      <x>0</x>
      <y>0</y>
      <width>1267</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMSRC">

@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->cbReceiver->addItems({"Frsky Smartport", "Frsky D", "Spektrum XBUS", "Spektrum SRXL", "Flysky IBUS", "Futaba SBUS2", "Multiplex Sensor Bus", "Jeti Ex Bus", "Hitec"});
     ui->cbEscModel->addItems({"Platinum PRO v4 25/40/60", "Platinum PRO v4 80A", "Platinum PRO v4 100A", "Platinum PRO v4 120A", "Platinum PRO v4 130A-HV", "Platinum PRO v4 150A", "Platinum PRO v4 200A-HV",
                               "FlyFun 30/40A", "FlyFun 60A", "FlyFun 80A", "FlyFun 120A", "FlyFun 110A-HV", "FlyFun 130A-HV",  "FlyFun 160A-HV"});
+    ui->cbCurrentSensorType->addItems({"Hall effect", "Open loop hall effect"});
     ui->cbBarometerType->addItems({"BMP280", "MS5611"});
     ui->cbAltitudeFilter->addItems({"Low", "Medium", "High"});
     ui->cbAltitudeFilter->setCurrentIndex(2);
@@ -656,6 +657,15 @@ void MainWindow::generateConfig()
     configString += "\n#define VOLTAGE1_MULTIPLIER " + QString::number(sbVoltage1Mult->value());
     configString += "\n#define VOLTAGE2_MULTIPLIER " + QString::number(sbVoltage2Mult->value());
     configString += "\n#define CURRENT_MULTIPLIER " + QString::number(sbCurrentMult->value());
+
+    // Analog current sensor offset
+    configString += ""
+                    "\n"
+                    "\n/* Analog current raw offset: 0 hall sensor, 512 open loop hall sensor */";
+    if (ui->cbCurrentSensorType->currentText() == "Hall effect")
+        configString += "\n#define CURRENT_OFFSET 0";
+    if (ui->cbCurrentSensorType->currentText() == "Open loop hall effect")
+        configString += "\n#define CURRENT_OFFSET 512";
 
     // RPM Multipliers
     configString += ""

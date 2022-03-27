@@ -146,7 +146,7 @@ protected:
 #endif
 #if CONFIG_CURRENT
     static Xbus_Battery xbusBattery;
-    Current curr = Current(PIN_CURRENT, ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), CURRENT_MULTIPLIER);
+    Current curr = Current(PIN_CURRENT, ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), CURRENT_MULTIPLIER, CURRENT_OFFSET);
 #endif
 #if CONFIG_GPS
     static Xbus_Gps_Loc xbusGpsLoc;
