@@ -351,7 +351,7 @@ The following analog sensors are supported:
 
 - 2 x voltage divider. Calibrate voltage analog sensors with VOLTAGE1_MULTIPLIER and VOLTAGE2_MULTIPLIER in msrc_gui or in config.h. Or from opentx, but it is recommended in order to increase sensor resolution. Multiplier = (R1+R2)/ R2
 - 2 x temperature sensors (thermistors)
-- Current sensor. Calibrate current analog sensor from msrc_gui or config.h. Or from opentx, but it is recommended in order to increase sensor resolution. Set offset for I = 0. E.g. ACS758 offset is 0 and Amploc is Vs/2=512. Multiplier = 1000 / sensitivity(mV/A)
+- Current sensor. Calibrate current analog sensor from msrc_gui or config.h. Or from opentx, but it is recommended in order to increase sensor resolution. Set sensor type. Sensor type Coreless (IC) are soldered sensors like ACS758. Sensor type Core are sensors that wire passes through the hole, like Amploc sensors. Multiplier = 1000 / sensitivity(mV/A)
 - Airspeed sensor (MPXV7002)
 
 ### 4.4. I2C sensors

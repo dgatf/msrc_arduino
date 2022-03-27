@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->cbReceiver->addItems({"Frsky Smartport", "Frsky D", "Spektrum XBUS", "Spektrum SRXL", "Flysky IBUS", "Futaba SBUS2", "Multiplex Sensor Bus", "Jeti Ex Bus", "Hitec"});
     ui->cbEscModel->addItems({"Platinum PRO v4 25/40/60", "Platinum PRO v4 80A", "Platinum PRO v4 100A", "Platinum PRO v4 120A", "Platinum PRO v4 130A-HV", "Platinum PRO v4 150A", "Platinum PRO v4 200A-HV",
                               "FlyFun 30/40A", "FlyFun 60A", "FlyFun 80A", "FlyFun 120A", "FlyFun 110A-HV", "FlyFun 130A-HV",  "FlyFun 160A-HV"});
-    ui->cbCurrentSensorOffset->addItems({"0", "Vs/2"});
+    ui->cbCurrentSensorType->addItems({"Coreless (IC)", "Core"});
     ui->cbBarometerType->addItems({"BMP280", "MS5611"});
     ui->cbAltitudeFilter->addItems({"Low", "Medium", "High"});
     ui->cbAltitudeFilter->setCurrentIndex(2);
@@ -649,9 +649,9 @@ void MainWindow::generateConfig()
                     "\n"
                     "\n/* Analog current sensor */";
     configString += "\n#define CURRENT_MULTIPLIER " + QString::number(1000 / ui->sbCurrentSens->value());
-    if (ui->cbCurrentSensorOffset->currentText() == "0")
+    if (ui->cbCurrentSensorType->currentText() == "Coreless (IC)")
         configString += "\n#define CURRENT_OFFSET 0";
-    if (ui->cbCurrentSensorOffset->currentText() == "Vs/2")
+    if (ui->cbCurrentSensorType->currentText() == "Core")
         configString += "\n#define CURRENT_OFFSET 512";
 
     // RPM Multipliers

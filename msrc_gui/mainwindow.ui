@@ -38,7 +38,7 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-585</y>
+             <y>-740</y>
              <width>603</width>
              <height>1762</height>
             </rect>
@@ -529,7 +529,14 @@
                   <bool>false</bool>
                  </property>
                  <layout class="QGridLayout" name="gridLayout_9">
-                  <item row="0" column="1">
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="label_29">
+                    <property name="text">
+                     <string>Type</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
                    <widget class="QLabel" name="label_5">
                     <property name="text">
                      <string>Sensitivity (mV/A)</string>
@@ -539,17 +546,10 @@
                     </property>
                    </widget>
                   </item>
+                  <item row="0" column="1">
+                   <widget class="QComboBox" name="cbCurrentSensorType"/>
+                  </item>
                   <item row="1" column="1">
-                   <widget class="QLabel" name="label_29">
-                    <property name="text">
-                     <string>Offset</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="2">
-                   <widget class="QComboBox" name="cbCurrentSensorOffset"/>
-                  </item>
-                  <item row="0" column="2">
                    <widget class="QSpinBox" name="sbCurrentSens">
                     <property name="minimum">
                      <number>1</number>

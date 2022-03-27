@@ -35,7 +35,7 @@
 #define VOLTAGE2_MULTIPLIER 7.8
 /* Analog current sensor */
 #define CURRENT_MULTIPLIER 1 // current_multiplier = 1000 / sensitivity(mV/A)
-#define CURRENT_OFFSET 0 // offset for I = 0. current_raw_offset: E.g. ACS758 offset is 0 and Amploc is Vs/2=512
+#define CURRENT_OFFSET 0 // current_raw_offset for I = 0. For coreless sensors (IC) like ACS758, offset is 0. For cored sensors like Amploc, offset is 512 (Vs/2)
 /* RPM multipliers (optional, this may be done in transmitter*/
 #define RPM_PAIR_OF_POLES 1
 #define RPM_PINION_TEETH 1  // For helis
