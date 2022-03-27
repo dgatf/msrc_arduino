@@ -334,7 +334,7 @@ If current is available, battery consumption is calculated in mAh
 
 ### RPM multipliers
 
-Adjust RPMs in *config.h*:
+Adjust RPMs in *msrc_gui* or *config.h*:
 
 - Set the number of pair of poles of the motor, RPM_PAIR_OF_POLES
 - For helis also set the pinion and main gear teeth: RPM_PINION_TEETH, RPM_MAIN_TEETH
@@ -349,9 +349,9 @@ Serial GPS (NMEA protocol) is supported
 
 The following analog sensors are supported:
 
-- 2 x voltage divider. Calibrate voltage analog sensors with VOLTAGE1_MULTIPLIER and VOLTAGE2_MULTIPLIER in config.h. Or from opentx, but it is recommended by code to increase sensor resolution
+- 2 x voltage divider. Calibrate voltage analog sensors with VOLTAGE1_MULTIPLIER and VOLTAGE2_MULTIPLIER in msrc_gui or in config.h. Or from opentx, but it is recommended by code to increase sensor resolution. Multiplier = (R1+R2)/ R2
 - 2 x temperature sensors (thermistors)
-- Current sensor (Hall effect: ACS758). Calibrate current analog sensor with CURRENT_MULTIPLIER in config.h. Or from opentx, but it is recommended by code to increase sensor resolution
+- Current sensor. Calibrate current analog sensor from msrc_gui or config.h. Or from opentx, but it is recommended by code to increase sensor resolution. There are two types: hall effect (e.g. ACS758) or open loop hall effect (amploc). If it is open loop type, set the offset (CURRENT_OFFSET) to 512, otherwise, set to 0. Multiplier = 1000 / sensitivity(mV/A)
 - Airspeed sensor (MPXV7002)
 
 ### 4.4. I2C sensors
@@ -597,6 +597,8 @@ For 6S battery (or lower) and Pro Mini 3.3v:
 
  - R1 68k
  - R2 10k
+
+In this case ratio is 7.8
 
 If more than 6S change R values or you may burn the Arduino!
 

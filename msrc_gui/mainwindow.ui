@@ -38,7 +38,7 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-906</y>
+             <y>-662</y>
              <width>603</width>
              <height>1762</height>
             </rect>
@@ -315,6 +315,13 @@
                      <string>Parameters</string>
                     </property>
                     <layout class="QGridLayout" name="gridLayout_15">
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_10">
+                       <property name="text">
+                        <string>Voltage divisor</string>
+                       </property>
+                      </widget>
+                     </item>
                      <item row="5" column="1">
                       <widget class="QSpinBox" name="sbCurrentMax">
                        <property name="maximum">
@@ -325,37 +332,6 @@
                        </property>
                       </widget>
                      </item>
-                     <item row="4" column="1">
-                      <widget class="QDoubleSpinBox" name="sbCurrentMultiplier">
-                       <property name="maximum">
-                        <double>1000.000000000000000</double>
-                       </property>
-                       <property name="value">
-                        <double>1.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="0">
-                      <widget class="QLabel" name="label_10">
-                       <property name="text">
-                        <string>Voltage divisor</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="0">
-                      <widget class="QLabel" name="label_9">
-                       <property name="text">
-                        <string>Throttle current thresold</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="5" column="0">
-                      <widget class="QLabel" name="label_14">
-                       <property name="text">
-                        <string>Max current</string>
-                       </property>
-                      </widget>
-                     </item>
                      <item row="2" column="1">
                       <widget class="QSpinBox" name="sbCurrentThresold">
                        <property name="maximum">
@@ -363,13 +339,6 @@
                        </property>
                        <property name="value">
                         <number>25</number>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="4" column="0">
-                      <widget class="QLabel" name="label_11">
-                       <property name="text">
-                        <string>Current multiplier</string>
                        </property>
                       </widget>
                      </item>
@@ -390,6 +359,20 @@
                        </property>
                       </widget>
                      </item>
+                     <item row="2" column="0">
+                      <widget class="QLabel" name="label_9">
+                       <property name="text">
+                        <string>Throttle current thresold</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="0">
+                      <widget class="QLabel" name="label_11">
+                       <property name="text">
+                        <string>Current multiplier</string>
+                       </property>
+                      </widget>
+                     </item>
                      <item row="0" column="0">
                       <widget class="QLabel" name="label_15">
                        <property name="text">
@@ -399,6 +382,23 @@
                      </item>
                      <item row="0" column="1">
                       <widget class="QComboBox" name="cbEscModel"/>
+                     </item>
+                     <item row="5" column="0">
+                      <widget class="QLabel" name="label_14">
+                       <property name="text">
+                        <string>Max current</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="1">
+                      <widget class="QDoubleSpinBox" name="sbCurrentMultiplier">
+                       <property name="maximum">
+                        <double>1000.000000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>1.000000000000000</double>
+                       </property>
+                      </widget>
                      </item>
                     </layout>
                    </widget>
@@ -475,7 +475,7 @@
                      <double>1000.000000000000000</double>
                     </property>
                     <property name="value">
-                     <double>1.000000000000000</double>
+                     <double>7.800000000000000</double>
                     </property>
                    </widget>
                   </item>
@@ -510,7 +510,7 @@
                      <double>1000.000000000000000</double>
                     </property>
                     <property name="value">
-                     <double>1.000000000000000</double>
+                     <double>7.800000000000000</double>
                     </property>
                    </widget>
                   </item>
@@ -529,20 +529,10 @@
                   <bool>false</bool>
                  </property>
                  <layout class="QGridLayout" name="gridLayout_9">
-                  <item row="0" column="2">
-                   <widget class="QDoubleSpinBox" name="sbCurrentMult">
-                    <property name="maximum">
-                     <double>1000.000000000000000</double>
-                    </property>
-                    <property name="value">
-                     <double>1.000000000000000</double>
-                    </property>
-                   </widget>
-                  </item>
                   <item row="0" column="1">
                    <widget class="QLabel" name="label_5">
                     <property name="text">
-                     <string>Multiplier</string>
+                     <string>Sensitivity (mV/A)</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -558,6 +548,19 @@
                   </item>
                   <item row="1" column="2">
                    <widget class="QComboBox" name="cbCurrentSensorType"/>
+                  </item>
+                  <item row="0" column="2">
+                   <widget class="QSpinBox" name="sbCurrentSens">
+                    <property name="minimum">
+                     <number>1</number>
+                    </property>
+                    <property name="maximum">
+                     <number>1000</number>
+                    </property>
+                    <property name="value">
+                     <number>1</number>
+                    </property>
+                   </widget>
                   </item>
                  </layout>
                 </widget>

@@ -30,12 +30,12 @@
 #define CONFIG_AVERAGING_ELEMENTS_TEMP 1
 #define CONFIG_AVERAGING_ELEMENTS_VARIO 1
 #define CONFIG_AVERAGING_ELEMENTS_DEF 1
-/* Analog multipliers */
-#define VOLTAGE1_MULTIPLIER 1
-#define VOLTAGE2_MULTIPLIER 1
-#define CURRENT_MULTIPLIER 1
-/* Analog current raw offset: 0 hall sensor, 512 open loop hall sensor */
-#define CURRENT_OFFSET 0
+/* Analog voltage sensors */
+#define VOLTAGE1_MULTIPLIER 7.8  // 7.8 if using 68k and 10k as proposed in the docs
+#define VOLTAGE2_MULTIPLIER 7.8
+/* Analog current sensor */
+#define CURRENT_MULTIPLIER 1 // current_multiplier = 1000 / sensitivity(mV/A)
+#define CURRENT_OFFSET 0 // current_raw_offset: 0 hall sensor, 512 open loop hall sensor */
 /* RPM multipliers (optional, this may be done in transmitter*/
 #define RPM_PAIR_OF_POLES 1
 #define RPM_PINION_TEETH 1  // For helis

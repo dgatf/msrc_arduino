@@ -619,49 +619,36 @@ void MainWindow::generateConfig()
     configString += ""
                     "\n"
                     "\n/* Refresh rate in 0.1s (1 = 100ms) */";
-    QSpinBox *sbRpmRate = ui->gbRate->findChild<QSpinBox *>("sbRpmRate");
-    QSpinBox *sbVoltageRate = ui->gbRate->findChild<QSpinBox *>("sbVoltageRate");
-    QSpinBox *sbCurrentRate = ui->gbRate->findChild<QSpinBox *>("sbCurrentRate");
-    QSpinBox *sbTemperatureRate = ui->gbRate->findChild<QSpinBox *>("sbTemperatureRate");
-    QSpinBox *sbGpsRate = ui->gbRate->findChild<QSpinBox *>("sbGpsRate");
-    configString += "\n#define CONFIG_REFRESH_RPM " + QString::number(sbRpmRate->value() / 100);
-    configString += "\n#define CONFIG_REFRESH_VOLT " + QString::number(sbVoltageRate->value() / 100);
-    configString += "\n#define CONFIG_REFRESH_CURR " + QString::number(sbCurrentRate->value() / 100);
-    configString += "\n#define CONFIG_REFRESH_TEMP " + QString::number(sbTemperatureRate->value() / 100);
-    configString += "\n#define CONFIG_REFRESH_GPS " + QString::number(sbGpsRate->value() / 100);
+    configString += "\n#define CONFIG_REFRESH_RPM " + QString::number(ui->sbRpmRate->value() / 100);
+    configString += "\n#define CONFIG_REFRESH_VOLT " + QString::number(ui->sbVoltageRate->value() / 100);
+    configString += "\n#define CONFIG_REFRESH_CURR " + QString::number(ui->sbCurrentRate->value() / 100);
+    configString += "\n#define CONFIG_REFRESH_TEMP " + QString::number(ui->sbTemperatureRate->value() / 100);
+    configString += "\n#define CONFIG_REFRESH_GPS " + QString::number(ui->sbGpsRate->value() / 100);
     configString += "\n#define CONFIG_REFRESH_DEF 1";
 
     // Averaging
     configString += ""
                     "\n"
                     "\n/* Averaging elements (1 = no averaging) */";
-    QSpinBox *sbRpmAvg = ui->gbAverage->findChild<QSpinBox *>("sbRpmAvg");
-    QSpinBox *sbVoltageAvg = ui->gbAverage->findChild<QSpinBox *>("sbVoltageAvg");
-    QSpinBox *sbCurrentAvg = ui->gbAverage->findChild<QSpinBox *>("sbCurrentAvg");
-    QSpinBox *sbTemperatureAvg = ui->gbAverage->findChild<QSpinBox *>("sbTemperatureAvg");
-    QSpinBox *sbVarioAvg = ui->gbAverage->findChild<QSpinBox *>("sbVarioAvg");
-    configString += "\n#define CONFIG_AVERAGING_ELEMENTS_RPM " + QString::number(sbRpmAvg->value());
-    configString += "\n#define CONFIG_AVERAGING_ELEMENTS_VOLT " + QString::number(sbVoltageAvg->value());
-    configString += "\n#define CONFIG_AVERAGING_ELEMENTS_CURR " + QString::number(sbCurrentAvg->value());
-    configString += "\n#define CONFIG_AVERAGING_ELEMENTS_TEMP " + QString::number(sbTemperatureAvg->value());
-    configString += "\n#define CONFIG_AVERAGING_ELEMENTS_VARIO " + QString::number(sbVarioAvg->value());
+    configString += "\n#define CONFIG_AVERAGING_ELEMENTS_RPM " + QString::number(ui->sbRpmAvg->value());
+    configString += "\n#define CONFIG_AVERAGING_ELEMENTS_VOLT " + QString::number(ui->sbVoltageAvg->value());
+    configString += "\n#define CONFIG_AVERAGING_ELEMENTS_CURR " + QString::number(ui->sbCurrentAvg->value());
+    configString += "\n#define CONFIG_AVERAGING_ELEMENTS_TEMP " + QString::number(ui->sbTemperatureAvg->value());
+    configString += "\n#define CONFIG_AVERAGING_ELEMENTS_VARIO " + QString::number(ui->sbVarioAvg->value());
     configString += "\n#define CONFIG_AVERAGING_ELEMENTS_DEF 1";
 
-    // Analog Multipliers
+    // Analog voltage multipliers
     configString += ""
                     "\n"
-                    "\n/* Analog multipliers */";
-    QDoubleSpinBox *sbVoltage1Mult = ui->gbVoltage1->findChild<QDoubleSpinBox *>("sbVoltage1Mult");
-    QDoubleSpinBox *sbVoltage2Mult = ui->gbVoltage2->findChild<QDoubleSpinBox *>("sbVoltage2Mult");
-    QDoubleSpinBox *sbCurrentMult = ui->gbCurrent->findChild<QDoubleSpinBox *>("sbCurrentMult");
-    configString += "\n#define VOLTAGE1_MULTIPLIER " + QString::number(sbVoltage1Mult->value());
-    configString += "\n#define VOLTAGE2_MULTIPLIER " + QString::number(sbVoltage2Mult->value());
-    configString += "\n#define CURRENT_MULTIPLIER " + QString::number(sbCurrentMult->value());
+                    "\n/* Analog voltage sensors */";
+    configString += "\n#define VOLTAGE1_MULTIPLIER " + QString::number(ui->sbVoltage1Mult->value());
+    configString += "\n#define VOLTAGE2_MULTIPLIER " + QString::number(ui->sbVoltage2Mult->value());
 
-    // Analog current sensor offset
+    // Analog current sensor
     configString += ""
                     "\n"
-                    "\n/* Analog current raw offset: 0 hall sensor, 512 open loop hall sensor */";
+                    "\n/* Analog current sensor */";
+    configString += "\n#define CURRENT_MULTIPLIER " + QString::number(1000 / ui->sbCurrentSens->value());
     if (ui->cbCurrentSensorType->currentText() == "Hall effect")
         configString += "\n#define CURRENT_OFFSET 0";
     if (ui->cbCurrentSensorType->currentText() == "Open loop hall effect")
@@ -671,12 +658,9 @@ void MainWindow::generateConfig()
     configString += ""
                     "\n"
                     "\n/* RPM multipliers (optional, this may be done in transmitter*/";
-    QSpinBox *sbPairOfPoles = ui->gbRpmMultipliers->findChild<QSpinBox *>("sbPairOfPoles");
-    QSpinBox *sbMainTeeth = ui->gbRpmMultipliers->findChild<QSpinBox *>("sbMainTeeth");
-    QSpinBox *sbPinionTeeth = ui->gbRpmMultipliers->findChild<QSpinBox *>("sbPinionTeeth");
-    configString += "\n#define RPM_PAIR_OF_POLES " + QString::number(sbPairOfPoles->value());
-    configString += "\n#define RPM_PINION_TEETH " + QString::number(sbMainTeeth->value());
-    configString += "\n#define RPM_MAIN_TEETH " + QString::number(sbPinionTeeth->value());
+    configString += "\n#define RPM_PAIR_OF_POLES " + QString::number(ui->sbPairOfPoles->value());
+    configString += "\n#define RPM_PINION_TEETH " + QString::number(ui->sbMainTeeth->value());
+    configString += "\n#define RPM_MAIN_TEETH " + QString::number(ui->sbPinionTeeth->value());
 
     // Altitude filter
     configString += ""
@@ -722,20 +706,15 @@ void MainWindow::generateConfig()
     configString += ""
                     "\n"
                     "\n/* Add init delay for FlyFun ESC. Uncomment if the ESC doesn't arm */";
-    QCheckBox *cbInitDelay = ui->gbEscParameters->findChild<QCheckBox *>("cbInitDelay");
-    if (cbInitDelay->isChecked()) configString += "\n#define ESC_INIT_DELAY 10000";
+    if (ui->cbInitDelay->isChecked()) configString += "\n#define ESC_INIT_DELAY 10000";
     else configString += "\n//#define ESC_INIT_DELAY 10000";
     configString += ""
                     "\n"
                     "\n/* HW V4/V5 parameters */";
-    QSpinBox *sbCurrentThresold = ui->gbEscParameters->findChild<QSpinBox *>("sbCurrentThresold");
-    QDoubleSpinBox *sbVoltageDivisor = ui->gbEscParameters->findChild<QDoubleSpinBox *>("sbVoltageDivisor");
-    QDoubleSpinBox *sbCurrentMultiplier = ui->gbEscParameters->findChild<QDoubleSpinBox *>("sbCurrentMultiplier");
-    QSpinBox *sbCurrentMax = ui->gbEscParameters->findChild<QSpinBox *>("sbCurrentMax");
-    configString += "\n#define CURRENT_THRESHOLD " + QString::number(sbCurrentThresold->value());
-    configString += "\n#define ESCHW4_DIVISOR " + QString::number(sbVoltageDivisor->value());
-    configString += "\n#define ESCHW4_AMPGAIN " + QString::number(sbCurrentMultiplier->value());
-    configString += "\n#define ESCHW4_CURRENT_MAX " + QString::number(sbCurrentMax->value());
+    configString += "\n#define CURRENT_THRESHOLD " + QString::number(ui->sbCurrentThresold->value());
+    configString += "\n#define ESCHW4_DIVISOR " + QString::number(ui->sbVoltageDivisor->value());
+    configString += "\n#define ESCHW4_AMPGAIN " + QString::number(ui->sbCurrentMultiplier->value());
+    configString += "\n#define ESCHW4_CURRENT_MAX " + QString::number(ui->sbCurrentMax->value());
 
     configString += ""
                     "\n"
@@ -830,110 +809,103 @@ void MainWindow::on_btCopy_clicked()
 
 void MainWindow::on_cbEscModel_currentIndexChanged(const QString &arg1)
 {
-    //QSpinBox *sbCurrentThresold = ui->gbEsc->findChild<QSpinBox *>("sbCurrentThresold");
-    QDoubleSpinBox *sbVoltageDivisor = ui->gbEsc->findChild<QDoubleSpinBox *>("sbVoltageDivisor");
-    QDoubleSpinBox *sbCurrentMultiplier = ui->gbEsc->findChild<QDoubleSpinBox *>("sbCurrentMultiplier");
-    QSpinBox *sbCurrentMax = ui->gbEsc->findChild<QSpinBox *>("sbCurrentMax");
-    QCheckBox *cbInitDelay = ui->gbEsc->findChild<QCheckBox *>("cbInitDelay");
-
     if (arg1 == "Platinum PRO v4 25/40/60") {
-        sbVoltageDivisor->setValue(11);
-        sbCurrentMultiplier->setValue(0);
-        sbCurrentMax->setValue(0);
-        cbInitDelay->setChecked(false);
+        ui->sbVoltageDivisor->setValue(11);
+        ui->sbCurrentMultiplier->setValue(0);
+        ui->sbCurrentMax->setValue(0);
+        ui->cbInitDelay->setChecked(false);
     }
     else if (arg1 == "Platinum PRO v4 80A") {
-        sbVoltageDivisor->setValue(11);
-        sbCurrentMultiplier->setValue(8);
-        sbCurrentMax->setValue(100);
-        cbInitDelay->setChecked(false);
+        ui->sbVoltageDivisor->setValue(11);
+        ui->sbCurrentMultiplier->setValue(8);
+        ui->sbCurrentMax->setValue(100);
+        ui->cbInitDelay->setChecked(false);
     }
     else if (arg1 == "Platinum PRO v4 100A") {
-        sbVoltageDivisor->setValue(11);
-        sbCurrentMultiplier->setValue(9);
-        sbCurrentMax->setValue(120);
-        cbInitDelay->setChecked(false);
+        ui->sbVoltageDivisor->setValue(11);
+        ui->sbCurrentMultiplier->setValue(9);
+        ui->sbCurrentMax->setValue(120);
+        ui->cbInitDelay->setChecked(false);
     }
     else if (arg1 == "Platinum PRO v4 120A") {
-        sbVoltageDivisor->setValue(11);
-        sbCurrentMultiplier->setValue(10);
-        sbCurrentMax->setValue(140);
-        cbInitDelay->setChecked(false);
+        ui->sbVoltageDivisor->setValue(11);
+        ui->sbCurrentMultiplier->setValue(10);
+        ui->sbCurrentMax->setValue(140);
+        ui->cbInitDelay->setChecked(false);
     }
     else if (arg1 == "Platinum PRO v4 150A") {
-        sbVoltageDivisor->setValue(15.75);
-        sbCurrentMultiplier->setValue(10);
-        sbCurrentMax->setValue(170);
-        cbInitDelay->setChecked(false);
+        ui->sbVoltageDivisor->setValue(15.75);
+        ui->sbCurrentMultiplier->setValue(10);
+        ui->sbCurrentMax->setValue(170);
+        ui->cbInitDelay->setChecked(false);
     }
     else if (arg1 == "Platinum PRO v4 130A-HV") {
-        sbVoltageDivisor->setValue(21);
-        sbCurrentMultiplier->setValue(11.3);
-        sbCurrentMax->setValue(150);
-        cbInitDelay->setChecked(false);
+        ui->sbVoltageDivisor->setValue(21);
+        ui->sbCurrentMultiplier->setValue(11.3);
+        ui->sbCurrentMax->setValue(150);
+        ui->cbInitDelay->setChecked(false);
     }
     else if (arg1 == "Platinum PRO v4 200A-HV") {
-        sbVoltageDivisor->setValue(21);
-        sbCurrentMultiplier->setValue(16.9);
-        sbCurrentMax->setValue(220);
-        cbInitDelay->setChecked(false);
+        ui->sbVoltageDivisor->setValue(21);
+        ui->sbCurrentMultiplier->setValue(16.9);
+        ui->sbCurrentMax->setValue(220);
+        ui->cbInitDelay->setChecked(false);
     }
     else if (arg1 == "FlyFun 30/40A") {
-        sbVoltageDivisor->setValue(11);
-        sbCurrentMultiplier->setValue(0);
-        sbCurrentMax->setValue(0);
-        cbInitDelay->setChecked(true);
+        ui->sbVoltageDivisor->setValue(11);
+        ui->sbCurrentMultiplier->setValue(0);
+        ui->sbCurrentMax->setValue(0);
+        ui->cbInitDelay->setChecked(true);
     }
     else if (arg1 == "FlyFun 60A") {
-        sbVoltageDivisor->setValue(11);
-        sbCurrentMultiplier->setValue(6);
-        sbCurrentMax->setValue(80);
-        cbInitDelay->setChecked(true);
+        ui->sbVoltageDivisor->setValue(11);
+        ui->sbCurrentMultiplier->setValue(6);
+        ui->sbCurrentMax->setValue(80);
+        ui->cbInitDelay->setChecked(true);
     }
     else if (arg1 == "FlyFun 80A") {
-        sbVoltageDivisor->setValue(15.75);
-        sbCurrentMultiplier->setValue(12.4);
-        sbCurrentMax->setValue(100);
-        cbInitDelay->setChecked(true);
+        ui->sbVoltageDivisor->setValue(15.75);
+        ui->sbCurrentMultiplier->setValue(12.4);
+        ui->sbCurrentMax->setValue(100);
+        ui->cbInitDelay->setChecked(true);
     }
     else if (arg1 == "FlyFun 120A") {
-        sbVoltageDivisor->setValue(21);
-        sbCurrentMultiplier->setValue(15);
-        sbCurrentMax->setValue(140);
-        cbInitDelay->setChecked(true);
+        ui->sbVoltageDivisor->setValue(21);
+        ui->sbCurrentMultiplier->setValue(15);
+        ui->sbCurrentMax->setValue(140);
+        ui->cbInitDelay->setChecked(true);
     }
     else if (arg1 == "FlyFun 110A-HV") {
-        sbVoltageDivisor->setValue(21);
-        sbCurrentMultiplier->setValue(15);
-        sbCurrentMax->setValue(130);
-        cbInitDelay->setChecked(true);
+        ui->sbVoltageDivisor->setValue(21);
+        ui->sbCurrentMultiplier->setValue(15);
+        ui->sbCurrentMax->setValue(130);
+        ui->cbInitDelay->setChecked(true);
     }
     else if (arg1 == "FlyFun 130A-HV") {
-        sbVoltageDivisor->setValue(21);
-        sbCurrentMultiplier->setValue(15);
-        sbCurrentMax->setValue(150);
-        cbInitDelay->setChecked(true);
+        ui->sbVoltageDivisor->setValue(21);
+        ui->sbCurrentMultiplier->setValue(15);
+        ui->sbCurrentMax->setValue(150);
+        ui->cbInitDelay->setChecked(true);
     }
     else if (arg1 == "FlyFun 160A-HV") {
-        sbVoltageDivisor->setValue(21);
-        sbCurrentMultiplier->setValue(15);
-        sbCurrentMax->setValue(180);
-        cbInitDelay->setChecked(true);
+        ui->sbVoltageDivisor->setValue(21);
+        ui->sbCurrentMultiplier->setValue(15);
+        ui->sbCurrentMax->setValue(180);
+        ui->cbInitDelay->setChecked(true);
     }
 }
 
 void MainWindow::on_cbBarometerType_currentIndexChanged(const QString &arg1)
 {
-    QLabel *lbAltitudeFilter = ui->gbAltitude->findChild<QLabel *>("lbAltitudeFilter");
     if (arg1 == "BMP280")
     {
         ui->cbAltitudeFilter->setVisible(true);
-        lbAltitudeFilter->setVisible(true);
+        ui->lbAltitudeFilter->setVisible(true);
     }
     else
     {
         ui->cbAltitudeFilter->setVisible(false);
-        lbAltitudeFilter->setVisible(false);
+        ui->lbAltitudeFilter->setVisible(false);
     }
 }
 
