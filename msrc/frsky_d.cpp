@@ -334,7 +334,7 @@ void Frsky::setConfig(Config &config)
     {
         Sensord *sensorP;
         Current *current;
-        current = new Current(PIN_CURRENT, ALPHA(config.average.curr), CURRENT_MULTIPLIER, CURRENT_OFFSET);
+        current = new Current(PIN_CURRENT, ALPHA(config.average.curr), CURRENT_MULTIPLIER, CURRENT_OFFSET, CURRENT_AUTO_OFFSET);
         sensorP = new Sensord(CURRENT_ID, current->valueP(), config.refresh.curr, current);
         addSensor(sensorP);
         sensorP = new Sensord(FUEL_ID, current->consumptionP(), config.refresh.curr, current);

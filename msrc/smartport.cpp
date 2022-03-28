@@ -533,7 +533,7 @@ void Smartport::setConfig(Config &config)
     {
         Sensor *sensorP;
         Current *current;
-        current = new Current(PIN_CURRENT, ALPHA(config.average.curr), CURRENT_MULTIPLIER, CURRENT_OFFSET);
+        current = new Current(PIN_CURRENT, ALPHA(config.average.curr), CURRENT_MULTIPLIER, CURRENT_OFFSET, CURRENT_AUTO_OFFSET);
         sensorP = new Sensor(CURR_FIRST_ID, current->valueP(), config.refresh.curr, current);
         addSensor(sensorP);
         sensorP = new SensorDouble(ESC_RPM_CONS_FIRST_ID + 1, NULL, current->consumptionP(), config.refresh.curr, current);

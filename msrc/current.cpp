@@ -1,13 +1,22 @@
 #include "current.h"
 
-Current::Current(uint8_t pin, uint8_t alpha, float multiplier, uint16_t offset) : Voltage(pin, alpha, multiplier), offset_(offset) {}
+Current::Current(uint8_t pin, uint8_t alpha, float multiplier, float offset, bool autoOffset) : Voltage(pin, alpha, multiplier), offset_(offset), autoOffset_(autoOffset) {}
 
 Current::Current(uint8_t pin, uint8_t alpha) : Voltage(pin, alpha) {}
 
 void Current::update()
 {
-    value_ = calcAverage(alpha_ / 100.0F, value_, readVoltage(offset_));
-    consumption_ = calcConsumption(value_);
+    if (autoOffset_)
+    {
+        if (millis() > 5000)
+        {
+            offset_ = value_;
+            autoOffset_ = false;
+        }
+    }
+    value_ = abs(calcAverage(alpha_ / 100.0F, value_, readVoltage()) - offset_);
+    if (!autoOffset_)
+        consumption_ = calcConsumption(value_);
 #ifdef SIM_SENSORS
     value_ = 12.34;
     consumption_ = 12.34;

@@ -19,7 +19,7 @@ protected:
     float value_ = 0;
     uint8_t alpha_;
     float multiplier_ = 1;
-    float readVoltage(uint16_t offset = 0);
+    float readVoltage();
 
 public:
     Voltage(uint8_t pin, uint8_t alpha, float multiplier);

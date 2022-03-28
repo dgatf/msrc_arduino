@@ -35,7 +35,13 @@
 #define VOLTAGE2_MULTIPLIER 7.8
 /* Analog current sensor */
 #define CURRENT_MULTIPLIER 1 // current_multiplier = 1000 / sensitivity(mV/A)
-#define CURRENT_OFFSET 0 // current_raw_offset for I = 0. For coreless sensors (IC) like ACS758, offset is 0. For cored sensors like Amploc, offset is 512 (Vs/2)
+/* Zero current output voltage offset or quiescent voltage (voltage offset when I = 0, Viout)
+ - All hall effect core sensors (Amploc) are bidirectional. Viout=Vs/2
+ - Hall effect coreless sensors (IC) (ACS758) can be bidirectional or directional. Recommended to use directional for higher sensitivity. Viout defined in datasheet
+ - If CURRENT_AUTO_OFFSET is true, then after 5 seconds, voltage read is set as offset. It is recommended to use auto offset
+*/
+#define CURRENT_OFFSET 0
+#define CURRENT_AUTO_OFFSET true
 /* RPM multipliers (optional, this may be done in transmitter*/
 #define RPM_PAIR_OF_POLES 1
 #define RPM_PINION_TEETH 1  // For helis

@@ -38,9 +38,9 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-740</y>
+             <y>-654</y>
              <width>603</width>
-             <height>1762</height>
+             <height>1759</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout">
@@ -529,6 +529,13 @@
                   <bool>false</bool>
                  </property>
                  <layout class="QGridLayout" name="gridLayout_9">
+                  <item row="3" column="0">
+                   <widget class="QLabel" name="lbQuiescentVoltage">
+                    <property name="text">
+                     <string>Zero current output voltage, Viout (V)</string>
+                    </property>
+                   </widget>
+                  </item>
                   <item row="0" column="0">
                    <widget class="QLabel" name="label_29">
                     <property name="text">
@@ -536,18 +543,32 @@
                     </property>
                    </widget>
                   </item>
-                  <item row="1" column="0">
-                   <widget class="QLabel" name="label_5">
-                    <property name="text">
-                     <string>Sensitivity (mV/A)</string>
+                  <item row="3" column="1">
+                   <widget class="QDoubleSpinBox" name="sbQuiescentVoltage">
+                    <property name="decimals">
+                     <number>1</number>
                     </property>
-                    <property name="alignment">
-                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QCheckBox" name="cbCurrentAutoOffset">
+                    <property name="text">
+                     <string>Auto-offset</string>
+                    </property>
+                    <property name="checked">
+                     <bool>false</bool>
                     </property>
                    </widget>
                   </item>
                   <item row="0" column="1">
                    <widget class="QComboBox" name="cbCurrentSensorType"/>
+                  </item>
+                  <item row="4" column="0">
+                   <widget class="QLabel" name="lbAnalogCurrentMultiplier">
+                    <property name="text">
+                     <string>Multiplier</string>
+                    </property>
+                   </widget>
                   </item>
                   <item row="1" column="1">
                    <widget class="QSpinBox" name="sbCurrentSens">
@@ -561,6 +582,19 @@
                      <number>1</number>
                     </property>
                    </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="lbCurrentSens">
+                    <property name="text">
+                     <string>Sensitivity (mV/A)</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="4" column="1">
+                   <widget class="QDoubleSpinBox" name="sbAnalogCurrentMultiplier"/>
                   </item>
                  </layout>
                 </widget>
@@ -842,7 +876,7 @@
      <x>0</x>
      <y>0</y>
      <width>1267</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMSRC">

@@ -27,7 +27,6 @@ private:
 private slots:
     void generateConfig();
     void exitApp();
-
     void on_cbReceiver_currentIndexChanged(const QString &arg1);
     void on_cbEsc_currentIndexChanged(const QString &arg1);
     void on_gbEsc_toggled(bool arg1);
@@ -47,7 +46,8 @@ private slots:
     void on_cbReceiver_currentTextChanged(const QString &arg1);
     void on_btCircuit_clicked();
     void resizeEvent(QResizeEvent* event);
-
     void on_gbGps_toggled(bool arg1);
+    void on_cbCurrentAutoOffset_toggled(bool checked);
+    void on_cbCurrentSensorType_currentTextChanged(const QString &arg1);
 };
 #endif // MAINWINDOW_H

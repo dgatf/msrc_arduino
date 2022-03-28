@@ -4,9 +4,9 @@ Voltage::Voltage(uint8_t pin, uint8_t alpha, float multiplier) : pin_(pin), alph
 
 Voltage::Voltage(uint8_t pin, uint8_t alpha) : pin_(pin), alpha_(alpha) {}
 
-float Voltage::readVoltage(uint16_t offset)
+float Voltage::readVoltage()
 {
-    return abs(analogRead(pin_) - offset) * BOARD_VCC / ADC_RESOLUTION * multiplier_;
+    return analogRead(pin_) * BOARD_VCC / ADC_RESOLUTION * multiplier_;
 }
 
 void Voltage::update()
