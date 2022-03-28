@@ -14,13 +14,14 @@ void Current::update()
             autoOffset_ = false;
         }
     }
-    value_ = abs(calcAverage(alpha_ / 100.0F, value_, readVoltage()) - offset_);
-    if (!autoOffset_)
-        consumption_ = calcConsumption(value_);
+    value_ = calcAverage(alpha_ / 100.0F, value_, readVoltage());
 #ifdef SIM_SENSORS
     value_ = 12.34;
     consumption_ = 12.34;
 #endif
+    value_ = abs(value_ - offset_);
+    if (!autoOffset_)
+        consumption_ += calcConsumption(value_);
 }
 
 float *Current::consumptionP()

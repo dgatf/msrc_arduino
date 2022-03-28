@@ -25,6 +25,8 @@ float Consumption::calcConsumption(float current, uint16_t currentMax)
     }
     uint16_t now = millis();
     uint16_t interval = (uint16_t)(now - prevMs);
+    if (interval < 5)
+        return 0;
     float mAh = current * interval / 3600.0;
     prevMs = now;
     if (interval > 2000 || (currentMax && (mAh > currentMax * (float)interval / 3600)))
