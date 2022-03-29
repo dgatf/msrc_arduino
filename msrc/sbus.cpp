@@ -172,8 +172,7 @@ void Sbus::begin()
     //SMARTPORT_FRSKY_SBUS_SERIAL.begin(100000, SERIAL__8E2);
     SMARTPORT_FRSKY_SBUS_SERIAL.setTimeout(SBUS_SERIAL_TIMEOUT);
     pinMode(LED_BUILTIN, OUTPUT);
-    Config config = {CONFIG_AIRSPEED, CONFIG_GPS, CONFIG_VOLTAGE1, CONFIG_VOLTAGE2, CONFIG_CURRENT, CONFIG_NTC1, CONFIG_NTC2, CONFIG_PWMOUT, {CONFIG_REFRESH_RPM, CONFIG_REFRESH_VOLT, CONFIG_REFRESH_CURR, CONFIG_REFRESH_TEMP}, {CONFIG_AVERAGING_ELEMENTS_RPM, CONFIG_AVERAGING_ELEMENTS_VOLT, CONFIG_AVERAGING_ELEMENTS_CURR, CONFIG_AVERAGING_ELEMENTS_TEMP}, CONFIG_ESC_PROTOCOL, CONFIG_I2C1_TYPE, CONFIG_I2C1_ADDRESS, 0, 0, SENSOR_ID};
-    setConfig(config);
+    setConfig();
 
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega328PB__) || defined(ARDUINO_AVR_A_STAR_328PB) || defined(__AVR_ATmega2560__)
     // TIMER 2 - shared with softserial
@@ -338,14 +337,14 @@ void Sbus::update()
         cont = 0;
 }
 
-void Sbus::setConfig(Config &config)
+void Sbus::setConfig()
 {
     deleteSensors();
     if (ESC_PROTOCOL == PROTOCOL_PWM)
     {
         SensorSbus *sensorSbusP;
         EscPWM *esc;
-        esc = new EscPWM(ALPHA(config.average.rpm));
+        esc = new EscPWM(ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM));
         esc->begin();
         sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP(), esc);
         addSensor(SBUS_SLOT_RPM, sensorSbusP);
@@ -354,7 +353,7 @@ void Sbus::setConfig(Config &config)
     {
         SensorSbus *sensorSbusP;
         EscHW3 *esc;
-        esc = new EscHW3(ESC_SERIAL, ALPHA(config.average.rpm));
+        esc = new EscHW3(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM));
         esc->begin();
         sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP(), esc);
         addSensor(SBUS_SLOT_RPM, sensorSbusP);
@@ -363,7 +362,7 @@ void Sbus::setConfig(Config &config)
     {
         SensorSbus *sensorSbusP;
         EscHW4 *esc;
-        esc = new EscHW4(ESC_SERIAL, ALPHA(config.average.rpm), ALPHA(config.average.volt), ALPHA(config.average.curr), ALPHA(config.average.temp), 0);
+        esc = new EscHW4(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP), 0);
         esc->begin();
         PwmOut pwmOut;
         pwmOut.setRpmP(esc->rpmP());
@@ -386,7 +385,7 @@ void Sbus::setConfig(Config &config)
     {
         SensorSbus *sensorSbusP;
         EscCastle *esc;
-        esc = new EscCastle(ALPHA(config.average.rpm), ALPHA(config.average.volt), ALPHA(config.average.curr), ALPHA(config.average.temp));
+        esc = new EscCastle(ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
         sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP(), esc);
         addSensor(SBUS_SLOT_RPM, sensorSbusP);
@@ -411,7 +410,7 @@ void Sbus::setConfig(Config &config)
     {
         SensorSbus *sensorSbusP;
         EscKontronik *esc;
-        esc = new EscKontronik(ESC_SERIAL, ALPHA(config.average.rpm), ALPHA(config.average.volt), ALPHA(config.average.curr), ALPHA(config.average.temp));
+        esc = new EscKontronik(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
         //PwmOut pwmOut;
         //pwmOut.setRpmP(esc->rpmP());
@@ -438,7 +437,7 @@ void Sbus::setConfig(Config &config)
     {
         SensorSbus *sensorSbusP;
         EscApdF *esc;
-        esc = new EscApdF(ESC_SERIAL, ALPHA(config.average.rpm), ALPHA(config.average.volt), ALPHA(config.average.curr), ALPHA(config.average.temp));
+        esc = new EscApdF(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
         //PwmOut pwmOut;
         //pwmOut.setRpmP(esc->rpmP());
@@ -459,7 +458,7 @@ void Sbus::setConfig(Config &config)
     {
         SensorSbus *sensorSbusP;
         EscApdHV *esc;
-        esc = new EscApdHV(ESC_SERIAL, ALPHA(config.average.rpm), ALPHA(config.average.volt), ALPHA(config.average.curr), ALPHA(config.average.temp));
+        esc = new EscApdHV(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
         //PwmOut pwmOut;
         //pwmOut.setRpmP(esc->rpmP());
@@ -476,7 +475,7 @@ void Sbus::setConfig(Config &config)
         //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->cellVoltageP(), esc);
         //addSensor(12, sensorSbusP);
     }
-    if (config.gps == true)
+    if (CONFIG_GPS)
     {
         SensorSbus *sensorSbusP;
         Bn220 *gps;
@@ -499,45 +498,45 @@ void Sbus::setConfig(Config &config)
         sensorSbusP = new SensorSbus(FASST_GPS_LONGITUDE2, gps->lonP(), gps);
         addSensor(SBUS_SLOT_GPS_LON2, sensorSbusP);
     }
-    if (config.airspeed == true)
+    if (CONFIG_AIRSPEED)
     {
         SensorSbus *sensorSbusP;
         Pressure *pressure;
-        pressure = new Pressure(PIN_PRESSURE, ALPHA(config.average.volt));
+        pressure = new Pressure(PIN_PRESSURE, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT));
         sensorSbusP = new SensorSbus(FASST_AIR_SPEED, pressure->valueP(), pressure);
         addSensor(SBUS_SLOT_AIR_SPEED, sensorSbusP);
     }
-    if (config.voltage1 == true)
+    if (CONFIG_VOLTAGE1)
     {
         SensorSbus *sensorSbusP;
         Voltage *voltage;
-        voltage = new Voltage(PIN_VOLTAGE1, ALPHA(config.average.volt), VOLTAGE1_MULTIPLIER);
+        voltage = new Voltage(PIN_VOLTAGE1, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), VOLTAGE1_MULTIPLIER);
         sensorSbusP = new SensorSbus(FASST_VOLT_V1, voltage->valueP(), voltage);
         addSensor(SBUS_SLOT_VOLT_V1, sensorSbusP);
-        if (config.voltage2 == false)
+        if (CONFIG_VOLTAGE2 == false)
         {
             sensorSbusP = new SensorSbus(FASST_VOLT_V2, NULL, voltage);
             addSensor(SBUS_SLOT_VOLT_V2, sensorSbusP);
         }
     }
-    if (config.voltage2 == true)
+    if (CONFIG_VOLTAGE2)
     {
         SensorSbus *sensorSbusP;
         Voltage *voltage;
-        voltage = new Voltage(PIN_VOLTAGE2, ALPHA(config.average.volt), VOLTAGE2_MULTIPLIER);
+        voltage = new Voltage(PIN_VOLTAGE2, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), VOLTAGE2_MULTIPLIER);
         sensorSbusP = new SensorSbus(FASST_VOLT_V2, voltage->valueP(), voltage);
         addSensor(SBUS_SLOT_VOLT_V2, sensorSbusP);
-        if (config.voltage1 == false)
+        if (CONFIG_VOLTAGE1 == false)
         {
             sensorSbusP = new SensorSbus(FASST_VOLT_V1, NULL, voltage);
             addSensor(SBUS_SLOT_VOLT_V1, sensorSbusP);
         }
     }
-    if (config.current == true)
+    if (CONFIG_CURRENT)
     {
         SensorSbus *sensorSbusP;
         Current *current;
-        current = new Current(PIN_CURRENT, ALPHA(config.average.curr), CURRENT_MULTIPLIER, CURRENT_OFFSET, CURRENT_AUTO_OFFSET);
+        current = new Current(PIN_CURRENT, ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), CURRENT_MULTIPLIER, CURRENT_OFFSET, CURRENT_AUTO_OFFSET);
         sensorSbusP = new SensorSbus(FASST_POWER_CURR, current->valueP(), current);
         addSensor(SBUS_SLOT_POWER_CURR2, sensorSbusP);
         sensorSbusP = new SensorSbus(FASST_POWER_CONS, current->consumptionP(), current);
@@ -545,38 +544,38 @@ void Sbus::setConfig(Config &config)
         sensorSbusP = new SensorSbus(FASST_POWER_VOLT, NULL, current);
         addSensor(SBUS_SLOT_POWER_VOLT2, sensorSbusP);
     }
-    if (config.ntc1 == true)
+    if (CONFIG_NTC1)
     {
         SensorSbus *sensorSbusP;
         Ntc *ntc;
-        ntc = new Ntc(PIN_NTC1, ALPHA(config.average.temp));
+        ntc = new Ntc(PIN_NTC1, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         sensorSbusP = new SensorSbus(FASST_TEMP, ntc->valueP(), ntc);
         addSensor(SBUS_SLOT_TEMP1, sensorSbusP);
     }
-    if (config.ntc2 == true)
+    if (CONFIG_NTC2)
     {
         SensorSbus *sensorSbusP;
         Ntc *ntc;
-        ntc = new Ntc(PIN_NTC2, ALPHA(config.average.temp));
+        ntc = new Ntc(PIN_NTC2, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         sensorSbusP = new SensorSbus(FASST_TEMP, ntc->valueP(), ntc);
         addSensor(SBUS_SLOT_TEMP2, sensorSbusP);
     }
-    if (config.deviceI2C1Type == I2C_BMP280)
+    if (CONFIG_I2C1_TYPE == I2C_BMP280)
     {
         SensorSbus *sensorSbusP;
         Bmp280 *bmp;
-        bmp = new Bmp280(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
+        bmp = new Bmp280(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         sensorSbusP = new SensorSbus(FASST_VARIO_SPEED, bmp->varioP(), bmp);
         addSensor(SBUS_SLOT_VARIO_SPEED, sensorSbusP);
         sensorSbusP = new SensorSbus(FASST_VARIO_ALT, bmp->altitudeP(), bmp);
         addSensor(SBUS_SLOT_VARIO_ALT, sensorSbusP);
     }
-    if (config.deviceI2C1Type == I2C_MS5611)
+    if (CONFIG_I2C1_TYPE == I2C_MS5611)
     {
         SensorSbus *sensorSbusP;
         MS5611 *bmp;
-        bmp = new MS5611(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
+        bmp = new MS5611(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         sensorSbusP = new SensorSbus(FASST_VARIO_SPEED, bmp->varioP(), bmp);
         addSensor(SBUS_SLOT_VARIO_SPEED, sensorSbusP);

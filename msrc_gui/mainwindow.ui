@@ -38,7 +38,7 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-173</y>
+             <y>-169</y>
              <width>603</width>
              <height>1892</height>
             </rect>
@@ -468,6 +468,9 @@
                  <layout class="QHBoxLayout" name="horizontalLayout_9">
                   <item>
                    <widget class="QLabel" name="label_3">
+                    <property name="toolTip">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(R1+R2)/R2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
                     <property name="text">
                      <string>Multiplier</string>
                     </property>
@@ -503,6 +506,9 @@
                  <layout class="QHBoxLayout" name="horizontalLayout_3">
                   <item>
                    <widget class="QLabel" name="label_4">
+                    <property name="toolTip">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(R1+R2)/R2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
                     <property name="text">
                      <string>Multiplier</string>
                     </property>

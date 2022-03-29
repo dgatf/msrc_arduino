@@ -48,7 +48,7 @@ public:
     void addSensor(Sensord *newSensorP);
     void deleteSensors();
     void update();
-    void setConfig(Config &config);
+    void setConfig();
 };
 
 #endif

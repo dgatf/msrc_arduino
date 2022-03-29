@@ -59,7 +59,7 @@ public:
     void begin();
     void addSensor(SensorIbus *newSensorIbusP);
     void update();
-    void setConfig(Config &config);
+    void setConfig();
 };
 
 #endif

@@ -43,7 +43,7 @@ public:
     void addSensor(SensorMultiplex *newSensorMultiplexP);
     void deleteSensors();
     void update();
-    void setConfig(Config &config);
+    void setConfig();
 };
 
 #endif

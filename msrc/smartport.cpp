@@ -202,14 +202,14 @@ uint8_t Smartport::read(uint8_t &sensorId, uint8_t &frameId, uint16_t &dataId, u
         uint8_t data[15];
         serial_.readBytes(data, lenght);
 #ifdef DEBUG_PACKET
-            DEBUG_PRINT("< ");
-            for (uint8_t i = 0; i < lenght; i++)
-            {
-                DEBUG_PRINT_HEX(data[i]);
-                DEBUG_PRINT(" ");
-            }
-            DEBUG_PRINTLN();
-#endif 
+        DEBUG_PRINT("< ");
+        for (uint8_t i = 0; i < lenght; i++)
+        {
+            DEBUG_PRINT_HEX(data[i]);
+            DEBUG_PRINT(" ");
+        }
+        DEBUG_PRINTLN();
+#endif
         if (lenght == 2 && data[0] == 0x7E && data[1] == sensorId_)
         {
             packet = RECEIVED_POLL;
@@ -316,11 +316,11 @@ void Smartport::update()
         {
             // loop sensors until correct timestamp or 1 sensors cycle
             Sensor *initialSensorP = spSensorP;
-            while ( ((uint16_t)(millis() - spSensorP->timestamp()) <= (uint16_t)spSensorP->refresh() * 100) && spSensorP->nextP != initialSensorP )
+            while (((uint16_t)(millis() - spSensorP->timestamp()) <= (uint16_t)spSensorP->refresh() * 100) && spSensorP->nextP != initialSensorP)
             {
                 spSensorP = spSensorP->nextP;
             }
-            if ( (uint16_t)(millis() - spSensorP->timestamp()) >= (uint16_t)spSensorP->refresh() * 100 )
+            if ((uint16_t)(millis() - spSensorP->timestamp()) >= (uint16_t)spSensorP->refresh() * 100)
             {
                 sendData(spSensorP->frameId(), spSensorP->dataId(), spSensorP->valueFormatted());
 #ifdef DEBUG
@@ -482,7 +482,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new Sensor(VFAS_FIRST_ID, esc->cellVoltageP(), config.refresh.volt, esc);
         addSensor(sensorP);
     }
-    if (config.gps == true)
+    if (config.gps)
     {
         Sensor *sensorP;
         Bn220 *gps;
@@ -505,7 +505,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new Sensor(DIY_FIRST_ID + 4, gps->distP(), 5, gps);
         addSensor(sensorP);
     }
-    if (config.airspeed == true)
+    if (config.airspeed)
     {
         Sensor *sensorP;
         Pressure *pressure;
@@ -513,7 +513,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new Sensor(AIR_SPEED_FIRST_ID, pressure->valueP(), config.refresh.volt, pressure);
         addSensor(sensorP);
     }
-    if (config.voltage1 == true)
+    if (config.voltage1)
     {
         Sensor *sensorP;
         Voltage *voltage;
@@ -521,7 +521,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new Sensor(A3_FIRST_ID, voltage->valueP(), config.refresh.volt, voltage);
         addSensor(sensorP);
     }
-    if (config.voltage2 == true)
+    if (config.voltage2)
     {
         Sensor *sensorP;
         Voltage *voltage;
@@ -529,7 +529,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new Sensor(A4_FIRST_ID, voltage->valueP(), config.refresh.volt, voltage);
         addSensor(sensorP);
     }
-    if (config.current == true)
+    if (config.current)
     {
         Sensor *sensorP;
         Current *current;
@@ -539,7 +539,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new SensorDouble(ESC_RPM_CONS_FIRST_ID + 1, NULL, current->consumptionP(), config.refresh.curr, current);
         addSensor(sensorP);
     }
-    if (config.ntc1 == true)
+    if (config.ntc1)
     {
         Sensor *sensorP;
         Ntc *ntc;
@@ -547,7 +547,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new Sensor(T1_FIRST_ID, ntc->valueP(), config.refresh.temp, ntc);
         addSensor(sensorP);
     }
-    if (config.ntc2 == true)
+    if (config.ntc2)
     {
         Sensor *sensorP;
         Ntc *ntc;
@@ -568,7 +568,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new Sensor(VARIO_FIRST_ID, bmp->varioP(), 5, bmp);
         addSensor(sensorP);
     }
-        if (config.deviceI2C1Type == I2C_MS5611)
+    if (config.deviceI2C1Type == I2C_MS5611)
     {
         Sensor *sensorP;
         MS5611 *bmp;

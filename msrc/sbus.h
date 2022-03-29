@@ -120,7 +120,7 @@ public:
     void addSensor(uint8_t slot, SensorSbus *newSensorSbusP);
     void deleteSensors();
     void update();
-    void setConfig(Config &config);
+    void setConfig();
 };
 
 #endif

@@ -13,8 +13,7 @@ void Frsky::begin()
 {
     serial_.begin(9600, SERIAL__8N1_RXINV_TXINV);
     pinMode(LED_BUILTIN, OUTPUT);
-    Config config = {CONFIG_AIRSPEED, CONFIG_GPS, CONFIG_VOLTAGE1, CONFIG_VOLTAGE2, CONFIG_CURRENT, CONFIG_NTC1, CONFIG_NTC2, CONFIG_PWMOUT, {CONFIG_REFRESH_RPM, CONFIG_REFRESH_VOLT, CONFIG_REFRESH_CURR, CONFIG_REFRESH_TEMP}, {CONFIG_AVERAGING_ELEMENTS_RPM, CONFIG_AVERAGING_ELEMENTS_VOLT, CONFIG_AVERAGING_ELEMENTS_CURR, CONFIG_AVERAGING_ELEMENTS_TEMP}, CONFIG_ESC_PROTOCOL, CONFIG_I2C1_TYPE, CONFIG_I2C1_ADDRESS, 0, 0, SENSOR_ID};
-    setConfig(config);
+    setConfig();
 }
 
 void Frsky::sendByte(uint8_t c, bool header)
@@ -127,141 +126,141 @@ void Frsky::update()
     }
 }
 
-void Frsky::setConfig(Config &config)
+void Frsky::setConfig()
 {
     deleteSensors();
     if (ESC_PROTOCOL == PROTOCOL_PWM)
     {
         Sensord *sensorP;
         EscPWM *esc;
-        esc = new EscPWM(ALPHA(config.average.rpm));
+        esc = new EscPWM(ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM));
         esc->begin();
-        sensorP = new Sensord(RPM_ID, esc->rpmP(), config.refresh.rpm, esc);
+        sensorP = new Sensord(RPM_ID, esc->rpmP(), CONFIG_REFRESH_RPM, esc);
         addSensor(sensorP);
     }
     if (ESC_PROTOCOL == PROTOCOL_HW_V3)
     {
         Sensord *sensorP;
         EscHW3 *esc;
-        esc = new EscHW3(ESC_SERIAL, ALPHA(config.average.rpm));
+        esc = new EscHW3(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM));
         esc->begin();
-        sensorP = new Sensord(RPM_ID, esc->rpmP(), config.refresh.rpm, esc);
+        sensorP = new Sensord(RPM_ID, esc->rpmP(), CONFIG_REFRESH_RPM, esc);
         addSensor(sensorP);
     }
     if (ESC_PROTOCOL == PROTOCOL_HW_V4)
     {
         Sensord *sensorP;
         EscHW4 *esc;
-        esc = new EscHW4(ESC_SERIAL, ALPHA(config.average.rpm), ALPHA(config.average.volt), ALPHA(config.average.curr), ALPHA(config.average.temp), 0);
+        esc = new EscHW4(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP), 0);
         esc->begin();
         PwmOut pwmOut;
         pwmOut.setRpmP(esc->rpmP());
-        sensorP = new Sensord(RPM_ID, esc->rpmP(), config.refresh.rpm, esc);
+        sensorP = new Sensord(RPM_ID, esc->rpmP(), CONFIG_REFRESH_RPM, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(VOLTS_BP_ID, esc->voltageP(), config.refresh.volt, esc);
+        sensorP = new Sensord(VOLTS_BP_ID, esc->voltageP(), CONFIG_REFRESH_VOLT, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(VOLTS_AP_ID, esc->voltageP(), config.refresh.volt, esc);
+        sensorP = new Sensord(VOLTS_AP_ID, esc->voltageP(), CONFIG_REFRESH_VOLT, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(CURRENT_ID, esc->currentP(), config.refresh.curr, esc);
+        sensorP = new Sensord(CURRENT_ID, esc->currentP(), CONFIG_REFRESH_CURR, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(TEMP1_ID, esc->tempFetP(), config.refresh.temp, esc);
+        sensorP = new Sensord(TEMP1_ID, esc->tempFetP(), CONFIG_REFRESH_TEMP, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(TEMP2_ID, esc->tempBecP(), config.refresh.temp, esc);
+        sensorP = new Sensord(TEMP2_ID, esc->tempBecP(), CONFIG_REFRESH_TEMP, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(VFAS_ID, esc->cellVoltageP(), config.refresh.volt, esc);
+        sensorP = new Sensord(VFAS_ID, esc->cellVoltageP(), CONFIG_REFRESH_VOLT, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(FUEL_ID, esc->consumptionP(), config.refresh.curr, esc);
+        sensorP = new Sensord(FUEL_ID, esc->consumptionP(), CONFIG_REFRESH_CURR, esc);
         addSensor(sensorP);
     }
     if (ESC_PROTOCOL == PROTOCOL_CASTLE)
     {
         Sensord *sensorP;
         EscCastle *esc;
-        esc = new EscCastle(ALPHA(config.average.rpm), ALPHA(config.average.volt), ALPHA(config.average.curr), ALPHA(config.average.temp));
+        esc = new EscCastle(ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
-        sensorP = new Sensord(RPM_ID, esc->rpmP(), config.refresh.rpm, esc);
+        sensorP = new Sensord(RPM_ID, esc->rpmP(), CONFIG_REFRESH_RPM, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(VOLTS_BP_ID, esc->voltageP(), config.refresh.volt, esc);
+        sensorP = new Sensord(VOLTS_BP_ID, esc->voltageP(), CONFIG_REFRESH_VOLT, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(VOLTS_AP_ID, esc->voltageP(), config.refresh.volt, esc);
+        sensorP = new Sensord(VOLTS_AP_ID, esc->voltageP(), CONFIG_REFRESH_VOLT, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(CURRENT_ID, esc->currentP(), config.refresh.curr, esc);
+        sensorP = new Sensord(CURRENT_ID, esc->currentP(), CONFIG_REFRESH_CURR, esc);
         addSensor(sensorP);
-        //sensorP = new Sensord(SBEC_POWER_FIRST_ID, esc->becVoltageP(), esc->becCurrentP(), config.refresh.volt, esc);
+        //sensorP = new Sensord(SBEC_POWER_FIRST_ID, esc->becVoltageP(), esc->becCurrentP(), CONFIG_REFRESH_VOLT, esc);
         //addSensor(sensorP);
-        //sensorP = new Sensord(ESC_POWER_FIRST_ID + 1, esc->rippleVoltageP(), NULL, config.refresh.volt, esc);
+        //sensorP = new Sensord(ESC_POWER_FIRST_ID + 1, esc->rippleVoltageP(), NULL, CONFIG_REFRESH_VOLT, esc);
         //addSensor(sensorP);
-        sensorP = new Sensord(TEMP1_ID, esc->temperatureP(), config.refresh.temp, esc);
+        sensorP = new Sensord(TEMP1_ID, esc->temperatureP(), CONFIG_REFRESH_TEMP, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(VFAS_ID, esc->cellVoltageP(), config.refresh.volt, esc);
+        sensorP = new Sensord(VFAS_ID, esc->cellVoltageP(), CONFIG_REFRESH_VOLT, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(FUEL_ID, esc->consumptionP(), config.refresh.curr, esc);
+        sensorP = new Sensord(FUEL_ID, esc->consumptionP(), CONFIG_REFRESH_CURR, esc);
         addSensor(sensorP);
     }
     if (ESC_PROTOCOL == PROTOCOL_KONTRONIK)
     {
         Sensord *sensorP;
         EscKontronik *esc;
-        esc = new EscKontronik(ESC_SERIAL, ALPHA(config.average.rpm), ALPHA(config.average.volt), ALPHA(config.average.curr), ALPHA(config.average.temp));
+        esc = new EscKontronik(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
-        sensorP = new Sensord(RPM_ID, esc->rpmP(), config.refresh.rpm, esc);
+        sensorP = new Sensord(RPM_ID, esc->rpmP(), CONFIG_REFRESH_RPM, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(VOLTS_BP_ID, esc->voltageP(), config.refresh.volt, esc);
+        sensorP = new Sensord(VOLTS_BP_ID, esc->voltageP(), CONFIG_REFRESH_VOLT, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(VOLTS_AP_ID, esc->voltageP(), config.refresh.volt, esc);
+        sensorP = new Sensord(VOLTS_AP_ID, esc->voltageP(), CONFIG_REFRESH_VOLT, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(CURRENT_ID, esc->currentP(), config.refresh.curr, esc);
+        sensorP = new Sensord(CURRENT_ID, esc->currentP(), CONFIG_REFRESH_CURR, esc);
         addSensor(sensorP);
-        //sensorP = new Sensord(SBEC_POWER_FIRST_ID, esc->becVoltageP(), esc->becCurrentP(), config.refresh.volt, esc);
+        //sensorP = new Sensord(SBEC_POWER_FIRST_ID, esc->becVoltageP(), esc->becCurrentP(), CONFIG_REFRESH_VOLT, esc);
         //addSensor(sensorP);
-        sensorP = new Sensord(TEMP1_ID, esc->tempFetP(), config.refresh.temp, esc);
+        sensorP = new Sensord(TEMP1_ID, esc->tempFetP(), CONFIG_REFRESH_TEMP, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(TEMP2_ID, esc->tempBecP(), config.refresh.temp, esc);
+        sensorP = new Sensord(TEMP2_ID, esc->tempBecP(), CONFIG_REFRESH_TEMP, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(VFAS_ID, esc->cellVoltageP(), config.refresh.volt, esc);
+        sensorP = new Sensord(VFAS_ID, esc->cellVoltageP(), CONFIG_REFRESH_VOLT, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(FUEL_ID, esc->consumptionP(), config.refresh.curr, esc);
+        sensorP = new Sensord(FUEL_ID, esc->consumptionP(), CONFIG_REFRESH_CURR, esc);
         addSensor(sensorP);
     }
     if (ESC_PROTOCOL == PROTOCOL_APD_F)
     {
         Sensord *sensorP;
         EscApdF *esc;
-        esc = new EscApdF(ESC_SERIAL, ALPHA(config.average.rpm), ALPHA(config.average.volt), ALPHA(config.average.curr), ALPHA(config.average.temp));
+        esc = new EscApdF(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
-        sensorP = new Sensord(RPM_ID, esc->rpmP(), config.refresh.rpm, esc);
+        sensorP = new Sensord(RPM_ID, esc->rpmP(), CONFIG_REFRESH_RPM, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(VOLTS_BP_ID, esc->voltageP(), config.refresh.volt, esc);
+        sensorP = new Sensord(VOLTS_BP_ID, esc->voltageP(), CONFIG_REFRESH_VOLT, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(VOLTS_AP_ID, esc->voltageP(), config.refresh.volt, esc);
+        sensorP = new Sensord(VOLTS_AP_ID, esc->voltageP(), CONFIG_REFRESH_VOLT, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(CURRENT_ID, esc->currentP(), config.refresh.curr, esc);
+        sensorP = new Sensord(CURRENT_ID, esc->currentP(), CONFIG_REFRESH_CURR, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(TEMP1_ID, esc->tempP(), config.refresh.temp, esc);
+        sensorP = new Sensord(TEMP1_ID, esc->tempP(), CONFIG_REFRESH_TEMP, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(VFAS_ID, esc->cellVoltageP(), config.refresh.volt, esc);
+        sensorP = new Sensord(VFAS_ID, esc->cellVoltageP(), CONFIG_REFRESH_VOLT, esc);
         addSensor(sensorP);
     }
     if (ESC_PROTOCOL == PROTOCOL_APD_HV)
     {
         Sensord *sensorP;
         EscApdHV *esc;
-        esc = new EscApdHV(ESC_SERIAL, ALPHA(config.average.rpm), ALPHA(config.average.volt), ALPHA(config.average.curr), ALPHA(config.average.temp));
+        esc = new EscApdHV(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
-        sensorP = new Sensord(RPM_ID, esc->rpmP(), config.refresh.rpm, esc);
+        sensorP = new Sensord(RPM_ID, esc->rpmP(), CONFIG_REFRESH_RPM, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(VOLTS_BP_ID, esc->voltageP(), config.refresh.volt, esc);
+        sensorP = new Sensord(VOLTS_BP_ID, esc->voltageP(), CONFIG_REFRESH_VOLT, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(VOLTS_AP_ID, esc->voltageP(), config.refresh.volt, esc);
+        sensorP = new Sensord(VOLTS_AP_ID, esc->voltageP(), CONFIG_REFRESH_VOLT, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(CURRENT_ID, esc->currentP(), config.refresh.curr, esc);
+        sensorP = new Sensord(CURRENT_ID, esc->currentP(), CONFIG_REFRESH_CURR, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(TEMP1_ID, esc->tempP(), config.refresh.temp, esc);
+        sensorP = new Sensord(TEMP1_ID, esc->tempP(), CONFIG_REFRESH_TEMP, esc);
         addSensor(sensorP);
-        sensorP = new Sensord(VFAS_ID, esc->cellVoltageP(), config.refresh.volt, esc);
+        sensorP = new Sensord(VFAS_ID, esc->cellVoltageP(), CONFIG_REFRESH_VOLT, esc);
         addSensor(sensorP);
     }
-    if (config.gps == true)
+    if (CONFIG_GPS)
     {
         Sensord *sensorP;
         Bn220 *gps;
@@ -302,67 +301,67 @@ void Frsky::setConfig(Config &config)
         //sensorP = new Sensord(VARIO_ID, gps->varioP(), 5, gps);
         //addSensor(sensorP);
     }
-    if (config.airspeed == true)
+    if (CONFIG_AIRSPEED)
     {
         Sensord *sensorP;
         Pressure *pressure;
-        pressure = new Pressure(PIN_PRESSURE, ALPHA(config.average.volt));
+        pressure = new Pressure(PIN_PRESSURE, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT));
         sensorP = new Sensord(GPS_SPEED_BP_ID, pressure->valueP(), 5, pressure);
         addSensor(sensorP);
         sensorP = new Sensord(GPS_SPEED_AP_ID, pressure->valueP(), 5, pressure);
         addSensor(sensorP);
     }
-    if (config.voltage1 == true)
+    if (CONFIG_VOLTAGE1)
     {
         Sensord *sensorP;
         Voltage *voltage;
-        voltage = new Voltage(PIN_VOLTAGE1, ALPHA(config.average.volt), VOLTAGE1_MULTIPLIER);
-        sensorP = new Sensord(VOLTS_BP_ID, voltage->valueP(), config.refresh.volt, voltage);
+        voltage = new Voltage(PIN_VOLTAGE1, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), VOLTAGE1_MULTIPLIER);
+        sensorP = new Sensord(VOLTS_BP_ID, voltage->valueP(), CONFIG_REFRESH_VOLT, voltage);
         addSensor(sensorP);
-        sensorP = new Sensord(VOLTS_AP_ID, voltage->valueP(), config.refresh.volt, voltage);
+        sensorP = new Sensord(VOLTS_AP_ID, voltage->valueP(), CONFIG_REFRESH_VOLT, voltage);
         addSensor(sensorP);
     }
-    /*if (config.voltage2 == true)
+    /*if (CONFIG_VOLTAGE2)
     {
         Sensord *sensorP;
         Voltage *voltage;
-        voltage = new Voltage(PIN_VOLTAGE2, ALPHA(config.average.volt), VOLTAGE2_MULTIPLIER);
-        sensorP = new Sensord(A4_FIRST_ID, voltage->valueP(), config.refresh.volt, voltage);
+        voltage = new Voltage(PIN_VOLTAGE2, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), VOLTAGE2_MULTIPLIER);
+        sensorP = new Sensord(A4_FIRST_ID, voltage->valueP(), CONFIG_REFRESH_VOLT, voltage);
         addSensor(sensorP);
     }*/
-    if (config.current == true)
+    if (CONFIG_CURRENT)
     {
         Sensord *sensorP;
         Current *current;
-        current = new Current(PIN_CURRENT, ALPHA(config.average.curr), CURRENT_MULTIPLIER, CURRENT_OFFSET, CURRENT_AUTO_OFFSET);
-        sensorP = new Sensord(CURRENT_ID, current->valueP(), config.refresh.curr, current);
+        current = new Current(PIN_CURRENT, ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), CURRENT_MULTIPLIER, CURRENT_OFFSET, CURRENT_AUTO_OFFSET);
+        sensorP = new Sensord(CURRENT_ID, current->valueP(), CONFIG_REFRESH_CURR, current);
         addSensor(sensorP);
-        sensorP = new Sensord(FUEL_ID, current->consumptionP(), config.refresh.curr, current);
+        sensorP = new Sensord(FUEL_ID, current->consumptionP(), CONFIG_REFRESH_CURR, current);
         addSensor(sensorP);
     }
-    if (config.ntc1 == true)
+    if (CONFIG_NTC1)
     {
         Sensord *sensorP;
         Ntc *ntc;
-        ntc = new Ntc(PIN_NTC1, ALPHA(config.average.temp));
-        sensorP = new Sensord(TEMP1_ID, ntc->valueP(), config.refresh.temp, ntc);
+        ntc = new Ntc(PIN_NTC1, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
+        sensorP = new Sensord(TEMP1_ID, ntc->valueP(), CONFIG_AVERAGING_ELEMENTS_TEMP, ntc);
         addSensor(sensorP);
     }
-    if (config.ntc2 == true)
+    if (CONFIG_NTC2)
     {
         Sensord *sensorP;
         Ntc *ntc;
-        ntc = new Ntc(PIN_NTC2, ALPHA(config.average.temp));
-        sensorP = new Sensord(TEMP2_ID, ntc->valueP(), config.refresh.temp, ntc);
+        ntc = new Ntc(PIN_NTC2, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
+        sensorP = new Sensord(TEMP2_ID, ntc->valueP(), CONFIG_AVERAGING_ELEMENTS_TEMP, ntc);
         addSensor(sensorP);
     }
-    if (config.deviceI2C1Type == I2C_BMP280)
+    if (CONFIG_I2C1_TYPE == I2C_BMP280)
     {
         Sensord *sensorP;
         Bmp280 *bmp;
-        bmp = new Bmp280(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
+        bmp = new Bmp280(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
-        sensorP = new Sensord(TEMP1_ID, bmp->temperatureP(), config.refresh.temp, bmp);
+        sensorP = new Sensord(TEMP1_ID, bmp->temperatureP(), CONFIG_AVERAGING_ELEMENTS_TEMP, bmp);
         addSensor(sensorP);
         sensorP = new Sensord(BARO_ALT_BP_ID, bmp->altitudeP(), CONFIG_REFRESH_DEF, bmp);
         addSensor(sensorP);
@@ -371,13 +370,13 @@ void Frsky::setConfig(Config &config)
         sensorP = new Sensord(VARIO_ID, bmp->varioP(), 5, bmp);
         addSensor(sensorP);
     }
-    if (config.deviceI2C1Type == I2C_MS5611)
+    if (CONFIG_I2C1_TYPE == I2C_MS5611)
     {
         Sensord *sensorP;
         MS5611 *bmp;
-        bmp = new MS5611(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
+        bmp = new MS5611(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
-        sensorP = new Sensord(TEMP1_ID, bmp->temperatureP(), config.refresh.temp, bmp);
+        sensorP = new Sensord(TEMP1_ID, bmp->temperatureP(), CONFIG_AVERAGING_ELEMENTS_TEMP, bmp);
         addSensor(sensorP);
         sensorP = new Sensord(BARO_ALT_BP_ID, bmp->altitudeP(), CONFIG_REFRESH_DEF, bmp);
         addSensor(sensorP);

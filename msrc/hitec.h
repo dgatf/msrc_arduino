@@ -100,7 +100,7 @@ private:
     static float *frame_0x1B_P[];
     DeviceElement *deviceElementP = NULL;
     static void i2c_request_handler();
-    void setConfig(Config &config);
+    void setConfig();
 public:
     Hitec();
     void begin();

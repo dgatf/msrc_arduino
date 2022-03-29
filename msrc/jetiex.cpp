@@ -13,8 +13,7 @@ void JetiEx::begin()
     serial_.begin(baudRate, SERIAL__8N1 | SERIAL__HALF_DUP);
     serial_.setTimeout(JETIEX_TIMEOUT);
     pinMode(LED_BUILTIN, OUTPUT);
-    Config config = {CONFIG_AIRSPEED, CONFIG_GPS, CONFIG_VOLTAGE1, CONFIG_VOLTAGE2, CONFIG_CURRENT, CONFIG_NTC1, CONFIG_NTC2, CONFIG_PWMOUT, {CONFIG_REFRESH_RPM, CONFIG_REFRESH_VOLT, CONFIG_REFRESH_CURR, CONFIG_REFRESH_TEMP}, {CONFIG_AVERAGING_ELEMENTS_RPM, CONFIG_AVERAGING_ELEMENTS_VOLT, CONFIG_AVERAGING_ELEMENTS_CURR, CONFIG_AVERAGING_ELEMENTS_TEMP}, CONFIG_ESC_PROTOCOL, CONFIG_I2C1_TYPE, CONFIG_I2C1_ADDRESS, 0, 0, SENSOR_ID};
-    setConfig(config);
+    setConfig();
 }
 
 uint8_t JetiEx::addSensor(SensorJetiEx *newSensorJetiExP)
@@ -366,13 +365,13 @@ void JetiEx::update()
         cont = 0;
 }
 
-void JetiEx::setConfig(Config &config)
+void JetiEx::setConfig()
 {
     if (ESC_PROTOCOL == PROTOCOL_PWM)
     {
         SensorJetiEx *sensorJetiExP;
         EscPWM *esc;
-        esc = new EscPWM(ALPHA(config.average.rpm));
+        esc = new EscPWM(ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM));
         esc->begin();
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT22, 0, esc->rpmP(), esc);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
@@ -383,7 +382,7 @@ void JetiEx::setConfig(Config &config)
     {
         SensorJetiEx *sensorJetiExP;
         EscHW3 *esc;
-        esc = new EscHW3(ESC_SERIAL, ALPHA(config.average.rpm));
+        esc = new EscHW3(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM));
         esc->begin();
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT22, 0, esc->rpmP(), esc);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
@@ -394,7 +393,7 @@ void JetiEx::setConfig(Config &config)
     {
         SensorJetiEx *sensorJetiExP;
         EscHW4 *esc;
-        esc = new EscHW4(ESC_SERIAL, ALPHA(config.average.rpm), ALPHA(config.average.volt), ALPHA(config.average.curr), ALPHA(config.average.temp), 0);
+        esc = new EscHW4(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP), 0);
         esc->begin();
         PwmOut pwmOut;
         pwmOut.setRpmP(esc->rpmP());
@@ -431,7 +430,7 @@ void JetiEx::setConfig(Config &config)
     {
         SensorJetiEx *sensorJetiExP;
         EscCastle *esc;
-        esc = new EscCastle(ALPHA(config.average.rpm), ALPHA(config.average.volt), ALPHA(config.average.curr), ALPHA(config.average.temp));
+        esc = new EscCastle(ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT22, 0, esc->rpmP(), esc);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
@@ -474,7 +473,7 @@ void JetiEx::setConfig(Config &config)
     {
         SensorJetiEx *sensorJetiExP;
         EscKontronik *esc;
-        esc = new EscKontronik(ESC_SERIAL, ALPHA(config.average.rpm), ALPHA(config.average.volt), ALPHA(config.average.curr), ALPHA(config.average.temp));
+        esc = new EscKontronik(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT22, 0, esc->rpmP(), esc);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
@@ -517,7 +516,7 @@ void JetiEx::setConfig(Config &config)
     {
         SensorJetiEx *sensorJetiExP;
         EscApdF *esc;
-        esc = new EscApdF(ESC_SERIAL, ALPHA(config.average.rpm), ALPHA(config.average.volt), ALPHA(config.average.curr), ALPHA(config.average.temp));
+        esc = new EscApdF(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT22, 0, esc->rpmP(), esc);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
@@ -552,7 +551,7 @@ void JetiEx::setConfig(Config &config)
     {
         SensorJetiEx *sensorJetiExP;
         EscApdHV *esc;
-        esc = new EscApdHV(ESC_SERIAL, ALPHA(config.average.rpm), ALPHA(config.average.volt), ALPHA(config.average.curr), ALPHA(config.average.temp));
+        esc = new EscApdHV(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT22, 0, esc->rpmP(), esc);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
@@ -579,7 +578,7 @@ void JetiEx::setConfig(Config &config)
         sensorJetiExP->setText("Consumption");
         sensorJetiExP->setUnit("mAh");
     }
-    if (config.gps == true)
+    if (CONFIG_GPS)
     {
         SensorJetiEx *sensorJetiExP;
         Bn220 *gps;
@@ -627,41 +626,41 @@ void JetiEx::setConfig(Config &config)
         sensorJetiExP->setText("HDOP");
 #endif
     }
-    if (config.airspeed == true)
+    if (CONFIG_AIRSPEED)
     {
         SensorJetiEx *sensorJetiExP;
         Pressure *pressure;
-        pressure = new Pressure(PIN_PRESSURE, ALPHA(config.average.volt));
+        pressure = new Pressure(PIN_PRESSURE, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT));
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 1, pressure->valueP(), pressure);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Air speed");
         sensorJetiExP->setUnit("m/s");
     }
-    if (config.voltage1 == true)
+    if (CONFIG_VOLTAGE1)
     {
         SensorJetiEx *sensorJetiExP;
         Voltage *voltage;
-        voltage = new Voltage(PIN_VOLTAGE1, ALPHA(config.average.volt), VOLTAGE1_MULTIPLIER);
+        voltage = new Voltage(PIN_VOLTAGE1, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), VOLTAGE1_MULTIPLIER);
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 2, voltage->valueP(), voltage);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Voltage 1");
         sensorJetiExP->setUnit("V");
     }
-    if (config.voltage2 == true)
+    if (CONFIG_VOLTAGE2)
     {
         SensorJetiEx *sensorJetiExP;
         Voltage *voltage;
-        voltage = new Voltage(PIN_VOLTAGE2, ALPHA(config.average.volt), VOLTAGE2_MULTIPLIER);
+        voltage = new Voltage(PIN_VOLTAGE2, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), VOLTAGE2_MULTIPLIER);
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 2, voltage->valueP(), voltage);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Voltage 2");
         sensorJetiExP->setUnit("V");
     }
-    if (config.current == true)
+    if (CONFIG_CURRENT)
     {
         SensorJetiEx *sensorJetiExP;
         Current *current;
-        current = new Current(PIN_CURRENT, ALPHA(config.average.curr), CURRENT_MULTIPLIER, CURRENT_OFFSET, CURRENT_AUTO_OFFSET);
+        current = new Current(PIN_CURRENT, ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), CURRENT_MULTIPLIER, CURRENT_OFFSET, CURRENT_AUTO_OFFSET);
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 1, current->valueP(), current);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Current");
@@ -671,31 +670,31 @@ void JetiEx::setConfig(Config &config)
         sensorJetiExP->setText("Consumption");
         sensorJetiExP->setUnit("mAh");
     }
-    if (config.ntc1 == true)
+    if (CONFIG_NTC1)
     {
         SensorJetiEx *sensorJetiExP;
         Ntc *ntc;
-        ntc = new Ntc(PIN_NTC1, ALPHA(config.average.temp));
+        ntc = new Ntc(PIN_NTC1, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 0, ntc->valueP(), ntc);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Temp 1");
         sensorJetiExP->setUnit("C");
     }
-    if (config.ntc2 == true)
+    if (CONFIG_NTC2)
     {
         SensorJetiEx *sensorJetiExP;
         Ntc *ntc;
-        ntc = new Ntc(PIN_NTC2, ALPHA(config.average.temp));
+        ntc = new Ntc(PIN_NTC2, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 0, ntc->valueP(), ntc);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
         sensorJetiExP->setText("Temp 2");
         sensorJetiExP->setUnit("C");
     }
-    if (config.deviceI2C1Type == I2C_BMP280)
+    if (CONFIG_I2C1_TYPE == I2C_BMP280)
     {
         SensorJetiEx *sensorJetiExP;
         Bmp280 *bmp;
-        bmp = new Bmp280(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
+        bmp = new Bmp280(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 1, bmp->altitudeP(), bmp);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));
@@ -712,11 +711,11 @@ void JetiEx::setConfig(Config &config)
         sensorJetiExP->setUnit("C");
 #endif
     }
-    if (config.deviceI2C1Type == I2C_MS5611)
+    if (CONFIG_I2C1_TYPE == I2C_MS5611)
     {
         SensorJetiEx *sensorJetiExP;
         MS5611 *bmp;
-        bmp = new MS5611(config.deviceI2C1Address, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
+        bmp = new MS5611(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         sensorJetiExP = new SensorJetiEx(JETIEX_TYPE_INT14, 1, bmp->altitudeP(), bmp);
         sensorJetiExP->setSensorId(addSensor(sensorJetiExP));

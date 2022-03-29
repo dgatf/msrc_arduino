@@ -64,7 +64,7 @@ public:
     void begin();
     uint8_t addSensor(SensorJetiEx *sensorJetiExP);
     void update();
-    void setConfig(Config &config);
+    void setConfig();
     bool addSensorValueToBuffer(uint8_t *buffer, uint8_t &posBuffer, uint8_t &sensorNumber);
     bool addSensorTextToBuffer(uint8_t *buffer, uint8_t &posBuffer, uint8_t &sensorNumber);
     uint8_t createExBuffer(uint8_t *buffer, bool sendText);
