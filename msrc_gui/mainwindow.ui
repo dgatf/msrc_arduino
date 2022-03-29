@@ -38,9 +38,9 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-654</y>
+             <y>-173</y>
              <width>603</width>
-             <height>1759</height>
+             <height>1892</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout">
@@ -242,73 +242,6 @@
                   <item row="0" column="1">
                    <widget class="QComboBox" name="cbEsc"/>
                   </item>
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="label_20">
-                    <property name="text">
-                     <string>   Protocol</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="0" colspan="2">
-                   <widget class="QGroupBox" name="gbRpmMultipliers">
-                    <property name="title">
-                     <string>RPM multipliers</string>
-                    </property>
-                    <layout class="QGridLayout" name="gridLayout">
-                     <item row="1" column="0">
-                      <widget class="QLabel" name="label_7">
-                       <property name="text">
-                        <string>Main gear teeth</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="0">
-                      <widget class="QLabel" name="label_8">
-                       <property name="text">
-                        <string>Pinion gear teeth</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="0">
-                      <widget class="QLabel" name="label_6">
-                       <property name="text">
-                        <string>Pair of Poles</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="1">
-                      <widget class="QSpinBox" name="sbPairOfPoles">
-                       <property name="maximum">
-                        <number>20</number>
-                       </property>
-                       <property name="value">
-                        <number>1</number>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="1">
-                      <widget class="QSpinBox" name="sbMainTeeth">
-                       <property name="maximum">
-                        <number>1000</number>
-                       </property>
-                       <property name="value">
-                        <number>1</number>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="1">
-                      <widget class="QSpinBox" name="sbPinionTeeth">
-                       <property name="maximum">
-                        <number>1000</number>
-                       </property>
-                       <property name="value">
-                        <number>1</number>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </widget>
-                  </item>
                   <item row="1" column="0" colspan="2">
                    <widget class="QGroupBox" name="gbEscParameters">
                     <property name="title">
@@ -401,6 +334,80 @@
                       </widget>
                      </item>
                     </layout>
+                   </widget>
+                  </item>
+                  <item row="2" column="0" colspan="2">
+                   <widget class="QGroupBox" name="gbRpmMultipliers">
+                    <property name="title">
+                     <string>RPM multipliers</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout">
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="label_7">
+                       <property name="text">
+                        <string>Main gear teeth</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="0">
+                      <widget class="QLabel" name="label_8">
+                       <property name="text">
+                        <string>Pinion gear teeth</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_6">
+                       <property name="text">
+                        <string>Pair of Poles</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QSpinBox" name="sbPairOfPoles">
+                       <property name="maximum">
+                        <number>20</number>
+                       </property>
+                       <property name="value">
+                        <number>1</number>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QSpinBox" name="sbMainTeeth">
+                       <property name="maximum">
+                        <number>1000</number>
+                       </property>
+                       <property name="value">
+                        <number>1</number>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QSpinBox" name="sbPinionTeeth">
+                       <property name="maximum">
+                        <number>1000</number>
+                       </property>
+                       <property name="value">
+                        <number>1</number>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="label_20">
+                    <property name="text">
+                     <string>   Protocol</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="0">
+                   <widget class="QCheckBox" name="cbPwmOut">
+                    <property name="text">
+                     <string>PWM out</string>
+                    </property>
                    </widget>
                   </item>
                  </layout>
@@ -876,7 +883,7 @@
      <x>0</x>
      <y>0</y>
      <width>1267</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMSRC">
