@@ -87,13 +87,13 @@ ATmega board version 3.3v or 5v: Usually 3.3v can be used and it is recommended 
 | XBUS NPN clock stretch<sup>(4)</sup> | 13    | 13                 | B5            | 9               | 13                           |
 
 (1) with 3.3k pull up resistor  
-(2) 1k resistor
+(2) 1k resistor  
 (3) If using i2c_t3 library connect I2C sensor to pins 23 (SDA1) and 22 (SCL1)  
 (4) optional. Only if needed. If connected, enable XBUS_CLOCK_STRECH_SWITCH in config.h  
 (5) If using serial ESC  
 (6) If using GPS  
 (7) If using serial ESC and GPS  
-(8) If using serial ESC or GPS
+(8) If using serial ESC or GPS  
 (9) If using with Castle, use Arduino Micro. Pin 13 not available in Arduino Pro Micro 
 
 
