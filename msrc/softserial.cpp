@@ -11,7 +11,7 @@ SoftSerial::SoftSerial() {}
 
 void SoftSerial::initWrite()
 {
-    DDRB |= _BV(DDB4);
+    DDRB |= _BV(DDBx);
 
     uint8_t outgoingByte = readTx();
     uint8_t oldSREG = SREG;
@@ -69,7 +69,7 @@ void SoftSerial::initWrite()
     _delay_loop_2(delay_stop);
 
     if (half_duplex_)
-        DDRB &= ~_BV(DDB4);
+        DDRB &= ~_BV(DDBx);
 
     SREG = oldSREG;
 }
@@ -180,7 +180,7 @@ void SoftSerial::begin(uint32_t baud, uint8_t format)
 
     if (!half_duplex_)
     {
-        DDRB |= _BV(DDB4);
+        DDRB |= _BV(DDBx);
         if (inverted_)
             setPinLow;
         else
@@ -283,7 +283,7 @@ void SoftSerial::begin(uint32_t baud, uint8_t format)
 
     if (!half_duplex_)
     {
-        DDRB |= _BV(DDB4);
+        DDRB |= _BV(DDBx);
         if (inverted_)
             setPinLow;
         else

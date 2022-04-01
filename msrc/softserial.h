@@ -40,6 +40,14 @@
 #define PINxn PINB3
 #endif
 
+#if defined(__AVR_ATmega328PB__) || defined(ARDUINO_AVR_A_STAR_328PB)
+#define DDBx DDB1
+#define PORTBx PORTB1
+#else
+#define DDBx DDB4
+#define PORTBx PORTB4
+#endif
+
 #define SOFTSERIAL_IDLE 0
 #define SOFTSERIAL_RECEIVING 1
 #define SOFTSERIAL_SENDING 2
@@ -54,10 +62,14 @@
     TX: 328P/PB: PIN 12  (PB4)
         2560:    PIN D10 (PB4)
         32U4:    PIN B4/8  (PB4)
+
+    TX: 328P/PB: PIN 9  (PB1)
+        2560:    PIN 52 (PB1)
+        32U4:    PIN 15 (PB1)
 */
 
-#define setPinHigh PORTB |= _BV(PORTB4)
-#define setPinLow PORTB &= ~_BV(PORTB4)
+#define setPinHigh PORTB |= _BV(PORTBx)
+#define setPinLow PORTB &= ~_BV(PORTBx)
 
 class SoftSerial : public AbstractSerial
 {
