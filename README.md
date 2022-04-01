@@ -79,7 +79,7 @@ For the rest of the cases you can use ATmega328P boards (Pro Mini/Pro Micro/Teen
 | PWM out                   | 10               | 10                 | B6            | 10              | 22                           |
 | Rx Castle                 | -                | 8                  | C7            | 13<sup>(9)</sup> | 16                          |
 | ESC Castle<sup>(1)</sup>  | -                | 2 & 22             | D4 & B6       | 4 & 10          | 2 & 6                        |
-| Frsky Smartport, SBUS     | 7 & 12<sup>(2)</sup> | 7 & 12<sup>(2)</sup> | A15 & D10<sup>(2)</sup> | B3 & B4<sup>(2)</sup><br/>(14 & 8) | 1 |
+| Frsky Smartport, SBUS     | 7 & 12<sup>(2)</sup> | 7 & 9<sup>(2)</sup> | A15 & D10<sup>(2)</sup> | B3 & B4<sup>(2)</sup><br/>(14 & 8) | 1 |
 | Frsky D                   | 12               | 12                 | D10           | B4(8)           | 1                            |
 | SRXL, IBUS, SB, Jeti Ex | RX & TX<sup>(2)</sup> </br>or<sup>(8)</sup> 7 & 12<sup>(2)</sup> | RX1 & TX1<sup>(2)</sup> </br>or<sup>(6)</sup> RX0 & TX0<sup>(2)</sup> </br>or<sup>(7)</sup> 7 & 12<sup>(2)</sup> | 15(RX3) & 14(TX3)<sup>(2)</sup> | D2(RX1) & D3(TX1)<sup>(2)</sup> </br>or<sup>(8)</sup> B3 & B4<sup>(2)</sup>(14 & 8) | 1 |
 | Hitec, XBUS or sensor SDA | A4               | A4                 | D1            | 2               | 18<sup>(3)</sup>             |
