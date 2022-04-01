@@ -47,13 +47,11 @@ ATmega2560 is deprecated
 (4) Teensy LC is not 5v tolerant. If using with Castle is preferred Teensy 3.2, which is 5v tolerant  
 (5) Arduino Pro Mini and Pololu ATmega328PB requires a USB-TTL programmer for flashing
 
-ATmega boards at 5v (16Mhz) may not read properly serial port when using ESC serial or GPS as they use 3.3v logic level and Arduino 5v. In this case if using 5v it is better without USB (Pro Mini) and/or use software serial. If using ATmega board, is preferred 3.3v (8Mhz) boards
-
 Which board should I choose?
 
 Board required if using:
 
-- ESC Castle: Teensy2, Micro or Teensy LC
+- ESC Castle: Teensy2, Micro, Pololu ATmega328PB or Teensy LC
 - Receiver serial with ESC serial and GPS serial: Pololu ATmega328PB, Teensy LC/3.x
 
 Teensy LC is recommended if using:
@@ -61,6 +59,8 @@ Teensy LC is recommended if using:
 - SBUS or Jeti with another serial (ESC or GPS) and you don't want to loose any serial frame. Though Mini/Micro/Teensy 2 will work as well, but losing few serial frames
 
 For the rest of the cases you can use ATmega328P boards (Pro Mini/Pro Micro/Teensy 2)
+
+ATmega board version 3.3v or 5v: Usually 3.3v can be used and it is recommended as serial ports for receiver, ESC and GPS works at 3.3v. This also allows to power the board from the telemetry port, which is at 3.3v. Though 5v boards will work fine as well.
 
 ### 1.2 Connections
 
@@ -101,8 +101,8 @@ For the rest of the cases you can use ATmega328P boards (Pro Mini/Pro Micro/Teen
 
 The following Rx protocols are supported:
 
-- Frsky Smartport : inverted serial, 57600 bps
-- Frsky D : inverted serial, 9200 bps
+- Frsky Smartport: inverted serial, 57600 bps
+- Frsky D: inverted serial, 9200 bps
 - Spektrum SRXL V5: serial, 115200 bps
 - Spektrum XBUS: I2C
 - Flysky IBUS: serial, 115200 bps
