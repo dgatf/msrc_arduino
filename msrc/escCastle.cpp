@@ -513,6 +513,7 @@ void EscCastle::begin()
     TCCR4B |= _BV(CS41);                 // SCALER 8
     TCCR4B |= _BV(ICNC4);                // NOISE CANCELLER
     OCR4A = 20 * MS_TO_COMP(8);          // 50Hz = 20ms
+    PORTD |= _BV(PD2);                   // workaround for timer chip bug: https://github.com/watterott/ATmega328PB-Testing/issues/29
 
     // TIMER 3. TOGGLE OC4B INPUT/OUTPUT
     TCCR3A = 0;                     // NORMAL MODE
