@@ -39,16 +39,15 @@ private:
     AbstractSerial &serial_;
     Sensord *sensorP = NULL;
     void sendByte(uint8_t c, bool header);
+    void sendData(uint8_t dataId, uint16_t value);
+    void addSensor(Sensord *newSensorP);
+    void setConfig();
 
 public:
     Frsky(AbstractSerial &serial);
     ~Frsky();
     void begin();
-    void sendData(uint8_t dataId, uint16_t value);
-    void addSensor(Sensord *newSensorP);
-    void deleteSensors();
     void update();
-    void setConfig();
 };
 
 #endif

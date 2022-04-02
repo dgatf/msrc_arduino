@@ -6,7 +6,6 @@ Sbus::Sbus(AbstractSerial &serial) : serial_(serial)
 
 Sbus::~Sbus()
 {
-    deleteSensors();
 }
 
 SensorSbus *Sbus::sensorSbusP[32] = {NULL};
@@ -209,15 +208,6 @@ void Sbus::addSensor(uint8_t number, SensorSbus *newSensorSbusP)
     sensorSbusP[number] = newSensorSbusP;
 }
 
-void Sbus::deleteSensors()
-{
-    for (uint8_t i = 0; i < 32; i++)
-    {
-        if (sensorSbusP[i] != NULL)
-            delete sensorSbusP[i];
-    }
-}
-
 void Sbus::sendPacket()
 {
     slotCont = 0;
@@ -339,7 +329,6 @@ void Sbus::update()
 
 void Sbus::setConfig()
 {
-    deleteSensors();
     if (CONFIG_ESC_PROTOCOL == PROTOCOL_PWM)
     {
         SensorSbus *sensorSbusP;

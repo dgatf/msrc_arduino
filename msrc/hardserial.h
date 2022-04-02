@@ -67,6 +67,9 @@
 class HardSerial : public AbstractSerial
 {
 private:
+    
+    void initWrite();
+
 public:
     uint16_t timeout_;
     volatile uint16_t ts = 0;
@@ -84,13 +87,12 @@ public:
     HardSerial(volatile uint8_t *udr, volatile uint8_t *ucsra, volatile uint8_t *ucsrb, volatile uint8_t *ucsrc, volatile uint8_t *ubrrl, volatile uint8_t *ubrrh, volatile uint8_t *ddr, volatile uint8_t *port, uint8_t pinRx, uint8_t pinTx);
     void begin(uint32_t baud, uint8_t format);
     void begin(uint32_t baud) { begin(baud, SERIAL__8N1); }
-    void initWrite();
     uint8_t availableTimeout();
     void setTimeout(uint16_t timeout);
+    uint16_t timestamp() { return (uint16_t)(micros() - ts); }
     void USART_RX_handler();
     void USART_TX_handler();
     void USART_UDRE_handler();
-    uint16_t timestamp() { return (uint16_t)(micros() - ts); }
 };
 
 #if defined(UBRRH) || defined(UBRR0H)

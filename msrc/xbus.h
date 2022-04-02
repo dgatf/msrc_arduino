@@ -191,14 +191,14 @@ protected:
     static Xbus_Vario xbusVario;
     Bmp280 bmp = Bmp280(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP), ALPHA(1));
 #endif
+    uint8_t bcd8(float value, uint8_t precision);
+    uint16_t bcd16(float value, uint8_t precision);
+    uint32_t bcd32(float value, uint8_t precision);
 
 public:
     Xbus();
     void begin();
     void update();
-    uint8_t bcd8(float value, uint8_t precision);
-    uint16_t bcd16(float value, uint8_t precision);
-    uint32_t bcd32(float value, uint8_t precision);
 };
 
 #endif

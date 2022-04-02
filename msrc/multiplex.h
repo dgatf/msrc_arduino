@@ -34,16 +34,15 @@ class Multiplex
 private:
     AbstractSerial &serial_;
     SensorMultiplex *sensorMultiplexP[16] = {NULL};
+    void setConfig();
+    void sendPacket(uint8_t address);
 
 public:
     Multiplex(AbstractSerial &serial);
     ~Multiplex();
     void begin();
-    void sendPacket(uint8_t address);
     void addSensor(SensorMultiplex *newSensorMultiplexP);
-    void deleteSensors();
     void update();
-    void setConfig();
 };
 
 #endif

@@ -105,6 +105,13 @@ private:
     uint16_t dataId_ = DATA_ID;
     bool maintenanceMode_ = false;
     void sendByte(uint8_t c, uint16_t *crcp);
+    uint8_t getCrc(uint8_t *data);
+    uint8_t read(uint8_t &sensorId, uint8_t &frameId, uint16_t &dataId, uint32_t &value);
+    void sendData(uint16_t dataId, uint32_t val);
+    void sendData(uint8_t frameId, uint16_t dataId, uint32_t val);
+    void sendVoid();
+    void setConfig(Config &config);
+    void processPacket(uint8_t frameId, uint16_t dataId, uint32_t value);
 
 public:
     Smartport(AbstractSerial &serial);
@@ -112,11 +119,6 @@ public:
     void begin();
     uint8_t idToCrc(uint8_t sensorId);
     uint8_t crcToId(uint8_t sensorIdCrc);
-    uint8_t getCrc(uint8_t *data);
-    uint8_t read(uint8_t &sensorId, uint8_t &frameId, uint16_t &dataId, uint32_t &value);
-    void sendData(uint16_t dataId, uint32_t val);
-    void sendData(uint8_t frameId, uint16_t dataId, uint32_t val);
-    void sendVoid();
     uint8_t sensorId();
     void setSensorId(uint8_t sensorId);
     void addSensor(Sensor *newSensorP);
@@ -124,8 +126,6 @@ public:
     void addPacket(uint8_t frameId, uint16_t dataId, uint32_t value);
     void deleteSensors();
     void update();
-    void setConfig(Config &config);
-    void processPacket(uint8_t frameId, uint16_t dataId, uint32_t value);
 
 };
 

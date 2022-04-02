@@ -6,7 +6,6 @@ Frsky::Frsky(AbstractSerial &serial) : serial_(serial)
 
 Frsky::~Frsky()
 {
-    deleteSensors();
 }
 
 void Frsky::begin()
@@ -58,39 +57,6 @@ void Frsky::addSensor(Sensord *newSensorP)
     prevSensorP = newSensorP;
 }
 
-void Frsky::deleteSensors()
-{
-    if (sensorP != NULL)
-    {
-        Sensord *firstSensorP, *nextSensorP;
-        firstSensorP = sensorP;
-        uint8_t cont = 0;
-        AbstractDevice *deviceP[20];
-        do
-        {
-            nextSensorP = sensorP->nextP;
-            boolean deleteDevice = true;
-            for (uint8_t i = 0; i < cont; i++)
-            {
-                if (deviceP[i] == sensorP->deviceP_)
-                {
-                    deleteDevice = false;
-                    break;
-                }
-            }
-            if (deleteDevice)
-            {
-                deviceP[cont] = sensorP->deviceP_;
-                delete sensorP->deviceP_;
-                cont++;
-            }
-            delete sensorP;
-            sensorP = nextSensorP;
-        } while (sensorP != firstSensorP);
-        sensorP = NULL;
-    }
-}
-
 void Frsky::update()
 {
     if (sensorP != NULL) // send telemetry
@@ -128,7 +94,6 @@ void Frsky::update()
 
 void Frsky::setConfig()
 {
-    deleteSensors();
     if (CONFIG_ESC_PROTOCOL == PROTOCOL_PWM)
     {
         Sensord *sensorP;

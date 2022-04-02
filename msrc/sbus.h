@@ -118,7 +118,6 @@ public:
     ~Sbus();
     void begin();
     void addSensor(uint8_t slot, SensorSbus *newSensorSbusP);
-    void deleteSensors();
     void update();
     void setConfig();
 };

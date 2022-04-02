@@ -57,13 +57,6 @@ private:
     AbstractSerial &serial_;
     SensorJetiEx *sensorJetiExP[16] = {NULL};
     uint32_t baudRate = 125000L;
-
-public:
-    JetiEx(AbstractSerial &serial);
-    ~JetiEx();
-    void begin();
-    uint8_t addSensor(SensorJetiEx *sensorJetiExP);
-    void update();
     void setConfig();
     bool addSensorValueToBuffer(uint8_t *buffer, uint8_t &posBuffer, uint8_t &sensorNumber);
     bool addSensorTextToBuffer(uint8_t *buffer, uint8_t &posBuffer, uint8_t &sensorNumber);
@@ -74,6 +67,12 @@ public:
     uint16_t crc16(uint8_t *p, uint16_t len);
     uint16_t update_crc16(uint16_t crc, uint8_t data);
 
+public:
+    JetiEx(AbstractSerial &serial);
+    ~JetiEx();
+    void begin();
+    uint8_t addSensor(SensorJetiEx *sensorJetiExP);
+    void update();
 };
 
 #endif

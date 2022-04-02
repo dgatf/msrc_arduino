@@ -6,7 +6,6 @@ Multiplex::Multiplex(AbstractSerial &serial) : serial_(serial)
 
 Multiplex::~Multiplex()
 {
-    deleteSensors();
 }
 
 void Multiplex::begin()
@@ -24,15 +23,6 @@ void Multiplex::addSensor(SensorMultiplex *newSensorMultiplexP)
     {
         sensorMultiplexP[cont] = newSensorMultiplexP;
         cont++;
-    }
-}
-
-void Multiplex::deleteSensors()
-{
-    for (uint8_t i = 0; i < 16; i++)
-    {
-        if (sensorMultiplexP[i] != NULL)
-            delete sensorMultiplexP[i];
     }
 }
 
@@ -93,7 +83,6 @@ void Multiplex::update()
 
 void Multiplex::setConfig()
 {
-    deleteSensors();
     if (CONFIG_ESC_PROTOCOL == PROTOCOL_PWM)
     {
         SensorMultiplex *sensorMultiplexP;

@@ -52,6 +52,7 @@ private:
     void sendData(uint8_t command, uint8_t address);
     uint8_t read(uint8_t &command, uint8_t &address);
     bool checkCrc(uint8_t *data);
+    void setConfig();
 
 public:
     Ibus(AbstractSerial &serial);
@@ -59,7 +60,6 @@ public:
     void begin();
     void addSensor(SensorIbus *newSensorIbusP);
     void update();
-    void setConfig();
 };
 
 #endif
