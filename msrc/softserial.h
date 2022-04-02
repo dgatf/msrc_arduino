@@ -59,13 +59,10 @@
         2560:    PIN A15 (PK7,PCINT23)
         32U4:    PIN B3/14  (PB3,PCINT3)
 
-    TX: 328P/PB: PIN 12  (PB4)
+    TX: 328P:    PIN 12  (PB4)
+        328PB:   PIN 9   (PB1)
         2560:    PIN D10 (PB4)
-        32U4:    PIN B4/8  (PB4)
-
-    TX: 328P/PB: PIN 9  (PB1)
-        2560:    PIN 52 (PB1)
-        32U4:    PIN 15 (PB1)
+        32U4:    PIN B4/8(PB4)
 */
 
 #define setPinHigh PORTB |= _BV(PORTBx)
