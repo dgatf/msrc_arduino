@@ -34,12 +34,6 @@
 #define I2C_SENSOR Wire
 #endif
 
-#if (defined(__AVR_ATmega328P__) || defined(__AVR_ATmega328PB__) || defined(ARDUINO_AVR_A_STAR_328PB) || defined(__AVR_ATmega32U4__)) || RX_PROTOCOL != RX_SMARTPORT
-#define ESC_PROTOCOL CONFIG_ESC_PROTOCOL
-#else
-#define ESC_PROTOCOL config.protocol
-#endif
-
 /* Version */
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 9

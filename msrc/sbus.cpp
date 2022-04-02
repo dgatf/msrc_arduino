@@ -340,7 +340,7 @@ void Sbus::update()
 void Sbus::setConfig()
 {
     deleteSensors();
-    if (ESC_PROTOCOL == PROTOCOL_PWM)
+    if (CONFIG_ESC_PROTOCOL == PROTOCOL_PWM)
     {
         SensorSbus *sensorSbusP;
         EscPWM *esc;
@@ -349,7 +349,7 @@ void Sbus::setConfig()
         sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP(), esc);
         addSensor(SBUS_SLOT_RPM, sensorSbusP);
     }
-    if (ESC_PROTOCOL == PROTOCOL_HW_V3)
+    if (CONFIG_ESC_PROTOCOL == PROTOCOL_HW_V3)
     {
         SensorSbus *sensorSbusP;
         EscHW3 *esc;
@@ -358,7 +358,7 @@ void Sbus::setConfig()
         sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP(), esc);
         addSensor(SBUS_SLOT_RPM, sensorSbusP);
     }
-    if (ESC_PROTOCOL == PROTOCOL_HW_V4)
+    if (CONFIG_ESC_PROTOCOL == PROTOCOL_HW_V4)
     {
         SensorSbus *sensorSbusP;
         EscHW4 *esc;
@@ -381,7 +381,7 @@ void Sbus::setConfig()
         //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->cellVoltageP(), esc);
         //addSensor(12, sensorSbusP);
     }
-    if (ESC_PROTOCOL == PROTOCOL_CASTLE)
+    if (CONFIG_ESC_PROTOCOL == PROTOCOL_CASTLE)
     {
         SensorSbus *sensorSbusP;
         EscCastle *esc;
@@ -406,7 +406,7 @@ void Sbus::setConfig()
         //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->cellVoltageP(), esc);
         //addSensor(12, sensorSbusP);
     }
-    if (ESC_PROTOCOL == PROTOCOL_KONTRONIK)
+    if (CONFIG_ESC_PROTOCOL == PROTOCOL_KONTRONIK)
     {
         SensorSbus *sensorSbusP;
         EscKontronik *esc;
@@ -433,7 +433,7 @@ void Sbus::setConfig()
         //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->cellVoltageP(), esc);
         //addSensor(12, sensorSbusP);
     }
-    if (ESC_PROTOCOL == PROTOCOL_APD_F)
+    if (CONFIG_ESC_PROTOCOL == PROTOCOL_APD_F)
     {
         SensorSbus *sensorSbusP;
         EscApdF *esc;
@@ -454,7 +454,7 @@ void Sbus::setConfig()
         //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->cellVoltageP(), esc);
         //addSensor(12, sensorSbusP);
     }
-    if (ESC_PROTOCOL == PROTOCOL_APD_HV)
+    if (CONFIG_ESC_PROTOCOL == PROTOCOL_APD_HV)
     {
         SensorSbus *sensorSbusP;
         EscApdHV *esc;

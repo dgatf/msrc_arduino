@@ -203,7 +203,7 @@ void setup()
 #endif
 #if defined(CONFIG_LUA) && RX_PROTOCOL == RX_SMARTPORT
     ConfigEeprom configEeprom;
-    config = configEeprom.readConfig();
+    Config config = configEeprom.readConfig();
     if (config.pwmOut)
         pwmOut.enable();
 #else

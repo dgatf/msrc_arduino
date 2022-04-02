@@ -367,7 +367,7 @@ void JetiEx::update()
 
 void JetiEx::setConfig()
 {
-    if (ESC_PROTOCOL == PROTOCOL_PWM)
+    if (CONFIG_ESC_PROTOCOL == PROTOCOL_PWM)
     {
         SensorJetiEx *sensorJetiExP;
         EscPWM *esc;
@@ -378,7 +378,7 @@ void JetiEx::setConfig()
         sensorJetiExP->setText("RPM");
         sensorJetiExP->setUnit("RPM");
     }
-    if (ESC_PROTOCOL == PROTOCOL_HW_V3)
+    if (CONFIG_ESC_PROTOCOL == PROTOCOL_HW_V3)
     {
         SensorJetiEx *sensorJetiExP;
         EscHW3 *esc;
@@ -389,7 +389,7 @@ void JetiEx::setConfig()
         sensorJetiExP->setText("RPM");
         sensorJetiExP->setUnit("RPM");
     }
-    if (ESC_PROTOCOL == PROTOCOL_HW_V4)
+    if (CONFIG_ESC_PROTOCOL == PROTOCOL_HW_V4)
     {
         SensorJetiEx *sensorJetiExP;
         EscHW4 *esc;
@@ -426,7 +426,7 @@ void JetiEx::setConfig()
         sensorJetiExP->setText("Consumption");
         sensorJetiExP->setUnit("mAh");
     }
-    if (ESC_PROTOCOL == PROTOCOL_CASTLE)
+    if (CONFIG_ESC_PROTOCOL == PROTOCOL_CASTLE)
     {
         SensorJetiEx *sensorJetiExP;
         EscCastle *esc;
@@ -469,7 +469,7 @@ void JetiEx::setConfig()
         sensorJetiExP->setText("Consumption");
         sensorJetiExP->setUnit("mAh");
     }
-    if (ESC_PROTOCOL == PROTOCOL_KONTRONIK)
+    if (CONFIG_ESC_PROTOCOL == PROTOCOL_KONTRONIK)
     {
         SensorJetiEx *sensorJetiExP;
         EscKontronik *esc;
@@ -512,7 +512,7 @@ void JetiEx::setConfig()
         sensorJetiExP->setText("Consumption");
         sensorJetiExP->setUnit("mAh");
     }
-    if (ESC_PROTOCOL == PROTOCOL_APD_F)
+    if (CONFIG_ESC_PROTOCOL == PROTOCOL_APD_F)
     {
         SensorJetiEx *sensorJetiExP;
         EscApdF *esc;
@@ -547,7 +547,7 @@ void JetiEx::setConfig()
         sensorJetiExP->setText("Consumption");
         sensorJetiExP->setUnit("mAh");
     }
-    if (ESC_PROTOCOL == PROTOCOL_APD_HV)
+    if (CONFIG_ESC_PROTOCOL == PROTOCOL_APD_HV)
     {
         SensorJetiEx *sensorJetiExP;
         EscApdHV *esc;
