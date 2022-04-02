@@ -36,8 +36,8 @@ All sensors are optional. Make the circuit with the desired sensors and enable t
 | ATmega328P<sup>(3)</sup> | Arduino Pro Mini<sup>(5)</sup> | Innacurate | 1 | :x: |
 | ATmega328PB<sup>(3)</sup> | Pololu ATmega328PB<sup>(5)</sup> | :heavy_check_mark: | 2 | :x: |
 | ATmega32U4<sup>(3)</sup> | Arduino Micro / Teensy 2 | :heavy_check_mark: | 1 | :x: |
-| ARM CortexM0+ | Teensy LC<sup>(4)</sup> | :heavy_check_mark: | 3 | :heavy_check_mark: |
-| ARM CortexM4 | Teensy 3.2 | :heavy_check_mark: | 3 | :heavy_check_mark: |
+| MKL26Z (ARM CortexM0+) | Teensy LC<sup>(4)</sup> | :heavy_check_mark: | 3 | :heavy_check_mark: |
+| MK20DX (ARM CortexM4) | Teensy 3.2 | :heavy_check_mark: | 3 | :heavy_check_mark: |
 
 ATmega2560 is deprecated
 
