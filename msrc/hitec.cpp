@@ -447,7 +447,7 @@ void Hitec::setConfig()
     if (CONFIG_I2C1_TYPE == I2C_BMP280)
     {
         Bmp280 *bmp;
-        bmp = new Bmp280(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP), ALPHA(1));
+        bmp = new Bmp280(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         addDevice(bmp);
         frame_0x1B_P[HITEC_FRAME_0X14_GPS_ALT] = bmp->altitudeP();
@@ -456,7 +456,7 @@ void Hitec::setConfig()
     if (CONFIG_I2C1_TYPE == I2C_MS5611)
     {
         MS5611 *bmp;
-        bmp = new MS5611(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP), ALPHA(1));
+        bmp = new MS5611(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
         addDevice(bmp);
         frame_0x1B_P[HITEC_FRAME_0X14_GPS_ALT] = bmp->altitudeP();
