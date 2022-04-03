@@ -64,27 +64,27 @@ ATmega board version 3.3v or 5v: Usually 3.3v can be used and it is recommended 
 
 ### 1.2 Connections
 
-| Board                     | Arduino Pro Mini | Pololu ATmega328PB | Teensy 2      | Arduino Pro Micro   | Teensy LC<br/>Teensy 3.x     |
-| :---:                     | :---:            | :---:              | :---:         | :---:           | :---:                        |
-| MCU                       | ATmega328P       | ATmega328PB        | ATmega32U4    | ATmega32U4      | ARMCortexM0+<br/>ARMCortexM4 |
-| NTC 1                     | A0               | A0                 | F7            | A0              | 14                           |
-| NTC 2                     | A1               | A1                 | F6            | A1              | 15                           |
-| Voltage 1                 | A2               | A2                 | F5            | A2              | 16                           |
-| Voltage 2                 | A3               | A3                 | F4            | A3              | 17                           |
-| Current                   | A6               | A6                 | B5            | A9              | 20                           |
-| Airspeed                  | A7               | A7                 | D7            | A7              | 26                           |
-| ESC serial                | RX               | RX0                | D2            | RX1             | 9                            |
-| GPS                       | RX               | RX1                | D2            | RX1             | 7                            |
-| PWM in                    | 8                | 8                  | D4            | 4               | 6                            |
-| PWM out                   | 10               | 10                 | B6            | 10              | 22                           |
-| Rx Castle                 | -                | 8                  | C7            | 13<sup>(9)</sup> | 16                          |
-| ESC Castle<sup>(1)</sup>  | -                | 2 & 22             | D4 & B6       | 4 & 10          | 2 & 6                        |
-| Frsky Smartport, SBUS     | 7 & 12<sup>(2)</sup> | 7 & 9<sup>(2)</sup> | A15 & D10<sup>(2)</sup> | B3 & B4<sup>(2)</sup><br/>(14 & 8) | 1 |
-| Frsky D                   | 12               | 12                 | D10           | B4(8)           | 1                            |
+| Board                     | Arduino Pro Mini | Pololu ATmega328PB | Teensy 2      | Arduino Pro Micro | Teensy LC<br/>Teensy 3.x     |
+| :---:                     | :---:            | :---:              | :---:         | :---:             | :---:                        |
+| MCU                       | ATmega328P       | ATmega328PB        | ATmega32U4    | ATmega32U4        | ARMCortexM0+<br/>ARMCortexM4 |
+| NTC 1                     | A0               | A0                 | F7            | A0                | 14                           |
+| NTC 2                     | A1               | A1                 | F6            | A1                | 15                           |
+| Voltage 1                 | A2               | A2                 | F5            | A2                | 16                           |
+| Voltage 2                 | A3               | A3                 | F4            | A3                | 17                           |
+| Current                   | A6               | A6                 | B5            | A9                | 20                           |
+| Airspeed                  | A7               | A7                 | D7            | A7                | 26                           |
+| ESC serial                | RX               | RX0                | D2            | RX1               | 9                            |
+| GPS                       | RX               | RX1                | D2            | RX1               | 7                            |
+| PWM in                    | 8                | 8                  | D4            | 4                 | 6                            |
+| PWM out                   | 10               | 10                 | B6            | 10                | 22                           |
+| Rx Castle                 | -                | 8                  | C7            | 13<sup>(9)</sup>  | 16                           |
+| ESC Castle<sup>(1)</sup>  | -                | 2 & 22             | D4 & B6       | 4 & 10            | 2 & 6                        |
+| Frsky Smartport, SBUS     | 7 & 12<sup>(2)</sup> | 7 & 9<sup>(2)</sup> | B3 & B4<sup>(2)</sup> | MISO & 8<sup>(2)</sup><br/> | 1     |
+| Frsky D                   | 12               | 12                 | B4            | 8                 | 1                            |
 | SRXL, IBUS, SB, Jeti Ex | RX & TX<sup>(2)</sup> </br>or<sup>(8)</sup> 7 & 12<sup>(2)</sup> | RX1 & TX1<sup>(2)</sup> </br>or<sup>(6)</sup> RX0 & TX0<sup>(2)</sup> </br>or<sup>(7)</sup> 7 & 12<sup>(2)</sup> | 15(RX3) & 14(TX3)<sup>(2)</sup> | D2(RX1) & D3(TX1)<sup>(2)</sup> </br>or<sup>(8)</sup> B3 & B4<sup>(2)</sup>(14 & 8) | 1 |
-| Hitec, XBUS or sensor SDA | A4               | A4                 | D1            | 2               | 18<sup>(3)</sup>             |
-| Hitec, XBUS or sensor SCL | A5               | A5                 | D0            | 3               | 19<sup>(3)</sup>             |
-| XBUS NPN clock stretch<sup>(4)</sup> | 13    | 13                 | B5            | 9               | 13                           |
+| Hitec, XBUS or sensor SDA | A4               | A4                 | D1            | 2                 | 18<sup>(3)</sup>             |
+| Hitec, XBUS or sensor SCL | A5               | A5                 | D0            | 3                 | 19<sup>(3)</sup>             |
+| XBUS NPN clock stretch<sup>(4)</sup> | 13    | 13                 | B5            | 9                 | 13                           |
 
 (1) with 3.3k pull up resistor  
 (2) 1k resistor  

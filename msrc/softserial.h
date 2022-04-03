@@ -57,7 +57,7 @@
 
     RX: 328P/PB: PIN 7   (PD7,PCINT23)
         2560:    PIN A15 (PK7,PCINT23)
-        32U4:    PIN B3/14  (PB3,PCINT3)
+        32U4:    PIN B3/14/MISO  (PB3,PCINT3)
 
     TX: 328P:    PIN 12  (PB4)
         328PB:   PIN 9   (PB1)
