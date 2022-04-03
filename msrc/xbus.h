@@ -189,7 +189,11 @@ protected:
 #endif
 #if (CONFIG_I2C1_TYPE == I2C_BMP280) && (defined(__MKL26Z64__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)) && defined(I2C_T3_TEENSY)
     static Xbus_Vario xbusVario;
-    Bmp280 bmp = Bmp280(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP), ALPHA(1));
+    Bmp280 bmp = Bmp280(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
+#endif
+#if (CONFIG_I2C1_TYPE == I2C_MS5611) && (defined(__MKL26Z64__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)) && defined(I2C_T3_TEENSY)
+    static Xbus_Vario xbusVario;
+    MS5611 bmp = MS5611(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
 #endif
     uint8_t bcd8(float value, uint8_t precision);
     uint16_t bcd16(float value, uint8_t precision);
