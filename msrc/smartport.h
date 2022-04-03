@@ -57,8 +57,10 @@
 
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega328PB__) || defined(ARDUINO_AVR_A_STAR_328PB) || defined(__AVR_ATmega32U4__) || RX_PROTOCOL != RX_SMARTPORT || !defined(CONFIG_LUA)
 #define ESC_PROTOCOL CONFIG_ESC_PROTOCOL
+#define DEVICE_I2C_TYPE CONFIG_I2C1_TYPE
 #else
 #define ESC_PROTOCOL config.protocol
+#define DEVICE_I2C_TYPE config.deviceI2C1Type
 #endif
 
 #include <Arduino.h>

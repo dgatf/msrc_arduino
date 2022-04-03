@@ -513,7 +513,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new SensorSport(T2_FIRST_ID, ntc->valueP(), config.refresh.temp);
         sensorBufferP->add(sensorP);
     }
-    if (config.deviceI2C1Type == I2C_BMP280)
+    if (DEVICE_I2C_TYPE == I2C_BMP280)
     {
         SensorSport *sensorP;
         Bmp280 *bmp;
@@ -527,7 +527,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new SensorSport(VARIO_FIRST_ID, bmp->varioP(), 5);
         sensorBufferP->add(sensorP);
     }
-    if (config.deviceI2C1Type == I2C_MS5611)
+    if (DEVICE_I2C_TYPE == I2C_MS5611)
     {
         SensorSport *sensorP;
         MS5611 *bmp;
