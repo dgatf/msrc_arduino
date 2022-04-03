@@ -1,5 +1,4 @@
-// This sketch is a sniffer for serial port
-// This is valid for any esc with serial output. Other kind of protocols like castlelink are no supported
+// This sketch outputs to serial port in hex format what it is received at pin 10
 // Circuit:
 // 1. esc serial data to pin 10 on the arduino
 // 2. esc gnd to arduino gnd
@@ -9,7 +8,7 @@
 
 #define PIN_SNIFFER 10
 #define BAUD_RATE_SNIFFER 19200
-#define TIMEOUT_SNIFFER 5
+#define TIMEOUT_SNIFFER 3
 
 #include <Arduino.h>
 #include <SoftwareSerial.h>
@@ -18,7 +17,7 @@ SoftwareSerial snifferSerial(PIN_SNIFFER, PIN_SNIFFER);  // Rx Tx
 uint8_t data[64];
 
 void setup() {
-  Serial.begin(19200);
+  Serial.begin(115200);
   Serial.println("INIT");
   snifferSerial.begin(BAUD_RATE_SNIFFER);
   snifferSerial.setTimeout(TIMEOUT_SNIFFER);
