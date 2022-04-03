@@ -5,7 +5,7 @@
 #include "device.h"
 #include "formatData.h"
 
-class Sensor : public FormatData
+class SensorSport : public FormatData
 {
 protected:
     uint16_t timestamp_ = 0, dataId_, frameId_ = 0x10;
@@ -14,60 +14,57 @@ protected:
     uint8_t refresh_;
 
 public:
-    AbstractDevice *deviceP_;
-    Sensor(uint16_t dataId, float *valueLP, uint8_t refresh, AbstractDevice *deviceP);
-    virtual ~Sensor();
-    Sensor *nextP = NULL;
+    SensorSport(uint16_t dataId, float *valueLP, uint8_t refresh);
+    virtual ~SensorSport();
     uint16_t timestamp();
     void setTimestamp(uint16_t dataId);
     uint16_t dataId();
     uint16_t frameId();
     uint8_t refresh();
-    void update();
     virtual uint32_t valueFormatted();
 };
 
-class SensorDouble : public Sensor
+class SensorSportDouble : public SensorSport
 {
 protected:
     float *valueMP_;
 
 public:
-    SensorDouble(uint16_t dataId, float *valueLP, float *valueMP, uint8_t refresh, AbstractDevice *deviceP);
+    SensorSportDouble(uint16_t dataId, float *valueLP, float *valueMP, uint8_t refresh);
     virtual uint32_t valueFormatted();
 };
 
-class SensorLatLon : public SensorDouble
+class SensorSportLatLon : public SensorSportDouble
 {
 protected:
     uint8_t type_ = TYPE_LAT;
 
 public:
-    SensorLatLon(uint16_t dataId, float *lonP, float *latP, uint8_t refresh, AbstractDevice *deviceP);
+    SensorSportLatLon(uint16_t dataId, float *lonP, float *latP, uint8_t refresh);
     uint32_t valueFormatted();
 };
 
-class SensorDateTime : public SensorDouble
+class SensorSportDateTime : public SensorSportDouble
 {
 protected:
     uint8_t type_ = TYPE_DATE;
 
 public:
-    SensorDateTime(uint16_t dataId, float *timeP, float *dateP, uint8_t refresh, AbstractDevice *deviceP);
+    SensorSportDateTime(uint16_t dataId, float *timeP, float *dateP, uint8_t refresh);
     uint32_t valueFormatted();
 };
 
-class SensorCell : public SensorDouble
+class SensorSportCell : public SensorSportDouble
 {
 protected:
     uint8_t cellIndex_ = 0;
 
 public:
-    SensorCell(uint16_t dataId, float *indexM, float *indexL, uint8_t cellIndex, uint8_t refresh, AbstractDevice *deviceP);
+    SensorSportCell(uint16_t dataId, float *indexM, float *indexL, uint8_t cellIndex, uint8_t refresh);
     uint32_t valueFormatted();
 };
 
-class Sensord : public FormatData
+class SensorFrskyD : public FormatData
 {
 protected:
     uint16_t timestamp_ = 0, value_;
@@ -76,15 +73,12 @@ protected:
     uint8_t refresh_;
 
 public:
-    AbstractDevice *deviceP_;
-    Sensord(uint8_t dataId, float *value, uint8_t refresh, AbstractDevice *deviceP);
-    ~Sensord();
-    Sensord *nextP = NULL;
+    SensorFrskyD(uint8_t dataId, float *value, uint8_t refresh);
+    ~SensorFrskyD();
     uint16_t timestamp();
     void setTimestamp(uint16_t dataId);
     uint8_t dataId();
     uint8_t refresh();
-    void update();
     uint16_t valueFormatted();
 };
 
@@ -97,12 +91,10 @@ protected:
     int32_t valueFormatted_ = 0;
 
 public:
-    AbstractDevice *deviceP_;
-    SensorIbus(uint8_t dataId, uint8_t type, float *value, AbstractDevice *deviceP);
+    SensorIbus(uint8_t dataId, uint8_t type, float *value);
     virtual ~SensorIbus();
     uint8_t dataId();
     uint8_t type();
-    void update();
     virtual uint8_t *valueFormatted();
 };
 
@@ -113,12 +105,10 @@ protected:
     float *valueP_;
 
 public:
-    AbstractDevice *deviceP_;
-    SensorSbus(uint8_t dataId, float *valueP, AbstractDevice *deviceP);
+    SensorSbus(uint8_t dataId, float *valueP);
     ~SensorSbus();
     uint8_t dataId();
     float *valueP();
-    void update();
     uint16_t valueFormatted();
 };
 
@@ -129,12 +119,10 @@ protected:
     float *valueP_;
 
 public:
-    AbstractDevice *deviceP_;
-    SensorMultiplex(uint8_t dataId, float *value, AbstractDevice *deviceP);
+    SensorMultiplex(uint8_t dataId, float *value);
     ~SensorMultiplex();
     uint8_t dataId();
     float *valueP();
-    void update();
     uint16_t valueFormatted();
 };
 
@@ -149,8 +137,7 @@ protected:
     char unit_[8] = "";
 
 public:
-    AbstractDevice *deviceP_;
-    SensorJetiEx(uint8_t type, uint8_t format, float *value, AbstractDevice *deviceP);
+    SensorJetiEx(uint8_t type, uint8_t format, float *value);
     ~SensorJetiEx();
     void setText(const char *textP);
     void setUnit(const char *textP);
@@ -160,7 +147,6 @@ public:
     uint8_t type();
     uint8_t format();
     float *valueP();
-    void update();
 };
 
 #endif

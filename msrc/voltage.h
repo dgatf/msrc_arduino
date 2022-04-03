@@ -8,11 +8,12 @@
 #endif
 
 #define ADC_RESOLUTION 1024.0
+#define ANALOG_SENSOR_INTERVAL 5
 
 #include <Arduino.h>
 #include "device.h"
 
-class Voltage : public AbstractDevice
+class Voltage : public Device
 {
 protected:
     uint8_t pin_;

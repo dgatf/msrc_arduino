@@ -167,6 +167,7 @@ void Sbus::sendSlot(uint8_t number)
 
 void Sbus::begin()
 {
+    deviceBufferP = new CircularBuffer<Device>;
     SMARTPORT_FRSKY_SBUS_SERIAL.begin(100000, SERIAL__8E2_RXINV_TXINV | SERIAL__HALF_DUP);
     //SMARTPORT_FRSKY_SBUS_SERIAL.begin(100000, SERIAL__8E2);
     SMARTPORT_FRSKY_SBUS_SERIAL.setTimeout(SBUS_SERIAL_TIMEOUT);
@@ -316,15 +317,11 @@ void Sbus::update()
     }
 
     // update sensor
-    static uint8_t cont = 0;
-    if (sensorSbusP[cont])
+    if (deviceBufferP->current())
     {
-        if (sensorSbusP[cont]->valueP())
-            sensorSbusP[cont]->update();
+        deviceBufferP->current()->update();
+        deviceBufferP->next();
     }
-    cont++;
-    if (cont == 32)
-        cont = 0;
 }
 
 void Sbus::setConfig()
@@ -335,7 +332,8 @@ void Sbus::setConfig()
         EscPWM *esc;
         esc = new EscPWM(ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM));
         esc->begin();
-        sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP(), esc);
+        deviceBufferP->add(esc);
+        sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP());
         addSensor(SBUS_SLOT_RPM, sensorSbusP);
     }
     if (CONFIG_ESC_PROTOCOL == PROTOCOL_HW_V3)
@@ -344,7 +342,8 @@ void Sbus::setConfig()
         EscHW3 *esc;
         esc = new EscHW3(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM));
         esc->begin();
-        sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP(), esc);
+        deviceBufferP->add(esc);
+        sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP());
         addSensor(SBUS_SLOT_RPM, sensorSbusP);
     }
     if (CONFIG_ESC_PROTOCOL == PROTOCOL_HW_V4)
@@ -353,21 +352,22 @@ void Sbus::setConfig()
         EscHW4 *esc;
         esc = new EscHW4(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP), 0);
         esc->begin();
+        deviceBufferP->add(esc);
         PwmOut pwmOut;
         pwmOut.setRpmP(esc->rpmP());
-        sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP(), esc);
+        sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP());
         addSensor(SBUS_SLOT_RPM, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_CURR, esc->currentP(), esc);
+        sensorSbusP = new SensorSbus(FASST_POWER_CURR, esc->currentP());
         addSensor(SBUS_SLOT_POWER_CURR1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->voltageP(), esc);
+        sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->voltageP());
         addSensor(SBUS_SLOT_POWER_VOLT1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_CONS, esc->consumptionP(), esc);
+        sensorSbusP = new SensorSbus(FASST_POWER_CONS, esc->consumptionP());
         addSensor(SBUS_SLOT_POWER_CONS1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_TEMP, esc->tempFetP(), esc);
+        sensorSbusP = new SensorSbus(FASST_TEMP, esc->tempFetP());
         addSensor(SBUS_SLOT_TEMP1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_TEMP, esc->tempBecP(), esc);
+        sensorSbusP = new SensorSbus(FASST_TEMP, esc->tempBecP());
         addSensor(SBUS_SLOT_TEMP2, sensorSbusP);
-        //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->cellVoltageP(), esc);
+        //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->cellVoltageP());
         //addSensor(12, sensorSbusP);
     }
     if (CONFIG_ESC_PROTOCOL == PROTOCOL_CASTLE)
@@ -376,23 +376,24 @@ void Sbus::setConfig()
         EscCastle *esc;
         esc = new EscCastle(ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
-        sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP(), esc);
+        deviceBufferP->add(esc);
+        sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP());
         addSensor(SBUS_SLOT_RPM, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_CURR, esc->currentP(), esc);
+        sensorSbusP = new SensorSbus(FASST_POWER_CURR, esc->currentP());
         addSensor(SBUS_SLOT_POWER_CURR1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->voltageP(), esc);
+        sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->voltageP());
         addSensor(SBUS_SLOT_POWER_VOLT1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_CONS, esc->consumptionP(), esc);
+        sensorSbusP = new SensorSbus(FASST_POWER_CONS, esc->consumptionP());
         addSensor(SBUS_SLOT_POWER_CONS1, sensorSbusP);
-        //sensorSbusP = new SensorSbus(FASST_VOLT_V1, esc->rippleVoltageP(), esc);
+        //sensorSbusP = new SensorSbus(FASST_VOLT_V1, esc->rippleVoltageP());
         //addSensor(SBUS_SLOT_VOLT_V1, sensorSbusP);
-        //sensorSbusP = new SensorSbus(FASST_POWER_CURR, esc->becCurrentP(), esc);
+        //sensorSbusP = new SensorSbus(FASST_POWER_CURR, esc->becCurrentP());
         //addSensor(SBUS_SLOT_POWER_CURR2, sensorSbusP);
-        //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->becVoltageP(), esc);
+        //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->becVoltageP());
         //addSensor(SBUS_SLOT_POWER_VOLT2, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_TEMP, esc->temperatureP(), esc);
+        sensorSbusP = new SensorSbus(FASST_TEMP, esc->temperatureP());
         addSensor(SBUS_SLOT_TEMP1, sensorSbusP);
-        //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->cellVoltageP(), esc);
+        //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->cellVoltageP());
         //addSensor(12, sensorSbusP);
     }
     if (CONFIG_ESC_PROTOCOL == PROTOCOL_KONTRONIK)
@@ -401,25 +402,26 @@ void Sbus::setConfig()
         EscKontronik *esc;
         esc = new EscKontronik(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
+        deviceBufferP->add(esc);
         //PwmOut pwmOut;
         //pwmOut.setRpmP(esc->rpmP());
-        sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP(), esc);
+        sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP());
         addSensor(SBUS_SLOT_RPM, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_CURR, esc->currentP(), esc);
+        sensorSbusP = new SensorSbus(FASST_POWER_CURR, esc->currentP());
         addSensor(SBUS_SLOT_POWER_CURR1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->voltageP(), esc);
+        sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->voltageP());
         addSensor(SBUS_SLOT_POWER_VOLT1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_CONS, esc->consumptionP(), esc);
+        sensorSbusP = new SensorSbus(FASST_POWER_CONS, esc->consumptionP());
         addSensor(SBUS_SLOT_POWER_CONS1, sensorSbusP);
-        //sensorSbusP = new SensorSbus(FASST_POWER_CURR, esc->becCurrentP(), esc);
+        //sensorSbusP = new SensorSbus(FASST_POWER_CURR, esc->becCurrentP());
         //addSensor(SBUS_SLOT_POWER_CURR2, sensorSbusP);
-        //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->becVoltageP(), esc);
+        //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->becVoltageP());
         //addSensor(SBUS_SLOT_POWER_VOLT2, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_TEMP, esc->tempFetP(), esc);
+        sensorSbusP = new SensorSbus(FASST_TEMP, esc->tempFetP());
         addSensor(SBUS_SLOT_TEMP1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_TEMP, esc->tempBecP(), esc);
+        sensorSbusP = new SensorSbus(FASST_TEMP, esc->tempBecP());
         addSensor(SBUS_SLOT_TEMP2, sensorSbusP);
-        //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->cellVoltageP(), esc);
+        //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->cellVoltageP());
         //addSensor(12, sensorSbusP);
     }
     if (CONFIG_ESC_PROTOCOL == PROTOCOL_APD_F)
@@ -428,19 +430,20 @@ void Sbus::setConfig()
         EscApdF *esc;
         esc = new EscApdF(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
+        deviceBufferP->add(esc);
         //PwmOut pwmOut;
         //pwmOut.setRpmP(esc->rpmP());
-        sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP(), esc);
+        sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP());
         addSensor(SBUS_SLOT_RPM, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_CURR, esc->currentP(), esc);
+        sensorSbusP = new SensorSbus(FASST_POWER_CURR, esc->currentP());
         addSensor(SBUS_SLOT_POWER_CURR1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->voltageP(), esc);
+        sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->voltageP());
         addSensor(SBUS_SLOT_POWER_VOLT1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_CONS, esc->consumptionP(), esc);
+        sensorSbusP = new SensorSbus(FASST_POWER_CONS, esc->consumptionP());
         addSensor(SBUS_SLOT_POWER_CONS1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_TEMP, esc->tempP(), esc);
+        sensorSbusP = new SensorSbus(FASST_TEMP, esc->tempP());
         addSensor(SBUS_SLOT_TEMP1, sensorSbusP);
-        //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->cellVoltageP(), esc);
+        //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->cellVoltageP());
         //addSensor(12, sensorSbusP);
     }
     if (CONFIG_ESC_PROTOCOL == PROTOCOL_APD_HV)
@@ -449,19 +452,20 @@ void Sbus::setConfig()
         EscApdHV *esc;
         esc = new EscApdHV(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
+        deviceBufferP->add(esc);
         //PwmOut pwmOut;
         //pwmOut.setRpmP(esc->rpmP());
-        sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP(), esc);
+        sensorSbusP = new SensorSbus(FASST_RPM, esc->rpmP());
         addSensor(SBUS_SLOT_RPM, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_CURR, esc->currentP(), esc);
+        sensorSbusP = new SensorSbus(FASST_POWER_CURR, esc->currentP());
         addSensor(SBUS_SLOT_POWER_CURR1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->voltageP(), esc);
+        sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->voltageP());
         addSensor(SBUS_SLOT_POWER_VOLT1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_CONS, esc->consumptionP(), esc);
+        sensorSbusP = new SensorSbus(FASST_POWER_CONS, esc->consumptionP());
         addSensor(SBUS_SLOT_POWER_CONS1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_TEMP, esc->tempP(), esc);
+        sensorSbusP = new SensorSbus(FASST_TEMP, esc->tempP());
         addSensor(SBUS_SLOT_TEMP1, sensorSbusP);
-        //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->cellVoltageP(), esc);
+        //sensorSbusP = new SensorSbus(FASST_POWER_VOLT, esc->cellVoltageP());
         //addSensor(12, sensorSbusP);
     }
     if (CONFIG_GPS)
@@ -470,21 +474,22 @@ void Sbus::setConfig()
         Bn220 *gps;
         gps = new Bn220(GPS_SERIAL, GPS_BAUD_RATE);
         gps->begin();
-        sensorSbusP = new SensorSbus(FASST_GPS_SPEED, gps->spdP(), gps);
+        deviceBufferP->add(gps);
+        sensorSbusP = new SensorSbus(FASST_GPS_SPEED, gps->spdP());
         addSensor(SBUS_SLOT_GPS_SPD, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_GPS_ALTITUDE, gps->altP(), gps);
+        sensorSbusP = new SensorSbus(FASST_GPS_ALTITUDE, gps->altP());
         addSensor(SBUS_SLOT_GPS_ALT, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_GPS_TIME, gps->timeP(), gps);
+        sensorSbusP = new SensorSbus(FASST_GPS_TIME, gps->timeP());
         addSensor(SBUS_SLOT_GPS_TIME, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_GPS_VARIO_SPEED, gps->varioP(), gps);
+        sensorSbusP = new SensorSbus(FASST_GPS_VARIO_SPEED, gps->varioP());
         addSensor(SBUS_SLOT_GPS_VARIO, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_GPS_LATITUDE1, gps->latP(), gps);
+        sensorSbusP = new SensorSbus(FASST_GPS_LATITUDE1, gps->latP());
         addSensor(SBUS_SLOT_GPS_LAT1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_GPS_LATITUDE2, gps->latP(), gps);
+        sensorSbusP = new SensorSbus(FASST_GPS_LATITUDE2, gps->latP());
         addSensor(SBUS_SLOT_GPS_LAT2, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_GPS_LONGITUDE1, gps->lonP(), gps);
+        sensorSbusP = new SensorSbus(FASST_GPS_LONGITUDE1, gps->lonP());
         addSensor(SBUS_SLOT_GPS_LON1, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_GPS_LONGITUDE2, gps->lonP(), gps);
+        sensorSbusP = new SensorSbus(FASST_GPS_LONGITUDE2, gps->lonP());
         addSensor(SBUS_SLOT_GPS_LON2, sensorSbusP);
     }
     if (CONFIG_AIRSPEED)
@@ -492,7 +497,8 @@ void Sbus::setConfig()
         SensorSbus *sensorSbusP;
         Pressure *pressure;
         pressure = new Pressure(PIN_PRESSURE, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT));
-        sensorSbusP = new SensorSbus(FASST_AIR_SPEED, pressure->valueP(), pressure);
+        deviceBufferP->add(pressure);
+        sensorSbusP = new SensorSbus(FASST_AIR_SPEED, pressure->valueP());
         addSensor(SBUS_SLOT_AIR_SPEED, sensorSbusP);
     }
     if (CONFIG_VOLTAGE1)
@@ -500,11 +506,12 @@ void Sbus::setConfig()
         SensorSbus *sensorSbusP;
         Voltage *voltage;
         voltage = new Voltage(PIN_VOLTAGE1, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), VOLTAGE1_MULTIPLIER);
-        sensorSbusP = new SensorSbus(FASST_VOLT_V1, voltage->valueP(), voltage);
+        deviceBufferP->add(voltage);
+        sensorSbusP = new SensorSbus(FASST_VOLT_V1, voltage->valueP());
         addSensor(SBUS_SLOT_VOLT_V1, sensorSbusP);
         if (CONFIG_VOLTAGE2 == false)
         {
-            sensorSbusP = new SensorSbus(FASST_VOLT_V2, NULL, voltage);
+            sensorSbusP = new SensorSbus(FASST_VOLT_V2, NULL);
             addSensor(SBUS_SLOT_VOLT_V2, sensorSbusP);
         }
     }
@@ -513,11 +520,12 @@ void Sbus::setConfig()
         SensorSbus *sensorSbusP;
         Voltage *voltage;
         voltage = new Voltage(PIN_VOLTAGE2, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), VOLTAGE2_MULTIPLIER);
-        sensorSbusP = new SensorSbus(FASST_VOLT_V2, voltage->valueP(), voltage);
+        deviceBufferP->add(voltage);
+        sensorSbusP = new SensorSbus(FASST_VOLT_V2, voltage->valueP());
         addSensor(SBUS_SLOT_VOLT_V2, sensorSbusP);
         if (CONFIG_VOLTAGE1 == false)
         {
-            sensorSbusP = new SensorSbus(FASST_VOLT_V1, NULL, voltage);
+            sensorSbusP = new SensorSbus(FASST_VOLT_V1, NULL);
             addSensor(SBUS_SLOT_VOLT_V1, sensorSbusP);
         }
     }
@@ -526,11 +534,12 @@ void Sbus::setConfig()
         SensorSbus *sensorSbusP;
         Current *current;
         current = new Current(PIN_CURRENT, ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), CURRENT_MULTIPLIER, CURRENT_OFFSET, CURRENT_AUTO_OFFSET);
-        sensorSbusP = new SensorSbus(FASST_POWER_CURR, current->valueP(), current);
+        deviceBufferP->add(current);
+        sensorSbusP = new SensorSbus(FASST_POWER_CURR, current->valueP());
         addSensor(SBUS_SLOT_POWER_CURR2, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_CONS, current->consumptionP(), current);
+        sensorSbusP = new SensorSbus(FASST_POWER_CONS, current->consumptionP());
         addSensor(SBUS_SLOT_POWER_CONS2, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_POWER_VOLT, NULL, current);
+        sensorSbusP = new SensorSbus(FASST_POWER_VOLT, NULL);
         addSensor(SBUS_SLOT_POWER_VOLT2, sensorSbusP);
     }
     if (CONFIG_NTC1)
@@ -538,7 +547,8 @@ void Sbus::setConfig()
         SensorSbus *sensorSbusP;
         Ntc *ntc;
         ntc = new Ntc(PIN_NTC1, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
-        sensorSbusP = new SensorSbus(FASST_TEMP, ntc->valueP(), ntc);
+        deviceBufferP->add(ntc);
+        sensorSbusP = new SensorSbus(FASST_TEMP, ntc->valueP());
         addSensor(SBUS_SLOT_TEMP1, sensorSbusP);
     }
     if (CONFIG_NTC2)
@@ -546,7 +556,8 @@ void Sbus::setConfig()
         SensorSbus *sensorSbusP;
         Ntc *ntc;
         ntc = new Ntc(PIN_NTC2, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
-        sensorSbusP = new SensorSbus(FASST_TEMP, ntc->valueP(), ntc);
+        deviceBufferP->add(ntc);
+        sensorSbusP = new SensorSbus(FASST_TEMP, ntc->valueP());
         addSensor(SBUS_SLOT_TEMP2, sensorSbusP);
     }
     if (CONFIG_I2C1_TYPE == I2C_BMP280)
@@ -555,9 +566,10 @@ void Sbus::setConfig()
         Bmp280 *bmp;
         bmp = new Bmp280(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
-        sensorSbusP = new SensorSbus(FASST_VARIO_SPEED, bmp->varioP(), bmp);
+        deviceBufferP->add(bmp);
+        sensorSbusP = new SensorSbus(FASST_VARIO_SPEED, bmp->varioP());
         addSensor(SBUS_SLOT_VARIO_SPEED, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_VARIO_ALT, bmp->altitudeP(), bmp);
+        sensorSbusP = new SensorSbus(FASST_VARIO_ALT, bmp->altitudeP());
         addSensor(SBUS_SLOT_VARIO_ALT, sensorSbusP);
     }
     if (CONFIG_I2C1_TYPE == I2C_MS5611)
@@ -566,9 +578,10 @@ void Sbus::setConfig()
         MS5611 *bmp;
         bmp = new MS5611(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
-        sensorSbusP = new SensorSbus(FASST_VARIO_SPEED, bmp->varioP(), bmp);
+        deviceBufferP->add(bmp);
+        sensorSbusP = new SensorSbus(FASST_VARIO_SPEED, bmp->varioP());
         addSensor(SBUS_SLOT_VARIO_SPEED, sensorSbusP);
-        sensorSbusP = new SensorSbus(FASST_VARIO_ALT, bmp->altitudeP(), bmp);
+        sensorSbusP = new SensorSbus(FASST_VARIO_ALT, bmp->altitudeP());
         addSensor(SBUS_SLOT_VARIO_ALT, sensorSbusP);
     }
 }

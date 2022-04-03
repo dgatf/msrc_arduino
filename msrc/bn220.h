@@ -29,7 +29,7 @@
 #include <Arduino.h>
 #include "device.h"
 
-class Bn220 : public AbstractDevice, Vario
+class Bn220 : public Device, Vario
 {
 private:
     const uint8_t gga[10] = {0, 0, 0, 0, 0, 0, BN220_SAT, BN220_HDOP, BN220_ALT, BN220_END}; // GGA

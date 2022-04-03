@@ -10,6 +10,7 @@ Multiplex::~Multiplex()
 
 void Multiplex::begin()
 {
+    deviceBufferP = new CircularBuffer<Device>;
     serial_.begin(38400, SERIAL__8N1 | SERIAL__HALF_DUP);
     serial_.setTimeout(MULTIPLEX_SERIAL_TIMEOUT);
     pinMode(LED_BUILTIN, OUTPUT);
@@ -54,6 +55,9 @@ void Multiplex::update()
     {
         status = MULTIPLEX_SEND;
         ts = millis();
+        address++;
+        if (address > 16)
+            address = 0;
     }
 #else
     if (serial_.availableTimeout() == 1)
@@ -70,15 +74,12 @@ void Multiplex::update()
         sendPacket(address);
     }
 
-    // update sensor
-    static uint8_t cont = 0;
-    if (sensorMultiplexP[cont])
+    // update device
+    if (deviceBufferP->current())
     {
-        sensorMultiplexP[cont]->update();
+        deviceBufferP->current()->update();
+        deviceBufferP->next();
     }
-    cont++;
-    if (cont == 16)
-        cont = 0;
 }
 
 void Multiplex::setConfig()
@@ -89,7 +90,8 @@ void Multiplex::setConfig()
         EscPWM *esc;
         esc = new EscPWM(ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM));
         esc->begin();
-        sensorMultiplexP = new SensorMultiplex(FHSS_RPM, esc->rpmP(), esc);
+        deviceBufferP->add(esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_RPM, esc->rpmP());
         addSensor(sensorMultiplexP);
     }
     if (CONFIG_ESC_PROTOCOL == PROTOCOL_HW_V3)
@@ -98,7 +100,8 @@ void Multiplex::setConfig()
         EscHW3 *esc;
         esc = new EscHW3(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM));
         esc->begin();
-        sensorMultiplexP = new SensorMultiplex(FHSS_RPM, esc->rpmP(), esc);
+        deviceBufferP->add(esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_RPM, esc->rpmP());
         addSensor(sensorMultiplexP);
     }
     if (CONFIG_ESC_PROTOCOL == PROTOCOL_HW_V4)
@@ -107,21 +110,22 @@ void Multiplex::setConfig()
         EscHW4 *esc;
         esc = new EscHW4(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP), 0);
         esc->begin();
+        deviceBufferP->add(esc);
         PwmOut pwmOut;
         pwmOut.setRpmP(esc->rpmP());
-        sensorMultiplexP = new SensorMultiplex(FHSS_RPM, esc->rpmP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_RPM, esc->rpmP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, esc->currentP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, esc->currentP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->voltageP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->voltageP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, esc->tempFetP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, esc->tempFetP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, esc->tempBecP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, esc->tempBecP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->cellVoltageP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->cellVoltageP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_CONSUMPTION, esc->consumptionP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_CONSUMPTION, esc->consumptionP());
         addSensor(sensorMultiplexP);
     }
     if (CONFIG_ESC_PROTOCOL == PROTOCOL_CASTLE)
@@ -130,23 +134,24 @@ void Multiplex::setConfig()
         EscCastle *esc;
         esc = new EscCastle(ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
-        sensorMultiplexP = new SensorMultiplex(FHSS_RPM, esc->rpmP(), esc);
+        deviceBufferP->add(esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_RPM, esc->rpmP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, esc->currentP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, esc->currentP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->voltageP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->voltageP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->rippleVoltageP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->rippleVoltageP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, esc->becCurrentP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, esc->becCurrentP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->becVoltageP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->becVoltageP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, esc->temperatureP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, esc->temperatureP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->cellVoltageP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->cellVoltageP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_CONSUMPTION, esc->consumptionP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_CONSUMPTION, esc->consumptionP());
         addSensor(sensorMultiplexP);
     }
     if (CONFIG_ESC_PROTOCOL == PROTOCOL_KONTRONIK)
@@ -155,23 +160,24 @@ void Multiplex::setConfig()
         EscKontronik *esc;
         esc = new EscKontronik(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
-        sensorMultiplexP = new SensorMultiplex(FHSS_RPM, esc->rpmP(), esc);
+        deviceBufferP->add(esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_RPM, esc->rpmP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, esc->currentP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, esc->currentP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->voltageP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->voltageP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, esc->becCurrentP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, esc->becCurrentP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->becVoltageP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->becVoltageP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, esc->tempFetP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, esc->tempFetP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, esc->tempFetP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, esc->tempFetP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->cellVoltageP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->cellVoltageP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_CONSUMPTION, esc->consumptionP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_CONSUMPTION, esc->consumptionP());
         addSensor(sensorMultiplexP);
     }
     if (CONFIG_ESC_PROTOCOL == PROTOCOL_APD_F)
@@ -180,19 +186,20 @@ void Multiplex::setConfig()
         EscApdF *esc;
         esc = new EscApdF(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
+        deviceBufferP->add(esc);
         //PwmOut pwmOut;
         //pwmOut.setRpmP(esc->rpmP());
-        sensorMultiplexP = new SensorMultiplex(FHSS_RPM, esc->rpmP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_RPM, esc->rpmP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, esc->currentP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, esc->currentP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->voltageP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->voltageP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, esc->tempP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, esc->tempP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_CONSUMPTION, esc->consumptionP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_CONSUMPTION, esc->consumptionP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->cellVoltageP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->cellVoltageP());
         addSensor(sensorMultiplexP);
     }
     if (CONFIG_ESC_PROTOCOL == PROTOCOL_APD_HV)
@@ -201,19 +208,20 @@ void Multiplex::setConfig()
         EscApdHV *esc;
         esc = new EscApdHV(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
+        deviceBufferP->add(esc);
         //PwmOut pwmOut;
         //pwmOut.setRpmP(esc->rpmP());
-        sensorMultiplexP = new SensorMultiplex(FHSS_RPM, esc->rpmP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_RPM, esc->rpmP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, esc->currentP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, esc->currentP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->voltageP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->voltageP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, esc->tempP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, esc->tempP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_CONSUMPTION, esc->consumptionP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_CONSUMPTION, esc->consumptionP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->cellVoltageP(), esc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, esc->cellVoltageP());
         addSensor(sensorMultiplexP);
     }
     if (CONFIG_GPS)
@@ -222,13 +230,14 @@ void Multiplex::setConfig()
         Bn220 *gps;
         gps = new Bn220(GPS_SERIAL, GPS_BAUD_RATE);
         gps->begin();
-        sensorMultiplexP = new SensorMultiplex(FHSS_SPEED, gps->spdP(), gps);
+        deviceBufferP->add(gps);
+        sensorMultiplexP = new SensorMultiplex(FHSS_SPEED, gps->spdP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_ALTITUDE, gps->altP(), gps);
+        sensorMultiplexP = new SensorMultiplex(FHSS_ALTITUDE, gps->altP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VARIO, gps->varioP(), gps);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VARIO, gps->varioP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_DISTANCE, gps->distP(), gps);
+        sensorMultiplexP = new SensorMultiplex(FHSS_DISTANCE, gps->distP());
         addSensor(sensorMultiplexP);
     }
     if (CONFIG_AIRSPEED)
@@ -236,7 +245,8 @@ void Multiplex::setConfig()
         SensorMultiplex *sensorMultiplexP;
         Pressure *pressure;
         pressure = new Pressure(PIN_PRESSURE, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT));
-        sensorMultiplexP = new SensorMultiplex(FHSS_SPEED, pressure->valueP(), pressure);
+        deviceBufferP->add(pressure);
+        sensorMultiplexP = new SensorMultiplex(FHSS_SPEED, pressure->valueP());
         addSensor(sensorMultiplexP);
     }
     if (CONFIG_VOLTAGE1)
@@ -244,7 +254,8 @@ void Multiplex::setConfig()
         SensorMultiplex *sensorMultiplexP;
         Voltage *voltage;
         voltage = new Voltage(PIN_VOLTAGE1, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), VOLTAGE1_MULTIPLIER);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, voltage->valueP(), voltage);
+        deviceBufferP->add(voltage);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, voltage->valueP());
         addSensor(sensorMultiplexP);
     }
     if (CONFIG_VOLTAGE2)
@@ -252,7 +263,8 @@ void Multiplex::setConfig()
         SensorMultiplex *sensorMultiplexP;
         Voltage *voltage;
         voltage = new Voltage(PIN_VOLTAGE2, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), VOLTAGE2_MULTIPLIER);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, voltage->valueP(), voltage);
+        deviceBufferP->add(voltage);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VOLTAGE, voltage->valueP());
         addSensor(sensorMultiplexP);
     }
     if (CONFIG_CURRENT)
@@ -260,9 +272,10 @@ void Multiplex::setConfig()
         SensorMultiplex *sensorMultiplexP;
         Current *current;
         current = new Current(PIN_CURRENT, ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), CURRENT_MULTIPLIER, CURRENT_OFFSET, CURRENT_AUTO_OFFSET);
-        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, current->valueP(), current);
+        deviceBufferP->add(current);
+        sensorMultiplexP = new SensorMultiplex(FHSS_CURRENT, current->valueP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_CONSUMPTION, current->consumptionP(), current);
+        sensorMultiplexP = new SensorMultiplex(FHSS_CONSUMPTION, current->consumptionP());
         addSensor(sensorMultiplexP);
     }
     if (CONFIG_NTC1)
@@ -270,7 +283,8 @@ void Multiplex::setConfig()
         SensorMultiplex *sensorMultiplexP;
         Ntc *ntc;
         ntc = new Ntc(PIN_NTC1, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
-        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, ntc->valueP(), ntc);
+        deviceBufferP->add(ntc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, ntc->valueP());
         addSensor(sensorMultiplexP);
     }
     if (CONFIG_NTC2)
@@ -278,7 +292,8 @@ void Multiplex::setConfig()
         SensorMultiplex *sensorMultiplexP;
         Ntc *ntc;
         ntc = new Ntc(PIN_NTC2, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
-        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, ntc->valueP(), ntc);
+        deviceBufferP->add(ntc);
+        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, ntc->valueP());
         addSensor(sensorMultiplexP);
     }
     if (CONFIG_I2C1_TYPE == I2C_BMP280)
@@ -287,11 +302,12 @@ void Multiplex::setConfig()
         Bmp280 *bmp;
         bmp = new Bmp280(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
-        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, bmp->temperatureP(), bmp);
+        deviceBufferP->add(bmp);
+        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, bmp->temperatureP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_ALTITUDE, bmp->altitudeP(), bmp);
+        sensorMultiplexP = new SensorMultiplex(FHSS_ALTITUDE, bmp->altitudeP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VARIO, bmp->varioP(), bmp);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VARIO, bmp->varioP());
         addSensor(sensorMultiplexP);
     }
     if (CONFIG_I2C1_TYPE == I2C_MS5611)
@@ -300,11 +316,12 @@ void Multiplex::setConfig()
         MS5611 *bmp;
         bmp = new MS5611(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
-        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, bmp->temperatureP(), bmp);
+        deviceBufferP->add(bmp);
+        sensorMultiplexP = new SensorMultiplex(FHSS_TEMP, bmp->temperatureP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_ALTITUDE, bmp->altitudeP(), bmp);
+        sensorMultiplexP = new SensorMultiplex(FHSS_ALTITUDE, bmp->altitudeP());
         addSensor(sensorMultiplexP);
-        sensorMultiplexP = new SensorMultiplex(FHSS_VARIO, bmp->varioP(), bmp);
+        sensorMultiplexP = new SensorMultiplex(FHSS_VARIO, bmp->varioP());
         addSensor(sensorMultiplexP);
     }
 }

@@ -89,7 +89,6 @@ class Smartport : public FormatData, public ConfigEeprom
 {
 private:
     static const uint8_t sensorIdMatrix[29];
-    Sensor *spSensorP;
 
     struct Packet
     {
@@ -99,8 +98,9 @@ private:
         Packet *nextP = NULL;
     };
     AbstractSerial &serial_;
-    Sensor *sensorP = NULL;
-    Packet *packetP = NULL;
+    FifoBuffer<Packet> *packetBufferP;
+    CircularBuffer<Device> *deviceBufferP;
+    CircularBuffer<SensorSport> *sensorBufferP;
     uint8_t sensorId_ = 0;
     uint16_t dataId_ = DATA_ID;
     bool maintenanceMode_ = false;
@@ -121,10 +121,8 @@ public:
     uint8_t crcToId(uint8_t sensorIdCrc);
     uint8_t sensorId();
     void setSensorId(uint8_t sensorId);
-    void addSensor(Sensor *newSensorP);
     void addPacket(uint16_t dataId, uint32_t value);
     void addPacket(uint8_t frameId, uint16_t dataId, uint32_t value);
-    void deleteSensors();
     void update();
 
 };

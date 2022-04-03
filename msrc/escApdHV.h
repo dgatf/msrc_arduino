@@ -7,7 +7,7 @@
 #include <Arduino.h>
 #include "device.h"
 
-class EscApdHV : public AbstractDevice, Consumption
+class EscApdHV : public Device, Consumption
 {
 private:
     AbstractSerial &serial_;

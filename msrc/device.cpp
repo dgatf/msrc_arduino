@@ -1,5 +1,5 @@
 #include "device.h"
 
-AbstractDevice::AbstractDevice() {}
+Device::Device() {}
 
-AbstractDevice::~AbstractDevice() {}
+Device::~Device() {}

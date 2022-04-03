@@ -38,7 +38,7 @@ Gain: Amperage
 #include <Arduino.h>
 #include "device.h"
 
-class EscHW4 : public AbstractDevice, Consumption
+class EscHW4 : public Device, Consumption
 {
 private:
     int16_t rawCurrentOffset_ = -1;

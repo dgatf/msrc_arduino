@@ -1,17 +1,12 @@
 #include "sensor.h"
 
-Sensor::Sensor(uint16_t dataId, float *valueLP, uint8_t refresh, AbstractDevice *deviceP) : dataId_(dataId), valueLP_(valueLP), refresh_(refresh), deviceP_(deviceP) {}
+SensorSport::SensorSport(uint16_t dataId, float *valueLP, uint8_t refresh) : dataId_(dataId), valueLP_(valueLP), refresh_(refresh) {}
 
-Sensor::~Sensor()
+SensorSport::~SensorSport()
 {
 }
 
-void Sensor::update()
-{
-    deviceP_->update();
-}
-
-uint32_t Sensor::valueFormatted()
+uint32_t SensorSport::valueFormatted()
 {
 #ifdef ESC_SIGNATURE
     if (dataId_ > DIY_STREAM_FIRST_ID && dataId_ < DIY_LAST_ID)
@@ -24,34 +19,34 @@ uint32_t Sensor::valueFormatted()
     return formatData(dataId_, *valueLP_);
 }
 
-uint16_t Sensor::timestamp()
+uint16_t SensorSport::timestamp()
 {
     return timestamp_;
 }
 
-void Sensor::setTimestamp(uint16_t timestamp)
+void SensorSport::setTimestamp(uint16_t timestamp)
 {
     timestamp_ = timestamp;
 }
 
-uint16_t Sensor::dataId()
+uint16_t SensorSport::dataId()
 {
     return dataId_;
 }
 
-uint16_t Sensor::frameId()
+uint16_t SensorSport::frameId()
 {
     return frameId_;
 }
 
-uint8_t Sensor::refresh()
+uint8_t SensorSport::refresh()
 {
     return refresh_;
 }
 
-SensorDouble::SensorDouble(uint16_t dataId, float *valueLP, float *valueMP, uint8_t refresh, AbstractDevice *deviceP) : Sensor(dataId, valueLP, refresh, deviceP), valueMP_(valueMP) {}
+SensorSportDouble::SensorSportDouble(uint16_t dataId, float *valueLP, float *valueMP, uint8_t refresh) : SensorSport(dataId, valueLP, refresh), valueMP_(valueMP) {}
 
-uint32_t SensorDouble::valueFormatted()
+uint32_t SensorSportDouble::valueFormatted()
 {
     float valueLP = 0;
     float valueMP = 0;
@@ -62,9 +57,9 @@ uint32_t SensorDouble::valueFormatted()
     return formatData(dataId_, valueLP, valueMP);
 }
 
-SensorLatLon::SensorLatLon(uint16_t dataId, float *lonP, float *latP, uint8_t refresh, AbstractDevice *device) : SensorDouble(dataId, lonP, latP, refresh, device) {}
+SensorSportLatLon::SensorSportLatLon(uint16_t dataId, float *lonP, float *latP, uint8_t refresh) : SensorSportDouble(dataId, lonP, latP, refresh) {}
 
-uint32_t SensorLatLon::valueFormatted()
+uint32_t SensorSportLatLon::valueFormatted()
 {
     if (type_ == TYPE_LAT)
     {
@@ -78,9 +73,9 @@ uint32_t SensorLatLon::valueFormatted()
     }
 }
 
-SensorDateTime::SensorDateTime(uint16_t dataId, float *timeP, float *dateP, uint8_t refresh, AbstractDevice *deviceP) : SensorDouble(dataId, timeP, dateP, refresh, deviceP) {}
+SensorSportDateTime::SensorSportDateTime(uint16_t dataId, float *timeP, float *dateP, uint8_t refresh) : SensorSportDouble(dataId, timeP, dateP, refresh) {}
 
-uint32_t SensorDateTime::valueFormatted()
+uint32_t SensorSportDateTime::valueFormatted()
 {
     if (!type_)
     {
@@ -94,59 +89,48 @@ uint32_t SensorDateTime::valueFormatted()
     }
 }
 
-SensorCell::SensorCell(uint16_t dataId, float *indexMP, float *indexLP, uint8_t cellIndex, uint8_t refresh, AbstractDevice *deviceP) : SensorDouble(dataId, indexMP, indexLP, refresh, deviceP), cellIndex_(cellIndex) {}
+SensorSportCell::SensorSportCell(uint16_t dataId, float *indexMP, float *indexLP, uint8_t cellIndex, uint8_t refresh) : SensorSportDouble(dataId, indexMP, indexLP, refresh), cellIndex_(cellIndex) {}
 
-uint32_t SensorCell::valueFormatted()
+uint32_t SensorSportCell::valueFormatted()
 {
     return formatCell(cellIndex_, *valueMP_, *valueLP_);
 }
 
-Sensord::Sensord(uint8_t dataId, float *valueP, uint8_t refresh, AbstractDevice *deviceP) : dataId_(dataId), valueP_(valueP), refresh_(refresh), deviceP_(deviceP) {}
+SensorFrskyD::SensorFrskyD(uint8_t dataId, float *valueP, uint8_t refresh) : dataId_(dataId), valueP_(valueP), refresh_(refresh) {}
 
-Sensord::~Sensord()
+SensorFrskyD::~SensorFrskyD()
 {
 }
 
-void Sensord::update()
-{
-    deviceP_->update();
-}
-
-uint16_t Sensord::valueFormatted()
+uint16_t SensorFrskyD::valueFormatted()
 {
     return formatData(dataId_, *valueP_);
 }
 
-uint16_t Sensord::timestamp()
+uint16_t SensorFrskyD::timestamp()
 {
     return timestamp_;
 }
 
-void Sensord::setTimestamp(uint16_t timestamp)
+void SensorFrskyD::setTimestamp(uint16_t timestamp)
 {
     timestamp_ = timestamp;
 }
 
-uint8_t Sensord::dataId()
+uint8_t SensorFrskyD::dataId()
 {
     return dataId_;
 }
 
-uint8_t Sensord::refresh()
+uint8_t SensorFrskyD::refresh()
 {
     return refresh_;
 }
 
-SensorIbus::SensorIbus(uint8_t dataId, uint8_t type, float *valueP, AbstractDevice *deviceP) : dataId_(dataId), type_(type), valueP_(valueP), deviceP_(deviceP) {}
+SensorIbus::SensorIbus(uint8_t dataId, uint8_t type, float *valueP) : dataId_(dataId), type_(type), valueP_(valueP) {}
 
 SensorIbus::~SensorIbus()
 {
-}
-
-void SensorIbus::update()
-{
-    if (deviceP_)
-        deviceP_->update();
 }
 
 uint8_t SensorIbus::dataId()
@@ -168,15 +152,10 @@ uint8_t *SensorIbus::valueFormatted()
     return (uint8_t *)&valueFormatted_;
 }
 
-SensorSbus::SensorSbus(uint8_t dataId, float *valueP, AbstractDevice *deviceP) : dataId_(dataId), valueP_(valueP), deviceP_(deviceP) {}
+SensorSbus::SensorSbus(uint8_t dataId, float *valueP) : dataId_(dataId), valueP_(valueP) {}
 
 SensorSbus::~SensorSbus()
 {
-}
-
-void SensorSbus::update()
-{
-    deviceP_->update();
 }
 
 uint16_t SensorSbus::valueFormatted()
@@ -196,15 +175,10 @@ float *SensorSbus::valueP()
     return valueP_;
 }
 
-SensorMultiplex::SensorMultiplex(uint8_t dataId, float *valueP, AbstractDevice *deviceP) : dataId_(dataId), valueP_(valueP), deviceP_(deviceP) {}
+SensorMultiplex::SensorMultiplex(uint8_t dataId, float *valueP) : dataId_(dataId), valueP_(valueP) {}
 
 SensorMultiplex::~SensorMultiplex()
 {
-}
-
-void SensorMultiplex::update()
-{
-    deviceP_->update();
 }
 
 uint16_t SensorMultiplex::valueFormatted()
@@ -222,15 +196,10 @@ float *SensorMultiplex::valueP()
     return valueP_;
 }
 
-SensorJetiEx::SensorJetiEx(uint8_t type, uint8_t format, float *valueP, AbstractDevice *deviceP) : type_(type), format_(format), valueP_(valueP), deviceP_(deviceP) {}
+SensorJetiEx::SensorJetiEx(uint8_t type, uint8_t format, float *valueP) : type_(type), format_(format), valueP_(valueP) {}
 
 SensorJetiEx::~SensorJetiEx()
 {
-}
-
-void SensorJetiEx::update()
-{
-    deviceP_->update();
 }
 
 float *SensorJetiEx::valueP()

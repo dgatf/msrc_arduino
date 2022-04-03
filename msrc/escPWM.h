@@ -18,7 +18,7 @@ extern void (*TIMER4_COMPB_handlerP)();
 extern void (*FTM0_IRQ_handlerP)();
 #endif
 
-class EscPWM : public AbstractDevice
+class EscPWM : public Device
 {
 private:
     static volatile uint32_t escPwmDuration;

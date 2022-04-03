@@ -56,6 +56,7 @@ class JetiEx
 private:
     AbstractSerial &serial_;
     SensorJetiEx *sensorJetiExP[16] = {NULL};
+    CircularBuffer<Device> *deviceBufferP;
     uint32_t baudRate = 125000L;
     void setConfig();
     bool addSensorValueToBuffer(uint8_t *buffer, uint8_t &posBuffer, uint8_t &sensorNumber);

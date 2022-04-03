@@ -1,7 +1,6 @@
 #include "hitec.h"
 
 volatile bool Hitec::isEnabledFrame[11] = {0};
-//volatile bool Hitec::isEnabledFrame[11] = {1,1,1,1,1,1,1,1,1,1,1};
 bool Hitec::isEmpty = true;
 float *Hitec::frame_0x11_P[1] = {NULL};
 float *Hitec::frame_0x12_P[2] = {NULL};
@@ -21,11 +20,12 @@ Hitec::Hitec()
 
 void Hitec::begin()
 {
+    deviceBufferP = new CircularBuffer<Device>;
     Wire.begin(HITEC_I2C_ADDRESS);
     Wire.onRequest(i2c_request_handler);
     pinMode(LED_BUILTIN, OUTPUT);
     setConfig();
-    if (deviceElementP)
+    if (deviceBufferP->current())
         isEmpty = false;
 }
 
@@ -246,30 +246,12 @@ void Hitec::i2c_request_handler()
     }
 }
 
-void Hitec::addDevice(AbstractDevice *deviceP)
-{
-    DeviceElement *newDeviceElementP;
-    newDeviceElementP = new DeviceElement;
-    newDeviceElementP->deviceP = deviceP;
-    if (deviceElementP == NULL)
-    {
-        deviceElementP = newDeviceElementP;
-        newDeviceElementP->nextP = newDeviceElementP;
-    }
-    else
-    {
-        newDeviceElementP->nextP = deviceElementP->nextP;
-        deviceElementP->nextP = newDeviceElementP;
-        deviceElementP = newDeviceElementP;
-    }
-}
-
 void Hitec::update()
 {
-    if (deviceElementP)
+    if (deviceBufferP->current())
     {
-        deviceElementP->deviceP->update();
-        deviceElementP = deviceElementP->nextP;
+        deviceBufferP->current()->update();
+        deviceBufferP->next();
     }
 #if defined(SIM_RX)
     static uint16_t ts = 0;
@@ -288,7 +270,7 @@ void Hitec::setConfig()
         EscPWM *esc;
         esc = new EscPWM(ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM));
         esc->begin();
-        addDevice(esc);
+        deviceBufferP->add(esc);
         frame_0x15_P[HITEC_FRAME_0X15_RPM1] = esc->rpmP();
         isEnabledFrame[HITEC_FRAME_0X15] = true;
     }
@@ -297,7 +279,7 @@ void Hitec::setConfig()
         EscHW3 *esc;
         esc = new EscHW3(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM));
         esc->begin();
-        addDevice(esc);
+        deviceBufferP->add(esc);
         frame_0x15_P[HITEC_FRAME_0X15_RPM1] = esc->rpmP();
         isEnabledFrame[HITEC_FRAME_0X15] = true;
     }
@@ -306,7 +288,7 @@ void Hitec::setConfig()
         EscHW4 *esc;
         esc = new EscHW4(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP), 0);
         esc->begin();
-        addDevice(esc);
+        deviceBufferP->add(esc);
         PwmOut pwmOut;
         pwmOut.setRpmP(esc->rpmP());
         frame_0x15_P[HITEC_FRAME_0X15_RPM1] = esc->rpmP();
@@ -324,7 +306,7 @@ void Hitec::setConfig()
         EscCastle *esc;
         esc = new EscCastle(ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
-        addDevice(esc);
+        deviceBufferP->add(esc);
         frame_0x15_P[HITEC_FRAME_0X15_RPM1] = esc->rpmP();
         frame_0x18_P[HITEC_FRAME_0X18_VOLT] = esc->voltageP();
         frame_0x18_P[HITEC_FRAME_0X18_AMP] = esc->currentP();
@@ -338,7 +320,7 @@ void Hitec::setConfig()
         EscKontronik *esc;
         esc = new EscKontronik(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
-        addDevice(esc);
+        deviceBufferP->add(esc);
         frame_0x15_P[HITEC_FRAME_0X15_RPM1] = esc->rpmP();
         frame_0x18_P[HITEC_FRAME_0X18_VOLT] = esc->voltageP();
         frame_0x18_P[HITEC_FRAME_0X18_AMP] = esc->currentP();
@@ -352,7 +334,7 @@ void Hitec::setConfig()
         EscApdF *esc;
         esc = new EscApdF(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
-        addDevice(esc);
+        deviceBufferP->add(esc);
         frame_0x15_P[HITEC_FRAME_0X15_RPM1] = esc->rpmP();
         frame_0x18_P[HITEC_FRAME_0X18_VOLT] = esc->voltageP();
         frame_0x18_P[HITEC_FRAME_0X18_AMP] = esc->currentP();
@@ -366,7 +348,7 @@ void Hitec::setConfig()
         EscApdHV *esc;
         esc = new EscApdHV(ESC_SERIAL, ALPHA(CONFIG_AVERAGING_ELEMENTS_RPM), ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
         esc->begin();
-        addDevice(esc);
+        deviceBufferP->add(esc);
         frame_0x15_P[HITEC_FRAME_0X15_RPM1] = esc->rpmP();
         frame_0x18_P[HITEC_FRAME_0X18_VOLT] = esc->voltageP();
         frame_0x18_P[HITEC_FRAME_0X18_AMP] = esc->currentP();
@@ -380,7 +362,7 @@ void Hitec::setConfig()
         Bn220 *gps;
         gps = new Bn220(GPS_SERIAL, GPS_BAUD_RATE);
         gps->begin();
-        addDevice(gps);
+        deviceBufferP->add(gps);
         frame_0x17_P[HITEC_FRAME_0X17_SATS] = gps->satP();
         frame_0x12_P[HITEC_FRAME_0X12_GPS_LAT] = gps->latP();
         frame_0x13_P[HITEC_FRAME_0X13_GPS_LON] = gps->lonP();
@@ -399,7 +381,7 @@ void Hitec::setConfig()
     {
         Pressure *pressure;
         pressure = new Pressure(PIN_PRESSURE, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT));
-        addDevice(pressure);
+        deviceBufferP->add(pressure);
         frame_0x1A_P[HITEC_FRAME_0X1A_ASPD] = pressure->valueP();
         isEnabledFrame[HITEC_FRAME_0X1A] = true;
     }
@@ -407,7 +389,7 @@ void Hitec::setConfig()
     {
         Voltage *voltage;
         voltage = new Voltage(PIN_VOLTAGE1, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), VOLTAGE1_MULTIPLIER);
-        addDevice(voltage);
+        deviceBufferP->add(voltage);
         frame_0x18_P[HITEC_FRAME_0X18_VOLT] = voltage->valueP();
         isEnabledFrame[HITEC_FRAME_0X18] = true;
     }
@@ -415,7 +397,7 @@ void Hitec::setConfig()
     {
         Voltage *voltage;
         voltage = new Voltage(PIN_VOLTAGE1, ALPHA(CONFIG_AVERAGING_ELEMENTS_VOLT), VOLTAGE1_MULTIPLIER);
-        addDevice(voltage);
+        deviceBufferP->add(voltage);
         frame_0x18_P[HITEC_FRAME_0X18_VOLT] = voltage->valueP();
         isEnabledFrame[HITEC_FRAME_0X18] = true;
     }
@@ -423,7 +405,7 @@ void Hitec::setConfig()
     {
         Current *current;
         current = new Current(PIN_CURRENT, ALPHA(CONFIG_AVERAGING_ELEMENTS_CURR), CURRENT_MULTIPLIER, CURRENT_OFFSET, CURRENT_AUTO_OFFSET);
-        addDevice(current);
+        deviceBufferP->add(current);
         frame_0x18_P[HITEC_FRAME_0X18_AMP] = current->valueP();
         isEnabledFrame[HITEC_FRAME_0X18] = true;
     }
@@ -431,7 +413,7 @@ void Hitec::setConfig()
     {
         Ntc *ntc;
         ntc = new Ntc(PIN_NTC1, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
-        addDevice(ntc);
+        deviceBufferP->add(ntc);
         frame_0x17_P[HITEC_FRAME_0X17_TEMP3] = ntc->valueP();
         isEnabledFrame[HITEC_FRAME_0X17] = true;
     }
@@ -439,7 +421,7 @@ void Hitec::setConfig()
     {
         Ntc *ntc;
         ntc = new Ntc(PIN_NTC1, ALPHA(CONFIG_AVERAGING_ELEMENTS_TEMP));
-        addDevice(ntc);
+        deviceBufferP->add(ntc);
         frame_0x17_P[HITEC_FRAME_0X17_TEMP4] = ntc->valueP();
         isEnabledFrame[HITEC_FRAME_0X17] = true;
     }
@@ -449,7 +431,7 @@ void Hitec::setConfig()
         Bmp280 *bmp;
         bmp = new Bmp280(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
-        addDevice(bmp);
+        deviceBufferP->add(bmp);
         frame_0x1B_P[HITEC_FRAME_0X14_GPS_ALT] = bmp->altitudeP();
         isEnabledFrame[HITEC_FRAME_0X14] = true;
     }
@@ -458,7 +440,7 @@ void Hitec::setConfig()
         MS5611 *bmp;
         bmp = new MS5611(CONFIG_I2C1_ADDRESS, ALPHA(CONFIG_AVERAGING_ELEMENTS_VARIO));
         bmp->begin();
-        addDevice(bmp);
+        deviceBufferP->add(bmp);
         frame_0x1B_P[HITEC_FRAME_0X14_GPS_ALT] = bmp->altitudeP();
         isEnabledFrame[HITEC_FRAME_0X14] = true;
     }

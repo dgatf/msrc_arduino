@@ -7,13 +7,13 @@
 #include "softserial.h"
 #include "hardserial.h"
 
-class AbstractDevice
+class Device
 {
 private:
 protected:
 public:
-    AbstractDevice();
-    virtual ~AbstractDevice();
+    Device();
+    virtual ~Device();
     virtual void update() = 0;
 };
 

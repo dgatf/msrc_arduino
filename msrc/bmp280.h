@@ -57,7 +57,7 @@
 #define BMP280_VARIO_INTERVAL 500
 #define BMP280_MEASUREMENT_INTERVAL 30
 
-class Bmp280 : public AbstractDevice, I2C, Vario
+class Bmp280 : public Device, I2C, Vario
 {
 private:
     uint16_t T1_, P1_;

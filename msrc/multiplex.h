@@ -34,6 +34,7 @@ class Multiplex
 private:
     AbstractSerial &serial_;
     SensorMultiplex *sensorMultiplexP[16] = {NULL};
+    CircularBuffer<Device> *deviceBufferP;
     void setConfig();
     void sendPacket(uint8_t address);
 

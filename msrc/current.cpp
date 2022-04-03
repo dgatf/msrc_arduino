@@ -6,6 +6,10 @@ Current::Current(uint8_t pin, uint8_t alpha) : Voltage(pin, alpha) {}
 
 void Current::update()
 {
+    static uint16_t ts = 0;
+    if ((uint16_t)(millis() - ts) < ANALOG_SENSOR_INTERVAL)
+        return;
+    ts = millis();
     if (autoOffset_)
     {
         if (millis() > 5000)

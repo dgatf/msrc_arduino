@@ -102,6 +102,7 @@ private:
     AbstractSerial &serial_;
     static uint8_t telemetryPacket;
     static SensorSbus *sensorSbusP[32];
+    CircularBuffer<Device> *deviceBufferP;
     static const uint8_t slotId[32];
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega328PB__) || defined(ARDUINO_AVR_A_STAR_328PB) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega32U4__)
     static void TIMER_COMP_handler();

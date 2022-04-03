@@ -7,7 +7,7 @@
 #include <Arduino.h>
 #include "device.h"
 
-class EscHW3 : public AbstractDevice
+class EscHW3 : public Device
 {
 private:
     uint8_t alphaRpm_;

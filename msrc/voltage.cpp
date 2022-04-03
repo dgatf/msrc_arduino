@@ -11,6 +11,10 @@ float Voltage::readVoltage()
 
 void Voltage::update()
 {
+    static uint16_t ts = 0;
+    if ((uint16_t)(millis() - ts) < ANALOG_SENSOR_INTERVAL)
+        return;
+    ts = millis();
     value_ = calcAverage(alpha_ / 100.0F, value_, readVoltage());
 #ifdef SIM_SENSORS
     value_ = 12.34;

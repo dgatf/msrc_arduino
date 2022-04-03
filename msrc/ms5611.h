@@ -29,7 +29,7 @@
 #define MS5611_VARIO_INTERVAL 500
 #define MS5611_MEASUREMENT_INTERVAL 10
 
-class MS5611 : public AbstractDevice, I2C, Vario
+class MS5611 : public Device, I2C, Vario
 {
 private:
     uint16_t C1_, C2_, C3_, C4_, C5_, C6_;

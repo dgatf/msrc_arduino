@@ -37,10 +37,10 @@ class Frsky
 {
 private:
     AbstractSerial &serial_;
-    Sensord *sensorP = NULL;
+    CircularBuffer<Device> *deviceBufferP;
+    CircularBuffer<SensorFrskyD> *sensorBufferP;
     void sendByte(uint8_t c, bool header);
     void sendData(uint8_t dataId, uint16_t value);
-    void addSensor(Sensord *newSensorP);
     void setConfig();
 
 public:

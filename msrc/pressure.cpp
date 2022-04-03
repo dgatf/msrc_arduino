@@ -4,6 +4,10 @@ Pressure::Pressure(uint8_t pin, uint8_t alpha) : Voltage(pin, alpha) {}
 
 void Pressure::update()
 {
+    static uint16_t ts = 0;
+    if ((uint16_t)(millis() - ts) < ANALOG_SENSOR_INTERVAL)
+        return;
+    ts = millis();
     if (RX_PROTOCOL != RX_SBUS) // Auto offset is done in Futaba transmitters
     {
         if (millis() > 2000 && voltageOffset == 0)

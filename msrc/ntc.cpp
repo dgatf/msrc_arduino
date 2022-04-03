@@ -4,6 +4,10 @@ Ntc::Ntc(uint8_t pin, uint8_t alpha) : Voltage(pin, alpha) {}
 
 void Ntc::update()
 {
+    static uint16_t ts = 0;
+    if ((uint16_t)(millis() - ts) < ANALOG_SENSOR_INTERVAL)
+        return;
+    ts = millis();
     float voltage = readVoltage();
     float ntcR_Rref = (voltage * NTC_R1 / (BOARD_VCC - voltage)) / NTC_R_REF;
     float temperature = 1 / (log(ntcR_Rref) / NTC_BETA + 1 / 298.15) - 273.15;

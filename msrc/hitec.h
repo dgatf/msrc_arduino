@@ -80,11 +80,6 @@
 class Hitec
 {
 private:
-    struct DeviceElement
-    {
-        AbstractDevice *deviceP;
-        DeviceElement *nextP;
-    };
     static volatile bool isEnabledFrame[];
     static bool isEmpty;
     static float *frame_0x11_P[];
@@ -98,13 +93,12 @@ private:
     static float *frame_0x19_P[];
     static float *frame_0x1A_P[];
     static float *frame_0x1B_P[];
-    DeviceElement *deviceElementP = NULL;
+    CircularBuffer<Device> *deviceBufferP;
     static void i2c_request_handler();
     void setConfig();
 public:
     Hitec();
     void begin();
-    void addDevice(AbstractDevice *deviceP);
     void update();
 };
 
