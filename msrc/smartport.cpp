@@ -433,7 +433,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new SensorSport(VFAS_FIRST_ID, esc->cellVoltageP(), config.refresh.volt);
         sensorBufferP->add(sensorP);
     }
-    if (config.gps)
+    if (ENABLE_GPS)
     {
         SensorSport *sensorP;
         Bn220 *gps;
@@ -457,7 +457,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new SensorSport(DIY_FIRST_ID + 4, gps->distP(), 5);
         sensorBufferP->add(sensorP);
     }
-    if (config.airspeed)
+    if (ENABLE_AIRSPEED)
     {
         SensorSport *sensorP;
         Pressure *pressure;
@@ -466,7 +466,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new SensorSport(AIR_SPEED_FIRST_ID, pressure->valueP(), config.refresh.volt);
         sensorBufferP->add(sensorP);
     }
-    if (config.voltage1)
+    if (ENABLE_VOLTAGE1)
     {
         SensorSport *sensorP;
         Voltage *voltage;
@@ -475,7 +475,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new SensorSport(A3_FIRST_ID, voltage->valueP(), config.refresh.volt);
         sensorBufferP->add(sensorP);
     }
-    if (config.voltage2)
+    if (ENABLE_VOLTAGE2)
     {
         SensorSport *sensorP;
         Voltage *voltage;
@@ -484,7 +484,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new SensorSport(A4_FIRST_ID, voltage->valueP(), config.refresh.volt);
         sensorBufferP->add(sensorP);
     }
-    if (config.current)
+    if (ENABLE_CURRENT)
     {
         SensorSport *sensorP;
         Current *current;
@@ -495,7 +495,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new SensorSportDouble(ESC_RPM_CONS_FIRST_ID + 1, NULL, current->consumptionP(), config.refresh.curr);
         sensorBufferP->add(sensorP);
     }
-    if (config.ntc1)
+    if (ENABLE_NTC1)
     {
         SensorSport *sensorP;
         Ntc *ntc;
@@ -504,7 +504,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new SensorSport(T1_FIRST_ID, ntc->valueP(), config.refresh.temp);
         sensorBufferP->add(sensorP);
     }
-    if (config.ntc2)
+    if (ENABLE_NTC2)
     {
         SensorSport *sensorP;
         Ntc *ntc;
@@ -513,7 +513,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new SensorSport(T2_FIRST_ID, ntc->valueP(), config.refresh.temp);
         sensorBufferP->add(sensorP);
     }
-    if (DEVICE_I2C_TYPE == I2C_BMP280)
+    if (I2C_TYPE == I2C_BMP280)
     {
         SensorSport *sensorP;
         Bmp280 *bmp;
@@ -527,7 +527,7 @@ void Smartport::setConfig(Config &config)
         sensorP = new SensorSport(VARIO_FIRST_ID, bmp->varioP(), 5);
         sensorBufferP->add(sensorP);
     }
-    if (DEVICE_I2C_TYPE == I2C_MS5611)
+    if (I2C_TYPE == I2C_MS5611)
     {
         SensorSport *sensorP;
         MS5611 *bmp;

@@ -57,10 +57,24 @@
 
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega328PB__) || defined(ARDUINO_AVR_A_STAR_328PB) || defined(__AVR_ATmega32U4__) || RX_PROTOCOL != RX_SMARTPORT || !defined(CONFIG_LUA)
 #define ESC_PROTOCOL CONFIG_ESC_PROTOCOL
-#define DEVICE_I2C_TYPE CONFIG_I2C1_TYPE
+#define I2C_TYPE CONFIG_I2C1_TYPE
+#define ENABLE_GPS CONFIG_GPS
+#define ENABLE_AIRSPEED CONFIG_AIRSPEED
+#define ENABLE_VOLTAGE1 CONFIG_VOLTAGE1
+#define ENABLE_VOLTAGE2 CONFIG_VOLTAGE2
+#define ENABLE_CURRENT CONFIG_CURRENT
+#define ENABLE_NTC1 CONFIG_NTC1
+#define ENABLE_NTC2 CONFIG_NTC2
 #else
 #define ESC_PROTOCOL config.protocol
-#define DEVICE_I2C_TYPE config.deviceI2C1Type
+#define I2C_TYPE config.deviceI2C1Type
+#define ENABLE_GPS config.gps
+#define ENABLE_AIRSPEED config.airspeed
+#define ENABLE_VOLTAGE1 config.voltage1
+#define ENABLE_VOLTAGE2 config.voltage2
+#define ENABLE_CURRENT config.current
+#define ENABLE_NTC1 config.ntc1
+#define ENABLE_NTC2 config.ntc2
 #endif
 
 #include <Arduino.h>
