@@ -93,7 +93,7 @@ uint16_t FormatData::formatData(uint8_t dataId, float value)
         value = abs(value);
         uint8_t deg = value / 60;
         uint8_t min = (int)value % 60;
-        char buf[6];
+        char buf[7];
         sprintf(buf, "%d%d", deg, min);
         return atoi(buf);
     }
