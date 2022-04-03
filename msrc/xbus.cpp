@@ -19,7 +19,7 @@ Xbus_Battery Xbus::xbusBattery;
 Xbus_Gps_Loc Xbus::xbusGpsLoc;
 Xbus_Gps_Stat Xbus::xbusGpsStat;
 #endif
-#if (CONFIG_I2C1_TYPE == I2C_BMP280) && (defined(__MKL26Z64__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)) && defined(I2C_T3_TEENSY)
+#if CONFIG_I2C1_TYPE && (defined(__MKL26Z64__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)) && defined(I2C_T3_TEENSY)
 Xbus_Vario Xbus::xbusVario;
 #endif
 
@@ -93,7 +93,7 @@ void Xbus::i2c_request_handler()
 #endif
         break;
 #endif
-#if (CONFIG_I2C1_TYPE == I2C_BMP280) && (defined(__MKL26Z64__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)) && defined(I2C_T3_TEENSY)
+#if CONFIG_I2C1_TYPE && (defined(__MKL26Z64__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)) && defined(I2C_T3_TEENSY)
     case XBUS_VARIO:
         memcpy(buffer, (uint8_t *)&xbusVario, sizeof(xbusVario));
     break;
@@ -155,7 +155,7 @@ void Xbus::begin()
     CONFIG_ESC_PROTOCOL == PROTOCOL_CASTLE
     esc.begin();
 #endif
-#if (CONFIG_I2C1_TYPE == I2C_BMP280) && !defined(__MK20DX128__) && defined(I2C_T3_TEENSY)
+#if CONFIG_I2C1_TYPE && !defined(__MK20DX128__) && defined(I2C_T3_TEENSY)
     bmp.begin();
 #endif
 #if (defined(__MKL26Z64__) || defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)) && defined(I2C_T3_TEENSY) && (RX_PROTOCOL == RX_XBUS || RX_PROTOCOL == RX_HITEC)
@@ -289,7 +289,7 @@ void Xbus::update()
     xbusGpsLoc.altitudeLow = bcd16(fmod(alt, 1000), 1);
     xbusGpsStat.altitudeHigh = bcd8((uint8_t)(alt / 1000), 0);
 #endif
-#if (CONFIG_I2C1_TYPE == I2C_BMP280) && (defined(__MKL26Z64__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)) && defined(I2C_T3_TEENSY)
+#if CONFIG_I2C1_TYPE && (defined(__MKL26Z64__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)) && defined(I2C_T3_TEENSY)
     bmp.update();
     uint16_t altitude = round(*bmp.altitudeP() * 10);
     uint16_t vario = round(*bmp.varioP() * 10);
