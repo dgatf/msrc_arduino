@@ -96,7 +96,7 @@ ATmega board version 3.3v or 5v: Usually 3.3v can be used and it is recommended 
 (8) If using serial ESC or GPS  
 (9) If using with Castle, use Arduino Micro. Pin 13 not available in Arduino Pro Micro 
 
-Status led of the board blinks when sending telemetry
+Status led of the board blinks when sending telemetry. If it doesn't blink check connections and config
 
 ## 2. Receiver protocol
 
