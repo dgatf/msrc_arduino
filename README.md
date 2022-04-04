@@ -303,10 +303,10 @@ If using ATmega328P telemetry values are not accurate all the time. Some reading
 Remark: currently not compatible with Teensy3.x
 
 <p align="center"><img src="./images/esc_castle_teensy2.png" width="420"><br>
-  <i>Castle Link with Teensy 2 and Smartport or SBUS</i><br><br></p>
+  <i>Castle Link 2 and Smartport or SBUS with Teensy</i><br><br></p>
 
 <p align="center"><img src="./images/esc_castle_micro.png" width="420"><br>
-  <i>Castle Link with Arduino Micro and Smartport or SBUS</i><br><br></p>
+  <i>Castle Link and Smartport or SBUS with Arduino Micro</i><br><br></p>
 
 <p align="center"><img src="./images/esc_castle_teensylc.png" width="500"><br>
 <i>Castle Link with Teensy LC/3.x</i><br><br></p>
