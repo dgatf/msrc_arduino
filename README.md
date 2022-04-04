@@ -54,7 +54,7 @@ Board required if using:
 - ESC Castle: Teensy2, Micro, Pololu ATmega328PB or Teensy LC
 - Receiver serial with ESC serial and GPS serial: Pololu ATmega328PB, Teensy LC/3.x
 
-Teensy LC is recommended if using:
+Teensy LC or Pololu 328PB is recommended if using:
 
 - SBUS or Jeti with another serial (ESC or GPS) and you don't want to loose any serial frame. Though Mini/Micro/Teensy 2 will work as well, but losing few serial frames
 
