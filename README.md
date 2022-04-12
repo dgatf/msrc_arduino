@@ -198,7 +198,7 @@ If no telemetry is shown, may be MSRC is booting too slow and the first poll fro
 
 ### Hitec
 
-If Vin is a regulated 5V source (e.g. receiver, BEC), pull ups can be connected to Vin/RAW instead Vcc
+If Vin is a regulated 5V source (e.g. receiver, BEC), pull ups can be connected to Vin/RAW instead Vcc. Use pull ups resistors 1k to 2.7k
 
 <p align="center"><img src="./images/hitec.png" width="300"><br>
   <i>Hitec schematic</i><br><br></p>
