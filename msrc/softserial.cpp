@@ -95,14 +95,14 @@ SoftSerial softSerial;
 
 #if defined(__AVR_ATmega32U4__)
 
-ISR(TIMER3_COMPA_vect)
+ISR(TIMER4_COMPA_vect)
 {
     softSerial.TIMER_COMP_handler();
 }
 
 void SoftSerial::TIMER_COMP_handler()
 {
-    TIMSK3 &= ~_BV(OCIE3A);
+    TIMSK4 &= ~_BV(OCIE4A);
     if (timeout_)
         timedout = true;
     ts = micros();
@@ -153,9 +153,9 @@ void SoftSerial::PCINT_handler()
         timedout = false;
         PCIFR = B111;
         PCMSKx |= _BV(PCINTxn);
-        OCR3A = TCNT3 + timeout_;
-        TIFR3 |= _BV(OCF3A);
-        TIMSK3 |= _BV(OCIE3A);
+        OCR4A = TCNT4 + timeout_;
+        TIFR4 |= _BV(OCF4A);
+        TIMSK4 |= _BV(OCIE4A);
     }
 }
 
@@ -200,8 +200,8 @@ void SoftSerial::begin(uint32_t baud, uint8_t format)
     rx_delay_centering = subs(delay / 2, (4 + 4 + 75 + 17 - 15) / 4);
     rx_delay_stop = subs(delay * 3 * stop_bits_ / 4, (37 + 11 + 12) / 4);
 
-    TCCR3A = 0;
-    TCCR3B |= _BV(CS31); // SCALER 8
+    TCCR4A = 0;
+    TCCR4B |= _BV(CS42); // SCALER 8
 }
 
 #endif

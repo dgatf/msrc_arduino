@@ -65,7 +65,7 @@ void Sbus::TIMER_COMP_handler()
 
 void Sbus::TIMER_COMP_handler()
 {
-    uint16_t ts = TCNT3;
+    uint16_t ts = TCNT4;
 #ifdef DEBUG_SBUS_MS
     static uint16_t msprev = 0;
     uint16_t ms = micros();
@@ -90,12 +90,12 @@ void Sbus::TIMER_COMP_handler()
         sendSlot(telemetryPacket * 8 + slotCont);
     if (slotCont < 7)
     {
-        OCR3B = ts + (uint16_t)(SBUS_INTER_SLOT_DELAY * US_TO_COMP(1));
+        OCR4B = ts + (uint16_t)(SBUS_INTER_SLOT_DELAY * US_TO_COMP(8));
         slotCont++;
     }
     else
     {
-        TIMSK3 &= ~_BV(OCIE3B); // DISABLE TIMER2 OCRA INTERRUPT
+        TIMSK4 &= ~_BV(OCIE4B); // DISABLE TIMER4 OCRB INTERRUPT
         slotCont = 0;
     }
 }
@@ -182,10 +182,10 @@ void Sbus::begin()
 #endif
 
 #if defined(__AVR_ATmega32U4__)
-    // TIMER 3
-    TIMER3_COMPB_handlerP = TIMER_COMP_handler;
-    TCCR3B = _BV(CS30); // SCALER 1
-    TCCR3A = 0;
+    // TIMER 4 - shared with softserial
+    TIMER4_COMPB_handlerP = TIMER_COMP_handler;
+    TCCR4B = _BV(CS42); // SCALER 8
+    TCCR4A = 0;
 #endif
 
 #if defined(__MKL26Z64__) || defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
@@ -233,9 +233,9 @@ void Sbus::sendPacket()
 
 #if defined(__AVR_ATmega32U4__)
     // configure timer
-    OCR3A = TCNT3 + (SBUS_SLOT_0_DELAY - ts) * US_TO_COMP(1); // complete 2ms
-    TIFR3 |= _BV(OCF3A);                                      // CLEAR TIMER2 OCRA CAPTURE FLAG
-    TIMSK3 |= _BV(OCIE3A);                                    // ENABLE TIMER2 OCRA INTERRUPT
+    OCR4B = TCNT4 + (SBUS_SLOT_0_DELAY - ts) * US_TO_COMP(8); // complete 2ms
+    TIFR4 |= _BV(OCF4B);                                      // CLEAR TIMER2 OCRA CAPTURE FLAG
+    TIMSK4 |= _BV(OCIE4B);                                    // ENABLE TIMER2 OCRA INTERRUPT
 #endif
 
 #if defined(__MKL26Z64__) || defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)

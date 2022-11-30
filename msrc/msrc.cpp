@@ -172,6 +172,12 @@ ISR(TIMER3_OVF_vect)
     if (TIMER3_OVF_handlerP)
         TIMER3_OVF_handlerP();
 }
+void (*TIMER4_COMPB_handlerP)() = NULL;
+ISR(TIMER4_COMPB_vect)
+{
+    if (TIMER4_COMPB_handlerP)
+        TIMER4_COMPB_handlerP();
+}
 #endif
 
 #if defined(__MKL26Z64__) || defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__) || defined(__IMXRT1062__)

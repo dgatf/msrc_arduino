@@ -306,11 +306,15 @@ void EscCastle::TIMER3_CAPT_handler() // RX INPUT
             TIFR3 |= _BV(TOV3);    // CLEAR OVERFLOW FLAG
             TIMSK3 |= _BV(TOIE3);  // ENABLE OVERFLOW INTERRUPT
         }
-        OCR1B = ICR3 - ts;
+        if (ICR3 - ts > 1500 && ICR3 - ts < 4500) 
+            OCR1B = ICR3 - ts;
         TCNT3 = 0;           // RESET COUNTER
 #ifdef DEBUG_CASTLE_RX
-        DEBUG_PRINT(ICR3 - ts);
-        DEBUG_PRINTLN();
+        if (ICR3 - ts > 1500 && ICR3 - ts < 4500) 
+        {
+            DEBUG_PRINT(ICR3 - ts);
+            DEBUG_PRINTLN();
+        }
 #endif
     }
     TCCR3B ^= _BV(ICES3); // TOGGLE ICP3 EDGE
@@ -560,6 +564,7 @@ void EscCastle::begin()
     TCCR3B = 0;           // MODE 0 (NORMAL)
     TCCR3B |= _BV(ICES3); // RISING EDGE
     TCCR3B |= _BV(CS31);  // SCALER 8
+    TCCR3B |= _BV(ICNC3);  // NOISE FILTER
     TIMSK3 |= _BV(ICIE3);  // CAPTURE INTERRUPT
 
     // TIMER1. ESC: PWM OUTPUT, TELEMETRY INPUT. ICP1 (PD4,4). OC1B (PB6,10) -> OUTPUT/INPUT PULL UP

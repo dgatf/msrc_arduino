@@ -88,7 +88,7 @@ extern void (*TIMER2_COMPA_handlerP)();
 #endif
 
 #if defined(__AVR_ATmega32U4__)
-extern void (*TIMER3_COMPB_handlerP)();
+extern void (*TIMER4_COMPB_handlerP)();
 #endif
 
 #if defined(__MKL26Z64__) || defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
