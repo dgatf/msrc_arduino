@@ -306,7 +306,7 @@ void EscCastle::TIMER3_CAPT_handler() // RX INPUT
             TIFR3 |= _BV(TOV3);    // CLEAR OVERFLOW FLAG
             TIMSK3 |= _BV(TOIE3);  // ENABLE OVERFLOW INTERRUPT
         }
-        if (ICR3 - ts > 1500 && ICR3 - ts < 4500)
+        if (ICR3 - ts > 0.7 * US_TO_COMP(8) && ICR3 - ts < 2.3 * US_TO_COMP(8))
         {
             OCR1B = ICR3 - ts;
 #ifdef DEBUG_CASTLE_RX
