@@ -42,11 +42,10 @@ void EscCastle::TIMER1_CAPT_handler() // RX INPUT
         {
             OCR1B = ICR1 + OCR1A - ts;
         }
-        castlePwmRx = OCR1B;
         TIMSK1 |= _BV(OCIE1B);
         castleRxLastReceived = 0;
 #ifdef DEBUG_CASTLE_RX
-        DEBUG_PRINT(castlePwmRx);
+        DEBUG_PRINT(OCR1B);
         DEBUG_PRINTLN();
 #endif
     }
@@ -62,6 +61,7 @@ void EscCastle::TIMER1_COMPB_handler() // START INPUT STATE
     OCR2A = TCNT2 + 12 * MS_TO_COMP(1024); // 12ms AHEAD
     TIFR2 |= _BV(OCF2A);                   // CLEAR TIMER2 OCRA CAPTURE FLAG
     TIMSK2 |= _BV(OCIE2A);                 // ENABLE TIMER2 OCRA INTERRUPT
+    castlePwmRx = OCR1B;
 }
 
 void EscCastle::INT0_handler() // READ TELEMETRY
@@ -99,7 +99,7 @@ void EscCastle::TIMER2_COMPA_handler() // START OUTPUT STATE
     }
     if (!castleTelemetryReceived)
     {
-        //castleCompsPerMilli = castleTelemetry[0] / 2 + (castleTelemetry[9] < castleTelemetry[10] ? castleTelemetry[9] : castleTelemetry[10]);
+        // castleCompsPerMilli = castleTelemetry[0] / 2 + (castleTelemetry[9] < castleTelemetry[10] ? castleTelemetry[9] : castleTelemetry[10]);
         castleCont = 0;
 #ifdef DEBUG_CASTLE
         DEBUG_PRINTLN();
@@ -132,10 +132,9 @@ void EscCastle::TIMER1_CAPT_handler() // RX INPUT
             TIMSK1 |= _BV(TOIE1);  // ENABLE OVERFLOW INTERRUPT
         }
         OCR4B = ICR1 - ts;
-        castlePwmRx = OCR4B; // KEEP PWM STATE FOR TELEMETRY PULSE LENGHT
         TCNT1 = 0;           // RESET COUNTER
 #ifdef DEBUG_CASTLE_RX
-        DEBUG_PRINT(castlePwmRx);
+        DEBUG_PRINT(OCR4B);
         DEBUG_PRINTLN();
 #endif
     }
@@ -165,6 +164,7 @@ void EscCastle::TIMER4_COMPB_handler() // START INPUT STATE
     TCNT3 = 0;             // RESET COUNTER
     TIFR3 |= _BV(OCF3A);   // CLEAR TIMER3 OCRA CAPTURE FLAG
     TIMSK3 |= _BV(OCIE3A); // ENABLE TIMER3 OCRA INTERRUPT
+    castlePwmRx = OCR4B;   // KEEP PWM STATE FOR TELEMETRY PULSE LENGHT
 }
 
 void EscCastle::TIMER4_CAPT_handler() // READ TELEMETRY
@@ -222,10 +222,9 @@ void EscCastle::TIMER4_CAPT_handler() // RX INPUT
             TIMSK4 |= _BV(TOIE4);  // ENABLE OVERFLOW INTERRUPT
         }
         OCR5B = ICR4 - ts;
-        castlePwmRx = OCR5B; // KEEP PWM STATE FOR TELEMETRY PULSE LENGHT
         TCNT4 = 0;           // RESET COUNTER
 #ifdef DEBUG_CASTLE_RX
-        DEBUG_PRINT(castlePwmRx);
+        DEBUG_PRINT(OCR5B);
         DEBUG_PRINTLN();
 #endif
     }
@@ -251,6 +250,7 @@ void EscCastle::TIMER5_COMPB_handler() // START INPUT STATE
     PORTL |= _BV(PL4);                  // PL4 PULLUP
     TIFR5 |= _BV(OCF5C) | _BV(ICF5);    // CLEAR ICP5 CAPTURE/OC5C MATCH FLAGS
     TIMSK5 |= _BV(OCIE5C) | _BV(ICIE5); // ENABLE ICP5 CAPT/OC5C MATCH
+    castlePwmRx = OCR5B;
 }
 
 void EscCastle::TIMER5_CAPT_handler() // READ TELEMETRY
@@ -306,16 +306,15 @@ void EscCastle::TIMER3_CAPT_handler() // RX INPUT
             TIFR3 |= _BV(TOV3);    // CLEAR OVERFLOW FLAG
             TIMSK3 |= _BV(TOIE3);  // ENABLE OVERFLOW INTERRUPT
         }
-        if (ICR3 - ts > 1500 && ICR3 - ts < 4500) 
-            OCR1B = ICR3 - ts;
-        TCNT3 = 0;           // RESET COUNTER
-#ifdef DEBUG_CASTLE_RX
-        if (ICR3 - ts > 1500 && ICR3 - ts < 4500) 
+        if (ICR3 - ts > 1500 && ICR3 - ts < 4500)
         {
-            DEBUG_PRINT(ICR3 - ts);
+            OCR1B = ICR3 - ts;
+#ifdef DEBUG_CASTLE_RX
+            DEBUG_PRINT(OCR1B);
             DEBUG_PRINTLN();
-        }
 #endif
+        }
+        TCNT3 = 0; // RESET COUNTER
     }
     TCCR3B ^= _BV(ICES3); // TOGGLE ICP3 EDGE
 }
@@ -386,7 +385,7 @@ void EscCastle::FTM1_IRQ_handler()
             FTM0_C0SC |= FTM_CSC_CHIE;
             FTM0_C0V = FTM1_C0V;
 #ifdef DEBUG_CASTLE_RX
-            //if (FTM1_C0V < 1500 || FTM1_C0V > 1600)
+            // if (FTM1_C0V < 1500 || FTM1_C0V > 1600)
             {
                 DEBUG_PRINT(FTM1_C0V);
                 DEBUG_PRINTLN();
@@ -400,7 +399,7 @@ void EscCastle::FTM1_IRQ_handler()
     }
     else if (FTM1_SC & FTM_SC_TOF) // TIMER OVERFLOW INTERRUPT
     {
-        //FTM0_C0SC &= ~0x3C;          // DISABLE CHANNEL
+        // FTM0_C0SC &= ~0x3C;          // DISABLE CHANNEL
         FTM0_C0SC &= ~FTM_CSC_CHIE;
         FTM0_C4SC &= ~FTM_CSC_CHIE;
         FTM0_C2SC &= ~FTM_CSC_CHIE;
@@ -472,7 +471,7 @@ void EscCastle::begin()
     TIMER1_CAPT_handlerP = TIMER1_CAPT_handler;
     TIMER1_COMPB_handlerP = TIMER1_COMPB_handler;
     INT0_handlerP = INT0_handler;
-    //TIMER2_COMPA_handlerP = TIMER2_COMPA_handler;
+    // TIMER2_COMPA_handlerP = TIMER2_COMPA_handler;
 
     // TIMER 1, ESC: PWM OUTPUT, RX INPUT. ICP1 (PB0, PIN 8). OC1B (PB2 PIN 10) -> OUTPUT/INPUT PULL UP
     DDRB |= _BV(DDB2);                   // OUTPUT OC1B PB2 (PIN 10)
@@ -482,6 +481,7 @@ void EscCastle::begin()
     TCCR1A |= _BV(COM1B1) | _BV(COM1B0); // TOGGLE OC1B ON OCR1B
     TCCR1B |= _BV(ICES1);                // RISING EDGE
     TCCR1B |= _BV(CS11);                 // SCALER 8
+    TCCR1B |= _BV(ICNC1);                // NOISE CANCELLER
     TIMSK1 = _BV(ICIE1);                 // CAPTURE INTERRUPT
     OCR1A = 20 * MS_TO_COMP(8);          // 50Hz = 20ms
 
@@ -507,6 +507,7 @@ void EscCastle::begin()
     TCCR1B = 0;           // MODE 0 (NORMAL)
     TCCR1B |= _BV(ICES1); // RISING EDGE
     TCCR1B |= _BV(CS11);  // SCALER 8
+    TCCR1B |= _BV(ICNC1); // NOISE CANCELLER
     TIMSK1 = _BV(ICIE1);  // CAPTURE INTERRUPT
 
     // TIMER4. ESC: PWM OUTPUT, TELEMETRY INPUT. ICP4 (PE0, PIN 22). OC4B (PD2 PIN 2) -> OUTPUT/INPUT PULL UP
@@ -538,6 +539,7 @@ void EscCastle::begin()
     TCCR4B = 0;           // MODE 0 (NORMAL)
     TCCR4B |= _BV(ICES4); // RISING EDGE
     TCCR4B |= _BV(CS41);  // SCALER 8
+    TCCR4B |= _BV(ICNC4); // NOISE CANCELLER
     TIMSK4 = _BV(ICIE4);  // CAPTURE INTERRUPT
 
     // TIMER5. ESC: PWM OUTPUT, TELEMETRY INPUT. ICP5 (PL1, PIN 48). OC5B (PL4 PIN 45) -> OUTPUT/INPUT PULL UP
@@ -559,13 +561,13 @@ void EscCastle::begin()
     TIMER1_CAPT_handlerP = TIMER1_CAPT_handler;
 
     // TIMER3. RX INPUT. ICP3 (PC7,13)
-    //PORTC |= _BV(PC7);    // ICP3 PULLUP
+    // PORTC |= _BV(PC7);    // ICP3 PULLUP
     TCCR3A = 0;           //
     TCCR3B = 0;           // MODE 0 (NORMAL)
     TCCR3B |= _BV(ICES3); // RISING EDGE
     TCCR3B |= _BV(CS31);  // SCALER 8
-    TCCR3B |= _BV(ICNC3);  // NOISE FILTER
-    TIMSK3 |= _BV(ICIE3);  // CAPTURE INTERRUPT
+    TCCR3B |= _BV(ICNC3); // NOISE CANCELLER
+    TIMSK3 |= _BV(ICIE3); // CAPTURE INTERRUPT
 
     // TIMER1. ESC: PWM OUTPUT, TELEMETRY INPUT. ICP1 (PD4,4). OC1B (PB6,10) -> OUTPUT/INPUT PULL UP
     TCCR1A = _BV(WGM11) | _BV(WGM10);    // MODE 15 (TOP OCR1A)
@@ -619,7 +621,7 @@ void EscCastle::begin()
     FTM0_C2SC = FTM_CSC_MSA;        // SOFTWARE COMPARE
     FTM0_C2V = 12 * MS_TO_COMP(32); // 12ms TOGGLE CH0 TO OUTPUT
     // SET PINS
-    //PORTD_PCR0 = PORT_PCR_MUX(0); // PTD0 MUX 0 -> DISABLE
+    // PORTD_PCR0 = PORT_PCR_MUX(0); // PTD0 MUX 0 -> DISABLE
     PORTD_PCR4 = PORT_PCR_MUX(4) | PORT_PCR_PE; // TPM0_CH4 MUX 4 -> PTD4 -> 6 (CAPTURE), PULLUP
 
     NVIC_ENABLE_IRQ(IRQ_FTM0);
